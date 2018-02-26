@@ -1,0 +1,24 @@
+User: carinelj
+Psw: jfcfn3zg
+
+CREATE TABLE User (
+    ID int AUTO_INCREMENT,
+    UserName varchar(12) NOT NULL,
+    LastName varchar(50) NOT NULL,
+    FirstName varchar(50) NOT NULL,
+    Address varchar(50) NOT NULL,
+    City varchar(50) NOT NULL,
+    Email varchar(50) NOT NULL,
+    ZIP INT(4) NOT NULL,
+    Phone INT(8) NOT NULL,
+    Age INT(2) NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+ALTER TABLE Persons AUTO_INCREMENT=100;
+
+INSERT INTO User (UserName, LastName, FirstName, Address, City, Email, ZIP, Phone, Age)
+VALUES ()
+
+INSERT INTO User (UserName, LastName, FirstName, Address, City, Email, ZIP, Phone, Age)
+VALUES ('ElizaBa', 'Aamodt', 'Elizabeth', 'Floraveien 3', 'Trondheim', 'elizabethaamodt@gmail.com', 7010, 92881179, 20)
