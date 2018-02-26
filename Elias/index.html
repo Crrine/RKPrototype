@@ -4,6 +4,8 @@
 		<title>Elias innlogging</title>
 	</head>
 	<body>
+
+
 		<h1>Innlogging</h1>
 		<input type="text" id="inpUser" placeholder="username">
 		<input type="password" id="inpPassword" placeholder="password">
@@ -29,16 +31,16 @@
 				
 				for(i=0;i<userArr.length;i++){
 					if(inpUser==userArr[i].username&&inpPassword==userArr[i].password){
-					document.getElementById("output").innerHTML += "LOGGET INN";
+					document.getElementById("output").innerHTML = "LOGGET INN";
 					return true;
 				}else{
-					document.getElementById("output").innerHTML += "feil brukernavn/pass";
+					document.getElementById("output").innerHTML = "feil brukernavn/pass";
 					return false;
 					i++;
 					}
 				}
 			}
-			document.getElementById("output").innerHTML += userArr.length;
+			// Jobber med: få linket databasen og javascripten, skal man bruke push til array eller ha spørringe lagret i array, what?
 		</script>
 		<script src='apps.js'></script>
 	</body>
