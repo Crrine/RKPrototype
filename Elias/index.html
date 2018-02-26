@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Elias innlogging</title>
+	</head>
+	<body>
+		<h1>Innlogging</h1>
+		<input type="text" id="inpUser" placeholder="username">
+		<input type="password" id="inpPassword" placeholder="password">
+		<button onclick="login()">Login</button>
+		<div id="output"></div>
+		<script>
+			class User {
+						constructor(username, password){
+							this.username = username;
+							this.password = password;
+						}
+					}
+
+			var userArr = [];
+
+			var p = new User('elias','pass123');
+			userArr.push(p);
+
+			function login(){
+
+				var inpUser = document.getElementById('inpUser').value;
+				var inpPassword = document.getElementById('inpPassword').value;
+				
+				for(i=0;i<userArr.length;i++){
+					if(inpUser==userArr[i].username&&inpPassword==userArr[i].password){
+					document.getElementById("output").innerHTML += "LOGGET INN";
+					return true;
+				}else{
+					document.getElementById("output").innerHTML += "feil brukernavn/pass";
+					return false;
+					i++;
+					}
+				}
+			}
+			document.getElementById("output").innerHTML += userArr.length;
+		</script>
+		<script src='apps.js'></script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
