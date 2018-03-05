@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Link, HashRouter, Switch, Route } from 'react-router-dom';
+import { Link, HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { customerService } from './services';
 
 class User {
@@ -38,8 +38,12 @@ class Navbar extends React.Component {
 		return(
 			<div>
 				<h1>Navigasjonsbaren</h1>
-				<Link to='/loginPage'>Logg ut</Link><br />
-				<Link to='/home'>Hjemmeside</Link>
+				<nav>
+					<Link to='/loginPage'>Logg ut</Link><br />
+					<Link to='/homepage'>Hjemmeside</Link><br />
+					<Link to='/calendar'>Kalender</Link><br />
+					<Link to='/profile'>Profil</Link><br />
+				</nav>
 			</div>
 		);
 	}
@@ -54,7 +58,6 @@ class LoginPage extends React.Component {
 				<input type='password' id='inpPassword' placeholder='password' /><span />
 				<button id='btn'>Login</button>
 				<div id='output'></div><br />
-				<Link to='/Home'>Hjemmeside</Link>
 			</div>
 		);
 	}
@@ -66,11 +69,31 @@ class LoginPage extends React.Component {
 	}
 }
 
-class Home extends React.Component {
+class Homepage extends React.Component {
 	render(){
 		return(
 			<div>
 				<h1>Hjemmeside</h1>
+			</div>
+		);
+	}
+}
+
+class Calendar extends React.Component {
+	render(){
+		return(
+			<div>
+				<h1>Kalender</h1>
+			</div>
+		);
+	}
+}
+
+class Profile extends React.Component {
+	render(){
+		return(
+			<div>
+				<h1>Profil</h1>
 			</div>
 		);
 	}
@@ -81,8 +104,10 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
-				<Route exact path='/home' component={Home}/>
+				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>
+				<Route excat path='/calendar' component={Calendar}/>
+				<Route excat path='/profile' component={Profile}/>
       </Switch>
     </div>
   </HashRouter>
