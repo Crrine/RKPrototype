@@ -1,73 +1,91 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link, HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { customerService } from './services';
+import { userService } from './services';
+import {createHashHistory} from 'history';
 
-class User {
-			constructor(username, password){
-				this.username = username;
-				this.password = password;
-			}
-		}
+export const history = createHashHistory();
 
-var userArr = [];
-
-var p = new User('elias','pass123');
-userArr.push(p);
-
-function login(){
-	var inpUser = document.getElementById('inpUser').value;
-	var inpPassword = document.getElementById('inpPassword').value;
-
-	for(var i=0;i<userArr.length;i++){
-		if(inpUser==userArr[i].username&&inpPassword==userArr[i].password){
-		output.innerText = 'logget inn';
-		console.log('logget inn');
-		return true;
-	}else{
-		output.innerText = 'feil brukernavn/passord';
-		console.log('feil brukernavn/passord');
-		return false;
-		i++;
-		}
-	}
-}
-
-class Navbar extends React.Component {
-	render(){
-		return(
-			<div>
-				<h1>Navigasjonsbaren</h1>
-				<nav>
-					<Link to='/loginPage'>Logg ut</Link><br />
-					<Link to='/homepage'>Hjemmeside</Link><br />
-					<Link to='/calendar'>Kalender</Link><br />
-					<Link to='/profile'>Profil</Link><br />
-				</nav>
-			</div>
-		);
-	}
-}
+var loggedIn = false;
 
 class LoginPage extends React.Component {
 	render(){
 		return (
 			<div>
 				<h1>Innlogging</h1>
-				<input type='text' id='inpUser' placeholder='username' />
-				<input type='password' id='inpPassword' placeholder='password' /><span />
-				<button id='btn'>Login</button>
-				<div id='output'></div><br />
+				<input type='text' ref='inpUser' placeholder='brukernavn' />
+				<input type='password' ref='inpPassword' placeholder='passord' /><span />
+				<button ref='btn'>Logg inn</button>
 			</div>
 		);
 	}
 	componentDidMount(){
-		document.getElementById('btn').onclick = () => {
-			login();
+		this.refs.btn.onclick = () => {
+				var inpUser = this.refs.inpUser.value;
+				var inpPassword = this.refs.inpPassword.value;
+
+				userService.loginUser(inpUser, inpPassword, (result) => {
+					if(result != undefined){
+						console.log("logget inn bruker");
+						loggedIn = true;
+						history.push('/Navbar/');
+					}else{
+						console.log("mislykket innlogging");
+						loggedIn = false;
+					}
+				})
+			}
 		}
-		var output = document.getElementById('output');
+	}
+
+class Navbar extends React.Component {
+	render(){
+		if(loggedIn){
+			return(
+				<div>
+					<h1>Navigasjonsbaren</h1>
+					<nav>
+						<button ref='logout' onClick = {() => {
+							loggedIn = false, history.push('/loginPage/'), console.log('logget ut bruker'),
+							this.forceUpdate()}}>Logg ut</button><br />
+						<Link to='/homepage'>Hjemmeside</Link><br />
+						<Link to='/calendar'>Kalender</Link><br />
+						<Link to='/profile'>Profil</Link><br />
+					</nav>
+				</div>
+			);
+		}else{
+			return(
+				<div>
+					<Link to='/loginPage'>Logg inn</Link>
+				</div>
+			)
+		}
 	}
 }
+
+	class Profile extends React.Component{
+		render(){
+			return(
+				<div>
+					<h1>Profil</h1>
+					<ul>
+						<li ref='userName'></li>
+						<li ref='userEmail'></li>
+					</ul>
+				</div>
+			);
+		}
+		componentDidMount(){
+			var userName = document.getElementById('userName');
+			var userEmail = document.getElementById('userEmail');
+
+	 		userService.getUser(2,(result) => {
+				this.refs.userName.innerText += result.FirstName;
+				this.refs.userEmail.innerText += result.Email;
+	    });
+		}
+	}
 
 class Homepage extends React.Component {
 	render(){
@@ -84,16 +102,6 @@ class Calendar extends React.Component {
 		return(
 			<div>
 				<h1>Kalender</h1>
-			</div>
-		);
-	}
-}
-
-class Profile extends React.Component {
-	render(){
-		return(
-			<div>
-				<h1>Profil</h1>
 			</div>
 		);
 	}

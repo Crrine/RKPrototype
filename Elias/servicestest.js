@@ -27,43 +27,40 @@ function connect() {
 }
 connect();
 
-class UserService {
-  getUsers(callback){
-    connection.query('SELECT * FROM Users', (error, result) => {
-      if(error) throw error;
+// Class that performs database queries related to customers
+class CustomerService {
+  getCustomers(callback) {
+    connection.query('SELECT * FROM User', (error, result) => {
+      if (error) throw error;
 
       callback(result);
     });
   }
-  getUser(id, callback){
-    connection.query('SELECT * FROM Users WHERE id=?', [id], (error, result) => {
+
+  getCustomer(id, callback) {
+    connection.query('SELECT * FROM User WHERE id=?', [id], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
     });
   }
-  addUser(FirstName, City, callback) {
-    connection.query('INSERT INTO Users (FirstName, City) values (?, ?)', [FirstName, City], (error, result) => {
+
+  addCustomer(firstName, city, callback) {
+    connection.query('INSERT INTO User (FirstName, City) values (?, ?)', [firstName, city], (error, result) => {
       if (error) throw error;
 
       callback();
     });
   }
-  deleteUser(id){
-    connection.query('DELETE * FROM Users WHERE id=?', [id], (error, result) => {
-      if (error) throw error;
+
+  deleteCustomer(id){
+    connection.query('DELETE * FROM User WHERE i=?',[id],(error,result) => {
+      if(error) throw error;
 
       callback(result[0]);
-    });
-  }
-  loginUser(username, password, callback){
-    connection.query('SELECT id FROM Users WHERE UserName = ? AND PASSWORD =?', [username, password], (error, result) => {
-      if (error) throw error;
-
-      callback(result[0]);
-    });
+    })
   }
 }
-let userService = new UserService();
+let customerService = new CustomerService();
 
-export {userService};
+export { customerService };
