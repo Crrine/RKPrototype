@@ -5,9 +5,9 @@ let connection;
 function connect() {
   connection = mysql.createConnection({
     host: 'mysql.stud.iie.ntnu.no',
-    user: 'carinelj',
-    password: 'jfcfn3zg',
-    database: 'carinelj'
+    user: 'g_oops_1',
+    password: 'tCFgEwfm',
+    database: 'g_oops_1'
   });
 
   // Connect to MySQL-server
@@ -29,35 +29,35 @@ connect();
 
 class UserService {
   getUsers(callback){
-    connection.query('SELECT * FROM Users', (error, result) => {
+    connection.query('SELECT * FROM users', (error, result) => {
       if(error) throw error;
 
       callback(result);
     });
   }
   getUser(id, callback){
-    connection.query('SELECT * FROM Users WHERE id=?', [id], (error, result) => {
+    connection.query('SELECT * FROM users WHERE id=?', [id], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
     });
   }
-  addUser(FirstName, City, callback) {
-    connection.query('INSERT INTO Users (FirstName, City) values (?, ?)', [FirstName, City], (error, result) => {
+  addUser(firstname, lastname, address, email, password, city, zip, phone, age, callback) {
+    connection.query('INSERT INTO users (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
       if (error) throw error;
 
       callback();
     });
   }
   deleteUser(id){
-    connection.query('DELETE * FROM Users WHERE id=?', [id], (error, result) => {
+    connection.query('DELETE * FROM users WHERE id=?', [id], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
     });
   }
-  loginUser(username, password, callback){
-    connection.query('SELECT id FROM Users WHERE UserName = ? AND PASSWORD =?', [username, password], (error, result) => {
+  loginUser(email, password, callback){
+    connection.query('SELECT id FROM users WHERE email = ? AND password =?', [email, password], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
