@@ -110,12 +110,10 @@ class Register extends React.Component {
 
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
 				console.log('sendt registrering');
-		})
+			})
+		}
 	}
 }
-}
-
-//Ikke bruk forceUpdate
 
 class Navbar extends React.Component {
 	render(){
@@ -133,6 +131,7 @@ class Navbar extends React.Component {
 					</nav>
 				</div>
 			);
+			//Ikke bruk foceUpdate
 		}else{
 			return(
 				<div>
