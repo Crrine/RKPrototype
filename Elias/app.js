@@ -148,21 +148,45 @@ class Profile extends React.Component{
 			<div>
 				<h1>Profil</h1>
 				<span ref='userName'></span><br />
-				<span ref='userAddress'></span><br />
-				<span ref='userEmail'></span>
+				<span ref='userEmail'></span><br />
+				<button ref='btnShowInfo'>Vis info</button><br />
+				<div ref='showInfo'>
+					<span ref='userAddress'></span><br />
+					<span ref='userCity'></span><br />
+					<span ref='userZip'></span><br />
+					<span ref='userPhone'></span><br />
+					<span ref='userAge'></span><br />
+					<span ref='userPassword'></span><br />
+				</div>
 			</div>
 		);
 	}
 	componentDidMount(){
-		var userName = document.getElementById('userName');
-		var userEmail = document.getElementById('userEmail');
-
  		userService.getUser(userid,(result) => {
-			this.refs.userName.innerText += result.firstname;
+			var btnShowInfoPressed = false;
+
+			this.refs.userName.innerText = result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
-			this.refs.userAddress.innerText += result.address;
-			this.refs.userEmail.innerText += result.email;
-    });
+			this.refs.userEmail.innerText = result.email;
+
+			this.refs.btnShowInfo.onclick = () => {
+				if(btnShowInfoPressed == false){
+					this.refs.showInfo.innerText =
+					" Adresse: " + result.address +
+					" By: " + result.city +
+					" Postnummer: " + result.zip +
+					" Tlf: " + result.phone +
+					" Alder: " + result.age +
+					" Passord: " + result.password;
+					this.refs.btnShowInfo.innerText = "Skjul info";
+					btnShowInfoPressed = true;
+				}else{
+					this.refs.showInfo.innerText = "";
+					this.refs.btnShowInfo.innerText = "Vis info";
+					btnShowInfoPressed = false;
+				}
+			}
+		});
 	}
 }
 
@@ -200,3 +224,6 @@ ReactDOM.render((
     </div>
   </HashRouter>
 ), document.getElementById('root'));
+
+//Neste: Vise (og skjule) og oppdatere brukerinfo
+//Må kunne endre passord
