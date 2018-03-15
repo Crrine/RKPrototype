@@ -6,9 +6,9 @@ import {createHashHistory} from 'history';
 
 export const history = createHashHistory();
 
-var loggedIn = false;
-var regPress = false;
-var userid = 0;
+let loggedIn = false;
+let regPress = false;
+let userid = 0;
 
 class LoginPage extends React.Component {
 	render(){
@@ -24,8 +24,8 @@ class LoginPage extends React.Component {
 	}
 	componentDidMount(){
 		this.refs.btnLogin.onclick = () => {
-				var inpUser = this.refs.inpUser.value;
-				var inpPassword = this.refs.inpPassword.value;
+				let inpUser = this.refs.inpUser.value;
+				let inpPassword = this.refs.inpPassword.value;
 
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
@@ -98,18 +98,18 @@ class Register extends React.Component {
 	}	//bør man heller ha en form-action og knappen inne i formen?
 	componentDidMount(){
 		this.refs.btnSendReg.onclick = () => {
-		 	var firstname = this.refs.regFirstName.value;
-			var lastname = this.refs.regLastName.value;
-			var address = this.refs.regAddress.value;
-			var email = this.refs.regEmail.value;
-			var password = this.refs.regPassword.value;
-			var city = this.refs.regCity.value;
-			var zip = this.refs.regZip.value;
-			var phone = this.refs.regPhone.value;
-			var age = this.refs.regAge.value;
+		 	let firstname = this.refs.regFirstName.value;
+			let lastname = this.refs.regLastName.value;
+			let address = this.refs.regAddress.value;
+			let email = this.refs.regEmail.value;
+			let password = this.refs.regPassword.value;
+			let city = this.refs.regCity.value;
+			let zip = this.refs.regZip.value;
+			let phone = this.refs.regPhone.value;
+			let age = this.refs.regAge.value;
 
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-				console.log('sendt registrering');
+
 			})
 		}
 	}
@@ -122,16 +122,18 @@ class Navbar extends React.Component {
 				<div>
 					<h1>Navigasjonsbaren</h1>
 					<nav>
+						<Link to='/profile'>Din profil</Link><br />
+						<Link to='/homepage'>Aktuelle saker</Link><br />
+						<Link to='/events'>Arrangementer</Link><br />
+						<Link to='/calendar'>Kalender</Link><br />
+						<Link to='/contact'>Kontakt oss</Link><br />
+						<Link to='/search'>Brukersøk</Link><br />
 						<button ref='logout' onClick = {() => {
 							loggedIn = false, history.push('/loginPage/'), console.log('logget ut bruker'),
 							this.forceUpdate()}}>Logg ut</button><br />
-						<Link to='/homepage'>Hjemmeside</Link><br />
-						<Link to='/calendar'>Kalender</Link><br />
-						<Link to='/profile'>Profil</Link><br />
 					</nav>
 				</div>
 			);
-			//Ikke bruk foceUpdate
 		}else{
 			return(
 				<div>
@@ -146,7 +148,7 @@ class Profile extends React.Component{
 	render(){
 		return(
 			<div>
-				<h1>Profil</h1>
+				<h1>Din profil</h1>
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
 				<button ref='btnShowInfo'>Vis info</button><br />
@@ -163,7 +165,7 @@ class Profile extends React.Component{
 	}
 	componentDidMount(){
  		userService.getUser(userid,(result) => {
-			var btnShowInfoPressed = false;
+			let btnShowInfoPressed = false;
 
 			this.refs.userName.innerText = result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
@@ -194,7 +196,27 @@ class Homepage extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>Hjemmeside</h1>
+				<h1>Aktuelle saker</h1>
+			</div>
+		);
+	}
+}
+
+class Events extends React.Component {
+	render(){
+		return(
+			<div>
+				<h1>Arrangementer</h1>
+			</div>
+		);
+	}
+}
+
+class Contact extends React.Component {
+	render(){
+		return(
+			<div>
+				<h1>Kontakt oss</h1>
 			</div>
 		);
 	}
@@ -210,6 +232,18 @@ class Calendar extends React.Component {
 	}
 }
 
+class Search extends React.Component {
+	render(){
+		return(
+			<div>
+				<h1>Brukersøk</h1>
+				<input type="text" placheolder="navn, epost, by, etc." />
+				<button>Søk</button>
+			</div>
+		);
+	}
+}
+
 ReactDOM.render((
   <HashRouter>
     <div>
@@ -220,6 +254,9 @@ ReactDOM.render((
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
 				<Route excat path='/profile' component={Profile}/>
+				<Route excat path='/events' component={Events}/>
+				<Route excat path='/contact' component={Contact}/>
+				<Route excat path='/search' component={Search}/>
       </Switch>
     </div>
   </HashRouter>
@@ -227,3 +264,4 @@ ReactDOM.render((
 
 //Neste: Vise (og skjule) og oppdatere brukerinfo
 //Må kunne endre passord
+//Ikke bruk force.update
