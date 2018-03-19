@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import { Link, HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { userService } from './services';
 import {createHashHistory} from 'history';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import globalize from 'globalize';
+
 
 export const history = createHashHistory();
 
@@ -221,17 +225,32 @@ class Contact extends React.Component {
 		);
 	}
 }
-
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 class Calendar extends React.Component {
-	render(){
-		return(
-			<div>
-				<h1>Kalender</h1>
-			</div>
-		);
-	}
-}
+	constructor(props) {
+    super(props);
+    this.state = {
+			height: "100%",
+    events:[
+                {
+                    title: 'All Day Event',
+                    start: '2017-05-01'
+                }
+            ],
+    }
+  }
 
+  render() {
+    return (
+      <div id="example-component">
+        <BigCalendar
+				hight = {this.state.hight}
+        events = {this.state.events}
+    />
+      </div>
+    );
+  }
+}
 class Search extends React.Component {
 	render(){
 		return(
