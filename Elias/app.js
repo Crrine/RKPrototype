@@ -29,8 +29,8 @@ class LoginPage extends React.Component {
 
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
-						console.log("logget inn bruker");
-						userid = result.id;
+						console.log("logget inn bruker - ID:" + result.userID);
+						userid = result.userID;
 						loggedIn = true;
 						history.push('/Navbar/');
 					}else{
@@ -265,3 +265,4 @@ ReactDOM.render((
 //Neste: Vise (og skjule) og oppdatere brukerinfo
 //Må kunne endre passord
 //Ikke bruk force.update
+//Sende tilbakemelding etter registrering
