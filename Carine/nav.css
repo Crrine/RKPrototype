@@ -1,0 +1,119 @@
+@font-face {
+  font-family: myFirstFont;
+  src: url(https://fonts.googleapis.com/css?family=Old+Standard+TT);
+}
+
+body {
+  background-color: #fcf9f4;
+}
+
+#loginlogo {
+  width: 65%;
+}
+
+#logininput {
+}
+
+.center {
+  margin: auto;
+  width: 60%;
+}
+
+.loginwrap {
+  float: left;
+}
+
+#loginpicture {
+  width: 55%;
+  float: right;
+}
+
+.logintext {
+  text-align: left;
+  text-decoration: none;
+  line-height: 1.8;
+  size: 1em;
+  font-family: 'Old Standard TT', serif;
+}
+
+#barnbilde {
+  width: 70%;
+  margin-top: -0%;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  width: 13%;
+  margin-top: 25px;
+  font-family: 'Old Standard TT', serif;
+}
+
+li a,
+.dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: letf;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover,
+.dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 13%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+#navcont {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+#sok {
+  margin-top: 12px;
+  text-align: left;
+}
+
+#logo {
+  width: 90%;
+  margin-top: -25px;
+  float: left;
+}
