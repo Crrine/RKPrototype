@@ -15,16 +15,18 @@ body {
 }
 
 .center {
+  padding-top: 60px;
   margin: auto;
   width: 60%;
 }
 
 .loginwrap {
   float: left;
+  width: 50%;
 }
 
 #loginpicture {
-  width: 55%;
+  width: 50%;
   float: right;
 }
 
@@ -41,18 +43,25 @@ body {
   margin-top: -0%;
 }
 
+#navbarbg {
+  background-color: #333;
+  float: left;
+  height: 63px;
+  width: 100%;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  /* background-color: #333; */
 }
 
 li {
   float: left;
   width: 13%;
-  margin-top: 25px;
+  margin-top: 15px;
   font-family: 'Old Standard TT', serif;
 }
 
@@ -60,7 +69,7 @@ li a,
 .dropbtn {
   display: inline-block;
   color: white;
-  text-align: letf;
+  text-align: left;
   padding: 14px 16px;
   text-decoration: none;
 }
@@ -102,7 +111,7 @@ li.dropdown {
 #navcont {
   display: inline-block;
   color: white;
-  text-align: center;
+  text-align: left;
   padding: 14px 16px;
   text-decoration: none;
 }
@@ -114,6 +123,6 @@ li.dropdown {
 
 #logo {
   width: 90%;
-  margin-top: -25px;
+  margin-top: -35px;
   float: left;
 }
