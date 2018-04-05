@@ -11,13 +11,17 @@ body {
   width: 65%;
 }
 
-#logininput {
-}
-
 .center {
   padding-top: 60px;
   margin: auto;
   width: 60%;
+}
+
+.glemtwrap {
+  padding-top: 60px;
+  margin: auto;
+  width: 40%;
+  text-align: right;
 }
 
 .loginwrap {
@@ -31,7 +35,7 @@ body {
 }
 
 .logintext {
-  text-align: left;
+  /* text-align: left; */
   text-decoration: none;
   line-height: 1.8;
   size: 1em;
