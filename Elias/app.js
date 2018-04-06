@@ -151,7 +151,8 @@ class Profile extends React.Component{
 				<h1>Din profil</h1>
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
-				<button ref='btnShowInfo'>Vis info</button><br />
+				<button ref='btnShowInfo'>Vis info</button>
+				<button ref='btnChangeInfo'>Rediger</button><br />
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
@@ -216,12 +217,28 @@ class Events extends React.Component {
 		userService.getEvents((result) => {
 			for(let event of result){
 				let divEvent = document.createElement('DIV');
+				// let btnEvent = document.createElement('BUTTON');
+				// // let btnEventInfoPressed = false;
+				// btnEvent.innerText = 'INFO';
+
 				divEvent.innerText = event.name + '\n' +
 					'Lokasjon: ' + event.area + '\n' +
-					'Kontakttelefon: ' + event.contact_phone;
+					'Kontakttelefon: ' + event.contact_phone + '\n';
 
+				// divEvent.appendChild(btnEvent);
 				this.refs.upcoming.appendChild(divEvent);
-				this.refs.upcoming.innerText += '\n' + '\n'; //Litt tungvint
+				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+
+				// btnEvent.onclick = () => {
+				// 	if(btnEventInfoPressed == false){
+				// 		divEvent.innerText +=
+				// 		'Startdato: ' + event.date_start;
+				// 		btnEventInfoPressed = true;
+				// 	}else{
+				// 		divEvent.innerText = 'what';
+				// 		btnEventInfoPressed = false;
+				// 	}
+				// }
 			}
 		})
 	}
