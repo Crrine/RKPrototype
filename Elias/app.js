@@ -174,11 +174,11 @@ class Profile extends React.Component{
 			this.refs.btnShowInfo.onclick = () => {
 				if(btnShowInfoPressed == false){
 					this.refs.showInfo.innerText =
-					" Adresse: " + result.address +
-					" By: " + result.city +
-					" Postnummer: " + result.zip +
-					" Tlf: " + result.phone +
-					" Alder: " + result.age +
+					" Adresse: " + result.address + '\n' +
+					" By: " + result.city + '\n' +
+					" Postnummer: " + result.zip + '\n' +
+					" Tlf: " + result.phone + '\n' +
+					" Alder: " + result.age + '\n' +
 					" Passord: " + result.password;
 					this.refs.btnShowInfo.innerText = "Skjul info";
 					btnShowInfoPressed = true;
@@ -207,8 +207,23 @@ class Events extends React.Component {
 		return(
 			<div>
 				<h1>Arrangementer</h1>
+				<h4>Kommende arrangementer</h4>
+				<div ref='upcoming'></div>
 			</div>
 		);
+	}
+	componentDidMount(){
+		userService.getEvents((result) => {
+			for(let event of result){
+				let divEvent = document.createElement('DIV');
+				divEvent.innerText = event.name + '\n' +
+					'Lokasjon: ' + event.area + '\n' +
+					'Kontakttelefon: ' + event.contact_phone;
+
+				this.refs.upcoming.appendChild(divEvent);
+				this.refs.upcoming.innerText += '\n' + '\n'; //Litt tungvint
+			}
+		})
 	}
 }
 

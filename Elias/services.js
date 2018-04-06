@@ -63,6 +63,12 @@ class UserService {
       callback(result[0]);
     });
   }
+  getEvents(callback){
+    connection.query('SELECT * FROM event ORDER BY date_start',(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
+  }
 }
 let userService = new UserService();
 
