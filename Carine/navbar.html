@@ -6,40 +6,52 @@
     <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
     <meta charset="utf-8">
     <title>Røde Kors Sanitetsvakt</title>
+    <div id="navbarbg">
+      <ul>
+        <li id="navcont"> <img id="logo" src="rodekors.png" alt="Røde Kors Sanitetsvakt"> </li>
+        <li><a href="index.html">Aktuelt</a></li>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">Arrangementer</a>
+          <div class="dropdown-content">
+            <a href="#">Kommende</a>
+            <a href="#">Påmeldte</a>
+            <a href="#">Vaktansvarlig</a>
+          </div>
+        </li>
+        <li><a href="#">Kalender</a></li>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">Om oss</a>
+          <div class="dropdown-content">
+            <a href="#">Kontaktinfo</a>
+            <a href="#">Ofte stilte spørsmål</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0)" class="dropbtn">Min profil</a>
+          <div class="dropdown-content">
+            <a href="#">Se poeng</a>
+            <a href="#">Redigere profil</a>
+            <a href="#">Registrere kurs</a>
+            <a href="#">Logg ut</a>
+          </div>
+        </li>
+        <li> <input id="sok" type="text" placeholder="Søk"> </li>
+      </ul>
+    </div>
   </head>
   <body>
-    <div id="navbarbg">
-    <ul>
-      <li id="navcont"> <img id="logo" src="rodekors.png" alt="Røde Kors Sanitetsvakt"> </li>
-      <li><a href="index.html">Aktuelt</a></li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Arrangementer</a>
-        <div class="dropdown-content">
-          <a href="#">Kommende</a>
-          <a href="#">Påmeldte</a>
-          <a href="#">Vaktansvarlig</a>
-        </div>
-      </li>
-      <li><a href="#">Kalender</a></li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Om oss</a>
-        <div class="dropdown-content">
-          <a href="#">Kontaktinfo</a>
-          <a href="#">Ofte stilte spørsmål</a>
-        </div>
-      </li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Min profil</a>
-        <div class="dropdown-content">
-          <a href="#">Se poeng</a>
-          <a href="#">Redigere profil</a>
-          <a href="#">Registrere kurs</a>
-          <a href="#">Logg ut</a>
-        </div>
-      </li>
-      <li> <input id="sok" type="text" placeholder="Søk"> </li>
-    </ul>
+
+  <div class="aktueltstorwrap">
+    <div class="nyhetsboks">
+      <h1>Aktuelle saker</h1>
+      <div class="nyhetsbilde">
+        <img src="" alt=""> </div>
+      <div class="nyhetstekst">
+        <h3>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h3>
+        <p>- Situasjonen i Jemen i dag er dramatisk.  Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+        <a href="#">Les videre om saken på vår nettside.</a>
+      </div>
+    </div>
   </div>
-    <script src='app.js'></script>
   </body>
 </html>

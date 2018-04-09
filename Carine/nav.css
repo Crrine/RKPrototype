@@ -130,3 +130,16 @@ li.dropdown {
   margin-top: -35px;
   float: left;
 }
+
+.aktueltstorwrap {
+  width: 80%;
+  margin: auto;
+  padding-top: 80px;
+  padding-bottom: 10px;
+}
+
+.nyhetsboks {
+  width: 60%;
+  background-color: white;
+  padding: 10px;
+}
