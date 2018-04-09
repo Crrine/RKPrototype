@@ -76,6 +76,13 @@ class UserService {
       callback(result);
     })
   }
+  search(keyword, callback){
+    connection.query("SELECT * FROM user WHERE firstname LIKE ? ORDER BY firstname", ['%' + keyword + '%'], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    });
+  }
 }
 let userService = new UserService();
 

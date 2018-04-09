@@ -338,10 +338,33 @@ class Search extends React.Component {
 		return(
 			<div>
 				<h1>Brukersøk</h1>
-				<input type="text" placheolder="navn, epost, by, etc." />
-				<button>Søk</button>
+				<input ref='searchField' type="text" placeholder="navn, epost, by, etc." />
+				<button ref='btnSearch'>Søk</button>
+				<div ref='output'>
+				</div>
 			</div>
 		);
+		//brukere skal kunne søke opp epost og telefonnummer
+	}
+	componentDidMount(){
+		this.refs.btnSearch.onclick = () => {
+			let keyword = this.refs.searchField.value;
+			userService.search(keyword, (result) => {
+				this.refs.output.innerText = '';
+				console.log(result);
+
+				for(let user of result){
+					// let divOutput = document.createElement('DIV');
+
+					this.refs.output.innerText += '\n' + user.firstname + ' ' + user.lastname + '\n' +
+						'epost: ' + user.email + '\n' +
+						'telefon: ' + user.phone + '\n';
+
+					// this.refs.output.appendChild(divOutput);
+					// divOutput.innerText += '\n'; //Fjern dette når du legger til if-en
+				}
+			})
+		}
 	}
 }
 
