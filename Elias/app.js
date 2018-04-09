@@ -151,14 +151,14 @@ class Profile extends React.Component{
 				<h1>Din profil</h1>
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
-				<button ref='btnShowInfo'>Vis info</button><br />
+				<button ref='btnShowInfo'>Vis info</button>
+				<Link to='/editprofile'>Rediger</Link><br />
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
 					<span ref='userZip'></span><br />
 					<span ref='userPhone'></span><br />
 					<span ref='userAge'></span><br />
-					<span ref='userPassword'></span><br />
 				</div>
 			</div>
 		);
@@ -174,12 +174,11 @@ class Profile extends React.Component{
 			this.refs.btnShowInfo.onclick = () => {
 				if(btnShowInfoPressed == false){
 					this.refs.showInfo.innerText =
-					" Adresse: " + result.address +
-					" By: " + result.city +
-					" Postnummer: " + result.zip +
-					" Tlf: " + result.phone +
-					" Alder: " + result.age +
-					" Passord: " + result.password;
+					" Adresse: " + result.address + '\n' +
+					" By: " + result.city + '\n' +
+					" Postnummer: " + result.zip + '\n' +
+					" Tlf: " + result.phone + '\n' +
+					" Alder: " + result.age + '\n';
 					this.refs.btnShowInfo.innerText = "Skjul info";
 					btnShowInfoPressed = true;
 				}else{
@@ -189,6 +188,83 @@ class Profile extends React.Component{
 				}
 			}
 		});
+	}
+}
+
+class EditProfile extends React.Component{
+	render(){
+		return(
+			<div>
+				<h1>Rediger profil</h1>
+				<form>
+					<label>
+						Fornavn:<br />
+						<input ref='editFirstName' type='text' /><br />
+					</label>
+					<label>
+						Etternavn:<br />
+						<input ref='editLastName' type='text' /><br />
+					</label>
+					<label>
+						Adresse:<br />
+						<input ref='editAddress' type='text' /><br />
+					</label>
+					<label>
+						Epost:<br />
+						<input ref='editEmail' type='text' /><br />
+					</label>
+					<label>
+						By:<br />
+						<input ref='editCity' type='text' /><br />
+					</label>
+					<label>
+						Postnummer:<br />
+						<input ref='editZip' type='number' /><br />
+					</label>
+					<label>
+						Tlf:<br />
+						<input ref='editPhone' type='number' /><br />
+					</label>
+					<label>
+						Alder:<br />
+						<input ref='editAge' type='number' /><br />
+					</label>
+					<label>
+						Passord:<br />
+						<input ref='editPassword' type='password' /><br />
+					</label>
+				</form>
+				<button ref='btnSendEdit'>Lagre</button>
+				<button ref='btnErase'>Fjern endringer</button>
+			</div>
+		)
+	}
+	componentDidMount(){
+		userService.getUser(userid,(result) => {
+			this.refs.editFirstName.value = result.firstname;
+			this.refs.editLastName.value = result.lastname;
+			this.refs.editAddress.value = result.address;
+			this.refs.editEmail.value = result.email;
+			this.refs.editCity.value = result.city;
+			this.refs.editZip.value = result.zip;
+			this.refs.editPhone.value = result.phone;
+			this.refs.editAge.value = result.age;
+			this.refs.editPassword.value = result.password;
+		});
+		this.refs.btnSendEdit.onclick = () => {
+		 	let firstname = this.refs.editFirstName.value;
+			let lastname = this.refs.editLastName.value;
+			let address = this.refs.editAddress.value;
+			let email = this.refs.editEmail.value;
+			let password = this.refs.editPassword.value;
+			let city = this.refs.editCity.value;
+			let zip = this.refs.editZip.value;
+			let phone = this.refs.editPhone.value;
+			let age = this.refs.editAge.value;
+
+			userService.editUser(userid,firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
+			})
+		}
 	}
 }
 
@@ -207,8 +283,24 @@ class Events extends React.Component {
 		return(
 			<div>
 				<h1>Arrangementer</h1>
+				<h4>Kommende arrangementer</h4>
+				<div ref='upcoming'></div>
 			</div>
 		);
+	}
+	componentDidMount(){
+		userService.getEvents((result) => {
+			for(let event of result){
+				let divEvent = document.createElement('DIV');
+
+				divEvent.innerText = event.name + '\n' +
+					'Lokasjon: ' + event.area + '\n' +
+					'Kontakttelefon: ' + event.contact_phone + '\n';
+
+				this.refs.upcoming.appendChild(divEvent);
+				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+			}
+		})
 	}
 }
 
@@ -254,6 +346,7 @@ ReactDOM.render((
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
 				<Route excat path='/profile' component={Profile}/>
+				<Route excat path='/editprofile' component={EditProfile}/>
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>

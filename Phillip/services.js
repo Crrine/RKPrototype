@@ -29,35 +29,35 @@ connect();
 
 class UserService {
   getUsers(callback){
-    connection.query('SELECT * FROM users', (error, result) => {
+    connection.query('SELECT * FROM user', (error, result) => {
       if(error) throw error;
 
       callback(result);
     });
   }
   getUser(id, callback){
-    connection.query('SELECT * FROM users WHERE id=?', [id], (error, result) => {
+    connection.query('SELECT * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
     });
   }
   addUser(firstname, lastname, address, email, password, city, zip, phone, age, callback) {
-    connection.query('INSERT INTO users (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
+    connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
       if (error) throw error;
 
       callback();
     });
   }
   deleteUser(id){
-    connection.query('DELETE * FROM users WHERE id=?', [id], (error, result) => {
+    connection.query('DELETE * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
     });
   }
   loginUser(email, password, callback){
-    connection.query('SELECT id FROM users WHERE email = ? AND password =?', [email, password], (error, result) => {
+    connection.query('SELECT userID FROM user WHERE email = ? AND password =?', [email, password], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);

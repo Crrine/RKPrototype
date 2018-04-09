@@ -7,6 +7,9 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import globalize from 'globalize';
 
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
+
+
 
 export const history = createHashHistory();
 
@@ -33,8 +36,8 @@ class LoginPage extends React.Component {
 
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
-						console.log("logget inn bruker");
-						userid = result.id;
+						console.log("logget inn bruker - ID:" + result.userID);
+						userid = result.userID;
 						loggedIn = true;
 						history.push('/Navbar/');
 					}else{
@@ -225,12 +228,11 @@ class Contact extends React.Component {
 		);
 	}
 }
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
+
 class Calendar extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
-			height: "100%",
     events:[
                 {
                     title: 'All Day Event',
@@ -244,7 +246,6 @@ class Calendar extends React.Component {
     return (
       <div id="example-component">
         <BigCalendar
-				hight = {this.state.hight}
         events = {this.state.events}
     />
       </div>

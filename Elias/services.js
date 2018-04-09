@@ -49,6 +49,13 @@ class UserService {
       callback();
     });
   }
+  editUser(userid,firstname, lastname, address, email, password, city, zip, phone, age, callback) {
+    connection.query('UPDATE user SET (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE userID=?', [userid,firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
   deleteUser(id){
     connection.query('DELETE * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;
@@ -62,6 +69,12 @@ class UserService {
 
       callback(result[0]);
     });
+  }
+  getEvents(callback){
+    connection.query('SELECT * FROM event ORDER BY date_start',(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
   }
 }
 let userService = new UserService();
