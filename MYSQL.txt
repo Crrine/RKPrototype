@@ -1,7 +1,7 @@
 User: carinelj
 Psw: jfcfn3zg
 
-CREATE TABLE User (
+CREATE TABLE Users (
     ID int AUTO_INCREMENT,
     UserName varchar(12) NOT NULL,
     LastName varchar(50) NOT NULL,
@@ -17,8 +17,11 @@ CREATE TABLE User (
 
 ALTER TABLE Persons AUTO_INCREMENT=100;
 
-INSERT INTO User (UserName, LastName, FirstName, Address, City, Email, ZIP, Phone, Age)
+INSERT INTO Users (UserName, LastName, FirstName, Address, City, Email, ZIP, Phone, Age)
 VALUES ()
 
-INSERT INTO User (UserName, LastName, FirstName, Address, City, Email, ZIP, Phone, Age)
-VALUES ('ElizaBa', 'Aamodt', 'Elizabeth', 'Floraveien 3', 'Trondheim', 'elizabethaamodt@gmail.com', 7010, 92881179, 20)
+INSERT INTO Users (UserName, LastName, FirstName, Address, City, Email, ZIP, Phone, Age, Password)
+VALUES ('ElizaBa', 'Aamodt', 'Elizabeth', 'Floraveien 3', 'Trondheim', 'elizabethaamodt@gmail.com', 7010, 92881179, 20, 'passord123')
+
+ALTER TABLE Users
+ADD PASSWORD VARCHAR(40);

@@ -91,7 +91,7 @@ li.dropdown {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 13%;
+  /* min-width: 13%; */
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -141,5 +141,31 @@ li.dropdown {
 .nyhetsboks {
   width: 60%;
   background-color: white;
-  padding: 10px;
+  padding: 13px;
+  overflow: auto;
+  margin-top: 10px;
+}
+
+.nyhetsbilde {
+  float: left;
+}
+
+.nyhetsimg {
+  width: 40%;
+  padding-top: 10px;
+}
+
+.nyhetstekst {
+  width: 60%;
+  float: right;
+  margin-top: -280px;
+}
+
+.tittel {
+  text-align: center;
+  color: #ad0513;
+  font-family: 'Old Standard TT', serif;
+  font-weight: bold;
+  font-size: 2.5em;
+  margin-top: -7px;
 }
