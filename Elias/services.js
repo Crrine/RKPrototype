@@ -49,8 +49,8 @@ class UserService {
       callback();
     });
   }
-  editUser(userid,firstname, lastname, address, email, password, city, zip, phone, age, callback) {
-    connection.query('UPDATE user SET (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE userID=?', [userid,firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
+  editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, callback) {
+    connection.query('UPDATE user SET firstname=?, lastname=?, address=?, email=?, password=?, city=?, zip=?, phone=?, age=? WHERE userID=?', [newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, userid], (error, result) => {
       if (error) throw error;
 
       callback();
