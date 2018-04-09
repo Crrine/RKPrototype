@@ -116,7 +116,7 @@ class Register extends React.Component {
 			let age = this.refs.regAge.value;
 
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-
+				
 			})
 		}
 	}
@@ -245,10 +245,15 @@ class Calendar extends React.Component {
   render() {
     return (
       <div id="example-component">
-        <BigCalendar
-        events = {this.state.events}
-    />
-      </div>
+			<BigCalendar
+			                messages={{next:"Neste",previous:"Tilbake",today:"I dag",month:"Måned",week:"Uke",work_week:"Jobbuke",day:"Dag",agenda:"Agenda", date:"Dato", time:"Tid", event:"Arrangement"}}
+			                events={this.state.events}
+			                step={60}
+			                showMultiDayTimes
+			                defaultDate={new Date()}
+			                style={{height: 400}}
+			              />
+			            </div>
     );
   }
 }
