@@ -152,7 +152,9 @@ class Profile extends React.Component{
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
 				<button ref='btnShowInfo'>Vis info</button>
-				<Link to='/editprofile'>Rediger</Link><br />
+				<button onClick = {() => {
+					history.push('/editprofile/'),
+					this.forceUpdate()}}>Rediger</button>
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
@@ -235,35 +237,42 @@ class EditProfile extends React.Component{
 					</label>
 				</form>
 				<button ref='btnSendEdit'>Lagre</button>
-				<button ref='btnErase'>Fjern endringer</button>
+				<button onClick = {() => {
+					history.push('/profile/'),
+					this.forceUpdate()}}>Angre</button>
 			</div>
 		)
 	}
 	componentDidMount(){
-		userService.getUser(userid,(result) => {
-			this.refs.editFirstName.value = result.firstname;
-			this.refs.editLastName.value = result.lastname;
-			this.refs.editAddress.value = result.address;
-			this.refs.editEmail.value = result.email;
-			this.refs.editCity.value = result.city;
-			this.refs.editZip.value = result.zip;
-			this.refs.editPhone.value = result.phone;
-			this.refs.editAge.value = result.age;
-			this.refs.editPassword.value = result.password;
-		});
-		this.refs.btnSendEdit.onclick = () => {
-		 	let firstname = this.refs.editFirstName.value;
-			let lastname = this.refs.editLastName.value;
-			let address = this.refs.editAddress.value;
-			let email = this.refs.editEmail.value;
-			let password = this.refs.editPassword.value;
-			let city = this.refs.editCity.value;
-			let zip = this.refs.editZip.value;
-			let phone = this.refs.editPhone.value;
-			let age = this.refs.editAge.value;
+			userService.getUser(userid,(result) => {
+				this.refs.editFirstName.value = result.firstname;
+				this.refs.editLastName.value = result.lastname;
+				this.refs.editAddress.value = result.address;
+				this.refs.editEmail.value = result.email;
+				this.refs.editCity.value = result.city;
+				this.refs.editZip.value = result.zip;
+				this.refs.editPhone.value = result.phone;
+				this.refs.editAge.value = result.age;
+				this.refs.editPassword.value = result.password;
+			});
 
-			userService.editUser(userid,firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
+		this.refs.btnSendEdit.onclick = () => {
+		 	let newFirstname = this.refs.editFirstName.value;
+			let newLastname = this.refs.editLastName.value;
+			let newAddress = this.refs.editAddress.value;
+			let newEmail = this.refs.editEmail.value;
+			let newPassword = this.refs.editPassword.value;
+			let newCity = this.refs.editCity.value;
+			let newZip = this.refs.editZip.value;
+			let newPhone = this.refs.editPhone.value;
+			let newAge = this.refs.editAge.value;
+
+			userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
 			})
+			console.log('Oppdatert bruker - ID:');
+			alert('Brukerinformasjonen ble oppdatert');
+			history.push('/profile/');
+			this.forceUpdate();
 		}
 	}
 }
