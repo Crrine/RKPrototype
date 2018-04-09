@@ -116,7 +116,7 @@ class Register extends React.Component {
 			let age = this.refs.regAge.value;
 
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-				
+
 			})
 		}
 	}
@@ -229,34 +229,42 @@ class Contact extends React.Component {
 	}
 }
 
+
 class Calendar extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
     events:[
-                {
-                    title: 'All Day Event',
-                    start: '2017-05-01'
-                }
-            ],
+		  {
+		    'title': 'Event 1',
+		    'startDate': new Date(2018,1,2,8),
+		    'endDate': new Date(2018,1,2,10)
+		  },
+		  {
+		    'title': 'Event 2',
+		    'startDate': new Date(2018,1,3,12),
+		    'endDate': new Date(2018,1,3,15)
+		  }],
     }
   }
 
   render() {
     return (
-      <div id="example-component">
 			<BigCalendar
 			                messages={{next:"Neste",previous:"Tilbake",today:"I dag",month:"Måned",week:"Uke",work_week:"Jobbuke",day:"Dag",agenda:"Agenda", date:"Dato", time:"Tid", event:"Arrangement"}}
 			                events={this.state.events}
 			                step={60}
+											startAccessor='startDate'
+											endAccessor='endDate'
 			                showMultiDayTimes
 			                defaultDate={new Date()}
 			                style={{height: 400}}
 			              />
-			            </div>
+
     );
   }
 }
+
 class Search extends React.Component {
 	render(){
 		return(
