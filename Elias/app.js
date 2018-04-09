@@ -338,7 +338,7 @@ class Search extends React.Component {
 		return(
 			<div>
 				<h1>Brukersøk</h1>
-				<input ref='searchField' type="text" placeholder="navn, epost, by, etc." />
+				<input ref='searchField' type="text" placeholder="navn, epost, tlf" />
 				<button ref='btnSearch'>Søk</button>
 				<div ref='output'>
 				</div>
@@ -352,6 +352,10 @@ class Search extends React.Component {
 			userService.search(keyword, (result) => {
 				this.refs.output.innerText = '';
 				console.log(result);
+
+				if(result==''){
+					this.refs.output.innerText = '\n' + 'Ingen resultater';
+				}
 
 				for(let user of result){
 					// let divOutput = document.createElement('DIV');

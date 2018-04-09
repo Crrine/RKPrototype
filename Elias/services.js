@@ -77,7 +77,7 @@ class UserService {
     })
   }
   search(keyword, callback){
-    connection.query("SELECT * FROM user WHERE firstname LIKE ? ORDER BY firstname", ['%' + keyword + '%'], (error, result) => {
+    connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
       if (error) throw error;
 
       callback(result);
