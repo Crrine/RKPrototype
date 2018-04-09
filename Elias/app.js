@@ -109,8 +109,11 @@ class Register extends React.Component {
 			let age = this.refs.regAge.value;
 
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-
+				alert('Brukeren er opprettet');
+				history.push('/loginPage/');
+				this.forceUpdate(); //Ikke bruke forceUpdate
 			})
+			// alert('Informasjonen er ugyldig'); lag noen if-error-sak
 		}
 	}
 }
