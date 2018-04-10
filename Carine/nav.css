@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #fcf9f4;
+  background-color: #f7eed7;
 }
 
 #loginlogo {
@@ -138,12 +138,23 @@ li.dropdown {
   padding-bottom: 10px;
 }
 
+.aktueltlitenwrap {
+  width: 37%;
+  position: inherit;
+  float: right;
+  margin-top: 10px;
+}
+
 .nyhetsboks {
-  width: 60%;
+  border-radius: 15px;
+  width: 57%;
   background-color: white;
-  padding: 13px;
+  padding: 20px;
   overflow: auto;
   margin-top: 10px;
+  float: left;
+  height: 600px;
+  overflow-y: scroll;
 }
 
 .nyhetsbilde {
@@ -151,14 +162,19 @@ li.dropdown {
 }
 
 .nyhetsimg {
-  width: 40%;
+  max-width: 40%;
+  min-width: 25%;
   padding-top: 10px;
 }
 
 .nyhetstekst {
-  width: 57%;
+  width: 58%;
   float: right;
   margin-top: -280px;
+  max-height: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
 }
 
 .tittel {
@@ -168,4 +184,48 @@ li.dropdown {
   font-weight: bold;
   font-size: 2.5em;
   margin-top: -7px;
+}
+
+.aktueltprofil {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  height: 20%;
+}
+
+.aktueltarrangmenterwrap {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  height: 30%;
+  margin-top: 30px;
+}
+
+#aktueltprofilbilde {
+  float: left;
+  max-width: 20%;
+  min-width: 20%;
+  border-radius: 40px;
+}
+
+.aktueltprofiltekst {
+  margin-left: 30px;
+  text-align: left;
+  text-indent: 30px;
+  font-size: 1.05em;
+}
+
+.aktueltarrangementer {
+  font-size: 0.8em
+}
+
+#arrangementertittel {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Old Standard TT', serif;
+  font-weight: bold;
+  /* font-size: 2.5em; */
+  margin-top: -5px;
 }
