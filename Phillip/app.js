@@ -14,7 +14,6 @@ export const history = createHashHistory();
 let loggedIn = false;
 let regPress = false;
 let userid = 0;
-let eventPress = false;
 
 class LoginPage extends React.Component {
 	render(){
@@ -419,25 +418,24 @@ class NewEvent extends React.Component {
 				)
 			}
 		}
-		componentDidMount(){
-			this.refs.btnSendArr.onclick = () => {
-			 	let name = this.refs.regArrName.value;
-				let datestart = this.refs.regStartDato.value;
-				let dateend = this.refs.regSluttDato.value;
-				let contactphone = this.refs.regTlf.value;
-				let rolelistroleID = this.refs.regRoles.value;
-				let description = this.refs.regDescript.value;
-				let area = this.refs.regMeet.value;
+	//	componentDidMount() {
+	//		this.refs.btnSendArr.onclick = () => {
+	//		 	let name = this.refs.regArrName.value;
+	//			let datestart = this.refs.regStartDato.value;
+	//			let dateend = this.refs.regSluttDato.value;
+	//			let contactphone = this.refs.regTlf.value;
+	//			let rolelistroleID = this.refs.regRoles.value;
+	//			let description = this.refs.regDescript.value;
+	//			let area = this.refs.regMeet.value;
 
-				userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
-					alert('Arrangementet er opprettet');
-					history.push('/Navbar/');
-					this.forceUpdate(); //Ikke bruke forceUpdate
-				})
-				// alert('Informasjonen er ugyldig'); lag noen if-error-sak
-			}
-		}
-	}
+			//	userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
+		//			alert('Arrangementet er opprettet');
+		//			history.push('/Navbar/');
+		//			this.forceUpdate();
+		//		})
+		//	}
+	 //	}
+//	}
 
 
 class Search extends React.Component {
