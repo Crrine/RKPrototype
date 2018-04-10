@@ -15,7 +15,7 @@ class LoginPage extends React.Component {
 		return (
 			<div>
 				<h1>Innlogging</h1>
-				<input type='text' ref='inpUser' placeholder='brukernavn' />
+				<input type='text' ref='inpUser' placeholder='epost' />
 				<input type='password' ref='inpPassword' placeholder='passord' /><span />
 				<button ref='btnLogin'>Logg inn</button>
 				<button ref='btnReg'>Ny bruker</button>
@@ -92,6 +92,9 @@ class Register extends React.Component {
 						</label>
 					</form>
 					<button ref='btnSendReg'>Registrer</button>
+					<button onClick = {() => {
+						history.push('/loginPage/'),
+						this.forceUpdate()}}>Tilbake</button>
 				</div>
 			)
 		}
@@ -296,21 +299,30 @@ class Events extends React.Component {
 			<div>
 				<h1>Arrangementer</h1>
 				<h4>Kommende arrangementer</h4>
+				<button ref='showMoreEvents'>Vis flere</button>
+				<br /><br />
 				<div ref='upcoming'></div>
 			</div>
 		);
 	}
 	componentDidMount(){
+		let i = 0;
+
 		userService.getEvents((result) => {
-			for(let event of result){
-				let divEvent = document.createElement('DIV');
+				for(let event of result){
+					let divEvent = document.createElement('DIV');
 
-				divEvent.innerText = event.name + '\n' +
-					'Lokasjon: ' + event.area + '\n' +
-					'Kontakttelefon: ' + event.contact_phone + '\n';
+					divEvent.innerText = event.name + '\n' +
+						'Lokasjon: ' + event.area + '\n' +
+						'Kontakttelefon: ' + event.contact_phone + '\n';
 
-				this.refs.upcoming.appendChild(divEvent);
-				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+					this.refs.upcoming.appendChild(divEvent);
+					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+					i++;
+					if(i==5){
+						return;
+						//Viser bare de 5 kommende arrangementene
+					}
 			}
 		})
 	}
@@ -398,3 +410,5 @@ ReactDOM.render((
 //Må kunne endre passord
 //Ikke bruk force.update
 //Sende tilbakemelding etter registrering
+//Spesifiser at man må logge inn med email
+//Må kunne bruke enter til søk, logg inn, registrer, etc
