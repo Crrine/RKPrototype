@@ -49,6 +49,13 @@ class UserService {
       callback();
     });
   }
+  editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, callback) {
+    connection.query('UPDATE user SET firstname=?, lastname=?, address=?, email=?, password=?, city=?, zip=?, phone=?, age=? WHERE userID=?', [newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, userid], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
   deleteUser(id){
     connection.query('DELETE * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;
@@ -61,6 +68,26 @@ class UserService {
       if (error) throw error;
 
       callback(result[0]);
+    });
+  }
+  addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, callback) {
+    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area) values (?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelist_roleID, description, area], (error, resutlt) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
+  getEvents(callback){
+    connection.query('SELECT * FROM event ORDER BY date_start',(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+  search(keyword, callback){
+    connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
     });
   }
 }

@@ -9,13 +9,12 @@ import globalize from 'globalize';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
-
-
 export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
 let userid = 0;
+let eventPress = false;
 
 class LoginPage extends React.Component {
 	render(){
@@ -116,8 +115,11 @@ class Register extends React.Component {
 			let age = this.refs.regAge.value;
 
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-
+				alert('Brukeren er opprettet');
+				history.push('/loginPage/');
+				this.forceUpdate(); //Ikke bruke forceUpdate
 			})
+			// alert('Informasjonen er ugyldig'); lag noen if-error-sak
 		}
 	}
 }
@@ -133,6 +135,7 @@ class Navbar extends React.Component {
 						<Link to='/homepage'>Aktuelle saker</Link><br />
 						<Link to='/events'>Arrangementer</Link><br />
 						<Link to='/calendar'>Kalender</Link><br />
+						<Link to='/nyttEvent'>NyttEvent</Link><br />
 						<Link to='/contact'>Kontakt oss</Link><br />
 						<Link to='/search'>Brukersøk</Link><br />
 						<button ref='logout' onClick = {() => {
@@ -158,14 +161,16 @@ class Profile extends React.Component{
 				<h1>Din profil</h1>
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
-				<button ref='btnShowInfo'>Vis info</button><br />
+				<button ref='btnShowInfo'>Vis info</button>
+				<button onClick = {() => {
+					history.push('/editprofile/'),
+					this.forceUpdate()}}>Rediger</button>
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
 					<span ref='userZip'></span><br />
 					<span ref='userPhone'></span><br />
 					<span ref='userAge'></span><br />
-					<span ref='userPassword'></span><br />
 				</div>
 			</div>
 		);
@@ -181,12 +186,11 @@ class Profile extends React.Component{
 			this.refs.btnShowInfo.onclick = () => {
 				if(btnShowInfoPressed == false){
 					this.refs.showInfo.innerText =
-					" Adresse: " + result.address +
-					" By: " + result.city +
-					" Postnummer: " + result.zip +
-					" Tlf: " + result.phone +
-					" Alder: " + result.age +
-					" Passord: " + result.password;
+					" Adresse: " + result.address + '\n' +
+					" By: " + result.city + '\n' +
+					" Postnummer: " + result.zip + '\n' +
+					" Tlf: " + result.phone + '\n' +
+					" Alder: " + result.age + '\n';
 					this.refs.btnShowInfo.innerText = "Skjul info";
 					btnShowInfoPressed = true;
 				}else{
@@ -196,6 +200,90 @@ class Profile extends React.Component{
 				}
 			}
 		});
+	}
+}
+
+class EditProfile extends React.Component{
+	render(){
+		return(
+			<div>
+				<h1>Rediger profil</h1>
+				<form>
+					<label>
+						Fornavn:<br />
+						<input ref='editFirstName' type='text' /><br />
+					</label>
+					<label>
+						Etternavn:<br />
+						<input ref='editLastName' type='text' /><br />
+					</label>
+					<label>
+						Adresse:<br />
+						<input ref='editAddress' type='text' /><br />
+					</label>
+					<label>
+						Epost:<br />
+						<input ref='editEmail' type='text' /><br />
+					</label>
+					<label>
+						By:<br />
+						<input ref='editCity' type='text' /><br />
+					</label>
+					<label>
+						Postnummer:<br />
+						<input ref='editZip' type='number' /><br />
+					</label>
+					<label>
+						Tlf:<br />
+						<input ref='editPhone' type='number' /><br />
+					</label>
+					<label>
+						Alder:<br />
+						<input ref='editAge' type='number' /><br />
+					</label>
+					<label>
+						Passord:<br />
+						<input ref='editPassword' type='password' /><br />
+					</label>
+				</form>
+				<button ref='btnSendEdit'>Lagre</button>
+				<button onClick = {() => {
+					history.push('/profile/'),
+					this.forceUpdate()}}>Angre</button>
+			</div>
+		)
+	}
+	componentDidMount(){
+			userService.getUser(userid,(result) => {
+				this.refs.editFirstName.value = result.firstname;
+				this.refs.editLastName.value = result.lastname;
+				this.refs.editAddress.value = result.address;
+				this.refs.editEmail.value = result.email;
+				this.refs.editCity.value = result.city;
+				this.refs.editZip.value = result.zip;
+				this.refs.editPhone.value = result.phone;
+				this.refs.editAge.value = result.age;
+				this.refs.editPassword.value = result.password;
+			});
+
+		this.refs.btnSendEdit.onclick = () => {
+		 	let newFirstname = this.refs.editFirstName.value;
+			let newLastname = this.refs.editLastName.value;
+			let newAddress = this.refs.editAddress.value;
+			let newEmail = this.refs.editEmail.value;
+			let newPassword = this.refs.editPassword.value;
+			let newCity = this.refs.editCity.value;
+			let newZip = this.refs.editZip.value;
+			let newPhone = this.refs.editPhone.value;
+			let newAge = this.refs.editAge.value;
+
+			userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
+			})
+			console.log('Oppdatert bruker - ID:');
+			alert('Brukerinformasjonen ble oppdatert');
+			history.push('/profile/');
+			this.forceUpdate();
+		}
 	}
 }
 
@@ -214,8 +302,24 @@ class Events extends React.Component {
 		return(
 			<div>
 				<h1>Arrangementer</h1>
+				<h4>Kommende arrangementer</h4>
+				<div ref='upcoming'></div>
 			</div>
 		);
+	}
+	componentDidMount(){
+		userService.getEvents((result) => {
+			for(let event of result){
+				let divEvent = document.createElement('DIV');
+
+				divEvent.innerText = event.name + '\n' +
+					'Lokasjon: ' + event.area + '\n' +
+					'Kontakttelefon: ' + event.contact_phone + '\n';
+
+				this.refs.upcoming.appendChild(divEvent);
+				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+			}
+		})
 	}
 }
 
@@ -229,51 +333,149 @@ class Contact extends React.Component {
 	}
 }
 
-
 class Calendar extends React.Component {
 	constructor(props) {
-    super(props);
-    this.state = {
-    events:[
-		  {
-		    'title': 'Event 1',
-		    'startDate': new Date(2018,1,2,8),
-		    'endDate': new Date(2018,1,2,10)
-		  },
-		  {
-		    'title': 'Event 2',
-		    'startDate': new Date(2018,1,3,12),
-		    'endDate': new Date(2018,1,3,15)
-		  }],
-    }
-  }
+		super(props);
+		this.state = {
+		events:[
+			{
+				'title': 'Event 1',
+				'startDate': new Date(2018,1,2,8),
+				'endDate': new Date(2018,1,2,10)
+			},
+			{
+				'title': 'Event 2',
+				'startDate': new Date(2018,1,3,12),
+				'endDate': new Date(2018,1,3,15)
+			}],
+		}
+	}
 
-  render() {
-    return (
+	render() {
+		return (
+			<div>
 			<BigCalendar
-			                messages={{next:"Neste",previous:"Tilbake",today:"I dag",month:"Måned",week:"Uke",work_week:"Jobbuke",day:"Dag",agenda:"Agenda", date:"Dato", time:"Tid", event:"Arrangement"}}
-			                events={this.state.events}
-			                step={60}
+											messages={{next:"Neste",previous:"Tilbake",today:"I dag",month:"Måned",week:"Uke",work_week:"Jobbuke",day:"Dag",agenda:"Agenda", date:"Dato", time:"Tid", event:"Arrangement"}}
+											events={this.state.events}
+											step={60}
 											startAccessor='startDate'
 											endAccessor='endDate'
-			                showMultiDayTimes
-			                defaultDate={new Date()}
-			                style={{height: 400}}
-			              />
+											showMultiDayTimes
+											defaultDate={new Date()}
+											style={{height: 400}}
+										/>
+										<div>
+										<button ref='CreateEvent'>Lag nytt arrangement</button>
+										</div>
+										</div>
 
-    );
-  }
+		);
+	}
+	componentDidMount() {
+		this.refs.CreateEvent.onClick = () => {
+			history.push('/nyttEvent/');
+			this.forceUpdate();
+		}
+	}
 }
+
+class NewEvent extends React.Component {
+	render(){
+				return(
+					<div>
+						<h1>Nytt Arrangement</h1>
+						<form>
+							<label>
+								Navn på arrangementet:<br />
+								<input ref='regArrName' type='text' /><br />
+							</label>
+							<label>
+								Startdato:<br />
+								<input ref='regStartDato' type='text' /><br />
+							</label>
+							<label>
+								sluttdato:<br />
+								<input ref='regSluttDato' type='text' /><br />
+							</label>
+							<label>
+								kontakttelefon:<br />
+								<input ref='regTlf' type='text' /><br />
+							</label>
+							<label>
+								rolelist:<br />
+								<input ref='regRoles' type='text' /><br />
+							</label>
+							<label>
+								description:<br />
+								<input ref='regDescript' type='text' /><br />
+							</label>
+							<label>
+								Møtested:<br />
+								<input ref='regMeet' type='text' /><br />
+							</label>
+						</form>
+						<button ref='btnSendArr'>Registrer Arrangement</button>
+					</div>
+				)
+			}
+		}
+		componentDidMount(){
+			this.refs.btnSendArr.onclick = () => {
+			 	let name = this.refs.regArrName.value;
+				let datestart = this.refs.regStartDato.value;
+				let dateend = this.refs.regSluttDato.value;
+				let contactphone = this.refs.regTlf.value;
+				let rolelistroleID = this.refs.regRoles.value;
+				let description = this.refs.regDescript.value;
+				let area = this.refs.regMeet.value;
+
+				userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
+					alert('Arrangementet er opprettet');
+					history.push('/Navbar/');
+					this.forceUpdate(); //Ikke bruke forceUpdate
+				})
+				// alert('Informasjonen er ugyldig'); lag noen if-error-sak
+			}
+		}
+	}
+
 
 class Search extends React.Component {
 	render(){
 		return(
 			<div>
 				<h1>Brukersøk</h1>
-				<input type="text" placheolder="navn, epost, by, etc." />
-				<button>Søk</button>
+				<input ref='searchField' type="text" placeholder="navn, epost, tlf" />
+				<button ref='btnSearch'>Søk</button>
+				<div ref='output'>
+				</div>
 			</div>
 		);
+		//brukere skal kunne søke opp epost og telefonnummer
+	}
+	componentDidMount(){
+		this.refs.btnSearch.onclick = () => {
+			let keyword = this.refs.searchField.value;
+			userService.search(keyword, (result) => {
+				this.refs.output.innerText = '';
+				console.log(result);
+
+				if(result==''){
+					this.refs.output.innerText = '\n' + 'Ingen resultater';
+				}
+
+				for(let user of result){
+					// let divOutput = document.createElement('DIV');
+
+					this.refs.output.innerText += '\n' + user.firstname + ' ' + user.lastname + '\n' +
+						'epost: ' + user.email + '\n' +
+						'telefon: ' + user.phone + '\n';
+
+					// this.refs.output.appendChild(divOutput);
+					// divOutput.innerText += '\n'; //Fjern dette når du legger til if-en
+				}
+			})
+		}
 	}
 }
 
@@ -282,11 +484,13 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
+				<Route exact path='/nyttEvent' component={NewEvent}/>
 				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
 				<Route excat path='/profile' component={Profile}/>
+				<Route excat path='/editprofile' component={EditProfile}/>
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
@@ -294,7 +498,6 @@ ReactDOM.render((
     </div>
   </HashRouter>
 ), document.getElementById('root'));
-
 //Neste: Vise (og skjule) og oppdatere brukerinfo
 //Må kunne endre passord
 //Ikke bruk force.update

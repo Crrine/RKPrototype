@@ -55,6 +55,67 @@ class LoginPage extends React.Component {
 		}
 	}
 
+
+	render(){
+				return(
+					<div>
+						<h1>Nytt Arrangement</h1>
+						<form>
+							<label>
+								Navn på arrangementet:<br />
+								<input ref='regArrName' type='text' /><br />
+							</label>
+							<label>
+								Startdato:<br />
+								<input ref='regStartDato' type='text' /><br />
+							</label>
+							<label>
+								sluttdato:<br />
+								<input ref='regSluttDato' type='text' /><br />
+							</label>
+							<label>
+								kontakttelefon:<br />
+								<input ref='regTlf' type='text' /><br />
+							</label>
+							<label>
+								rolelist:<br />
+								<input ref='regRoles' type='text' /><br />
+							</label>
+							<label>
+								description:<br />
+								<input ref='regDescript' type='number' /><br />
+							</label>
+							<label>
+								Møtested:<br />
+								<input ref='regMeet' type='number' /><br />
+							</label>
+						</form>
+						<button ref='btnSendArr'>Registrer Arrangement</button>
+					</div>
+				)
+			}
+		}	//bør man heller ha en form-action og knappen inne i formen?
+		componentDidMount(){
+			this.refs.btnSendArr.onclick = () => {
+			 	let name = this.refs.regArrName.value;
+				let startDato = this.refs.regStartDato.value;
+				let sluttDato = this.refs.regSluttDato.value;
+				let regTlf = this.refs.regTlf.value;
+				let password = this.refs.regRoles.value;
+				let description = this.refs.regDescript.value;
+				let Møtested = this.refs.regMeet.value;
+
+				userService.addArr(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
+					alert('Arrangementet er opprettet');
+					history.push('/Navbar/');
+					this.forceUpdate(); //Ikke bruke forceUpdate
+				})
+				// alert('Informasjonen er ugyldig'); lag noen if-error-sak
+			}
+		}
+	}
+
+
 class Register extends React.Component {
 		render(){
 			if(regPress){
