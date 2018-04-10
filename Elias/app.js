@@ -161,6 +161,7 @@ class Profile extends React.Component{
 				<button onClick = {() => {
 					history.push('/editprofile/'),
 					this.forceUpdate()}}>Rediger</button>
+				<button ref='btnDeactivate'>Deaktiver</button>
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
@@ -196,6 +197,14 @@ class Profile extends React.Component{
 				}
 			}
 		});
+		this.refs.btnDeactivate.onclick = () => {
+			let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
+			if(r == true){
+				userService.deactivateUser(userid,(result) => {
+					console.log('Deaktivert bruker - ID:' + userid);
+				});	
+			}
+		}
 	}
 }
 

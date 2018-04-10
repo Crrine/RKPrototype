@@ -64,7 +64,7 @@ class UserService {
     });
   }
   loginUser(email, password, callback){
-    connection.query('SELECT userID FROM user WHERE email = ? AND password =?', [email, password], (error, result) => {
+    connection.query('SELECT userID FROM user WHERE email = ? AND password =? AND inactive=0', [email, password], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
@@ -82,6 +82,18 @@ class UserService {
 
       callback(result);
     });
+  }
+  deactivateUser(userid, callback){
+    connection.query('UPDATE user SET inactive=1 where userID=?', [userid], (error,result) => {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+  activateUser(userid, callback){
+    connection.query('UPDATE user SET inactive=0 where userID=?', [userid], (error,result) => {
+      if(error) throw error;
+      callback(result);
+    })
   }
 }
 let userService = new UserService();
