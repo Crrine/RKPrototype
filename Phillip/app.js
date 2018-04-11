@@ -332,6 +332,7 @@ class Contact extends React.Component {
 	}
 }
 
+
 class Calendar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -340,6 +341,11 @@ class Calendar extends React.Component {
 		}
 	}
 
+	setArrinfo(event) {
+		console.log("clicked")
+
+
+	}
 	render() {
 		return (
 			<div>
@@ -358,7 +364,6 @@ class Calendar extends React.Component {
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
 										</div>
 										</div>
-
 		);
 	}
 	componentDidMount() {
@@ -374,7 +379,6 @@ class Calendar extends React.Component {
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
-				console.log(result);
 			this.setState({events: result});
 		})
 
