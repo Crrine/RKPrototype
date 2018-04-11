@@ -336,17 +336,7 @@ class Calendar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-		events:[
-			{
-				'title': 'Event 1',
-				'startDate': new Date(2018,1,2,8),
-				'endDate': new Date(2018,1,2,10)
-			},
-			{
-				'title': 'Event 2',
-				'startDate': new Date(2018,1,3,12),
-				'endDate': new Date(2018,1,3,15)
-			}],
+		events:[],
 		}
 	}
 
@@ -362,6 +352,7 @@ class Calendar extends React.Component {
 											showMultiDayTimes
 											defaultDate={new Date()}
 											style={{height: 400}}
+											onSelectEvent={event => this.setArrinfo(event)}
 										/>
 										<div>
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
@@ -371,10 +362,22 @@ class Calendar extends React.Component {
 		);
 	}
 	componentDidMount() {
-		this.refs.CreateEvent.onClick = () => {
+		this.refs.CreateEvent.onclick = () => {
 			history.push('/nyttEvent/');
 			this.forceUpdate();
 		}
+
+	// 	userService.getEvents((result) => {
+	// 	this.setState({events: result});
+	// })
+	// console.log(result);
+	}
+	componentWillMount() {
+			userService.getEvent((result) => {
+				console.log(result);
+			this.setState({events: result});
+		})
+
 	}
 }
 
@@ -390,11 +393,11 @@ class NewEvent extends React.Component {
 							</label>
 							<label>
 								Startdato:<br />
-								<input ref='regStartDato' type='text' /><br />
+								<input ref='regStartDato' type='date' /><br />
 							</label>
 							<label>
 								sluttdato:<br />
-								<input ref='regSluttDato' type='text' /><br />
+								<input ref='regSluttDato' type='date' /><br />
 							</label>
 							<label>
 								kontakttelefon:<br />
@@ -417,25 +420,25 @@ class NewEvent extends React.Component {
 					</div>
 				)
 			}
-		}
-	//	componentDidMount() {
-	//		this.refs.btnSendArr.onclick = () => {
-	//		 	let name = this.refs.regArrName.value;
-	//			let datestart = this.refs.regStartDato.value;
-	//			let dateend = this.refs.regSluttDato.value;
-	//			let contactphone = this.refs.regTlf.value;
-	//			let rolelistroleID = this.refs.regRoles.value;
-	//			let description = this.refs.regDescript.value;
-	//			let area = this.refs.regMeet.value;
+			componentDidMount() {
+				this.refs.btnSendArr.onclick = () => {
+				 	let name = this.refs.regArrName.value;
+					let date_start = this.refs.regStartDato.value;
+					let date_end = this.refs.regSluttDato.value;
+					let contact_phone = this.refs.regTlf.value;
+					let rolelist_roleID = this.refs.regRoles.value;
+					let description = this.refs.regDescript.value;
+					let area = this.refs.regMeet.value;
 
-			//	userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
-		//			alert('Arrangementet er opprettet');
-		//			history.push('/Navbar/');
-		//			this.forceUpdate();
-		//		})
-		//	}
-	 //	}
-//	}
+					userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
+						alert('Arrangementet er opprettet');
+						history.push('/Navbar/');
+						this.forceUpdate();
+					})
+			}
+		}
+		}
+
 
 
 class Search extends React.Component {

@@ -83,6 +83,14 @@ class UserService {
       callback(result);
     })
   }
+
+  getEvent(callback){
+    connection.query('SELECT name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+
   search(keyword, callback){
     connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
       if (error) throw error;
