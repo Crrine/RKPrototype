@@ -333,7 +333,6 @@ class Contact extends React.Component {
 	}
 }
 
-<<<<<<< HEAD
 class editEvent extends React.Component {
 	render() {
 		return(
@@ -416,8 +415,6 @@ class divEvent extends React.Component {
 		}
 	}
 }
-=======
->>>>>>> 2766b8f79c229c41b050ddabb19a290f2800e7d8
 
 class Calendar extends React.Component {
 	constructor(props) {
@@ -427,7 +424,6 @@ class Calendar extends React.Component {
 		}
 	}
 
-<<<<<<< HEAD
 setArrinfo(event) {
 	console.log(event)
 	var title = event.title;
@@ -440,13 +436,6 @@ setArrinfo(event) {
 	history.push('/divEvent/')
 
 }
-=======
-	setArrinfo(event) {
-		console.log("clicked")
-
-
-	}
->>>>>>> 2766b8f79c229c41b050ddabb19a290f2800e7d8
 	render() {
 		return (
 			<div>
@@ -473,20 +462,13 @@ setArrinfo(event) {
 			history.push('/nyttEvent/');
 			this.forceUpdate();
 		}
-
-
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
-<<<<<<< HEAD
 				console.log(result);
 					eventID = result[0].eventID;
-=======
->>>>>>> 2766b8f79c229c41b050ddabb19a290f2800e7d8
 			this.setState({events: result});
-
 		})
-
 	}
 }
 
