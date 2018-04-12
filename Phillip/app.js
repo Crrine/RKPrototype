@@ -14,6 +14,7 @@ export const history = createHashHistory();
 let loggedIn = false;
 let regPress = false;
 let userid = 0;
+var eventID = 0;
 
 class LoginPage extends React.Component {
 	render(){
@@ -332,6 +333,91 @@ class Contact extends React.Component {
 	}
 }
 
+<<<<<<< HEAD
+class editEvent extends React.Component {
+	render() {
+		return(
+			<div>
+			<form>
+				<label>
+					Navn på arrangementet:<br />
+					<input ref='editArrName' type='text' /><br />
+				</label>
+				<label>
+					Startdato:<br />
+					<input ref='editStartDato' type='date' /><br />
+				</label>
+				<label>
+					sluttdato:<br />
+					<input ref='editSluttDato' type='date' /><br />
+				</label>
+				<label>
+					kontakttelefon:<br />
+					<input ref='editTlf' type='text' /><br />
+				</label>
+				<label>
+					rolelist:<br />
+					<input ref='editRoles' type='text' /><br />
+				</label>
+				<label>
+					description:<br />
+					<input ref='editDescript' type='text' /><br />
+				</label>
+				<label>
+					Møtested:<br />
+					<input ref='editMeet' type='text' /><br />
+				</label>
+			</form>
+			<button ref='btneditArr'>Registrer Arrangement</button>
+		</div>
+	)
+	}
+	componentDidMount() {
+		userService.getDivEvent(eventID,(result) => {
+					this.refs.editArrName.innerText = result.name;
+					this.refs.editStartDato.innerText = result.date_start;
+					this.refs.editSluttDato.innerText = result.date_end;
+					this.refs.editDescript.innerText = result.description;
+					this.refs.editMeet.innerText = result.area;
+					this.refs.edotTlf.innerText = result.contact_phone;
+					this.refs.editRoles.innerText = result.rolelist_roleID;
+		})
+	}
+}
+
+class divEvent extends React.Component {
+	render() {
+		return(
+			<div>
+			<h1>Valgt arrangement: </h1> <br />
+			arrangementets navn: <span height='300' ref='eventName'></span><br />
+			Startdato: <span ref='eventstartdate'></span><br />
+			Sluttdato: <span ref='eventsluttdate'></span><br />
+			Møtested: <span ref='eventmøtested'></span><br />
+			Kontaktinfo: <span ref='kontaktinfo'></span><br />
+			rolleliste: <span ref='rolelist'></span><br />
+			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
+			<button ref='editArr'>Rediger</button>
+			</div>
+		)
+	}
+	componentDidMount() {
+		userService.getDivEvent(eventID,(result) => {
+					this.refs.eventName.innerText = result.name;
+					this.refs.eventstartdate.innerText = result.date_start;
+					this.refs.eventsluttdate.innerText = result.date_end;
+					this.refs.eventinfo.innerText = result.description;
+					this.refs.eventmøtested.innerText = result.area;
+					this.refs.kontaktinfo.innerText = result.contact_phone;
+					this.refs.rolelist.innerText = result.rolelist_roleID;
+		})
+		this.refs.editArr.onclick = () => {
+			history.push('/editEvent/');
+		}
+	}
+}
+=======
+>>>>>>> 2766b8f79c229c41b050ddabb19a290f2800e7d8
 
 class Calendar extends React.Component {
 	constructor(props) {
@@ -341,11 +427,26 @@ class Calendar extends React.Component {
 		}
 	}
 
+<<<<<<< HEAD
+setArrinfo(event) {
+	console.log(event)
+	var title = event.title;
+	var datestart = event.startDate;
+	var dateend = event.endDate;
+	eventID = event.eventID;
+
+	let diversEvent = document.getElementById('diversEvent');
+	diversEvent.innerText = title + "\n" + datestart + "\n" + dateend + "\n" + eventID;
+	history.push('/divEvent/')
+
+}
+=======
 	setArrinfo(event) {
 		console.log("clicked")
 
 
 	}
+>>>>>>> 2766b8f79c229c41b050ddabb19a290f2800e7d8
 	render() {
 		return (
 			<div>
@@ -358,11 +459,12 @@ class Calendar extends React.Component {
 											showMultiDayTimes
 											defaultDate={new Date()}
 											style={{height: 400}}
-											onSelectEvent={event => this.setArrinfo(event)}
+											onSelectEvent={event => this.setArrinfo(event) == {divEvent}}
 										/>
 										<div>
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
 										</div>
+										<div id='diversEvent'></div>
 										</div>
 		);
 	}
@@ -372,14 +474,17 @@ class Calendar extends React.Component {
 			this.forceUpdate();
 		}
 
-	// 	userService.getEvents((result) => {
-	// 	this.setState({events: result});
-	// })
-	// console.log(result);
+
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
+<<<<<<< HEAD
+				console.log(result);
+					eventID = result[0].eventID;
+=======
+>>>>>>> 2766b8f79c229c41b050ddabb19a290f2800e7d8
 			this.setState({events: result});
+
 		})
 
 	}
@@ -489,6 +594,8 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
+				>Route exact path='editEvent' component={editEvent}/>
+				<Route exact path='/divevent' component={divEvent}/>
 				<Route exact path='/nyttEvent' component={NewEvent}/>
 				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>

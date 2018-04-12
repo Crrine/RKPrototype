@@ -77,6 +77,14 @@ class UserService {
       callback();
     });
   }
+  getDivEvent(eventID, callback){
+    connection.query('SELECT * FROM event WHERE eventID=?', [eventID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    });
+  }
+
   getEvents(callback){
     connection.query('SELECT * FROM event ORDER BY date_start',(error,result)=> {
       if(error) throw error;
@@ -85,7 +93,7 @@ class UserService {
   }
 
   getEvent(callback){
-    connection.query('SELECT name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
+    connection.query('SELECT eventID, name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
       if(error) throw error;
       callback(result);
     })
