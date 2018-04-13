@@ -376,8 +376,8 @@ class EditEvent extends React.Component {
 	componentDidMount() {
 		userService.getDivEvent(eventID,(result) => {
 					this.refs.editArrName.value = result.name;
-					this.refs.editStartDato.value = result.date_start;
-					this.refs.editSluttDato.value = result.date_end;
+					this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
+					this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
 					this.refs.editTlf.value = result.contact_phone;
 					this.refs.editRoles.value = result.rolelist_roleID;
 					this.refs.editMeet.value = result.area;
@@ -420,6 +420,8 @@ class divEvent extends React.Component {
 		)
 	}
 	componentDidMount() {
+		let str; let string; let array;
+
 		userService.getDivEvent(eventID,(result) => {
 					this.refs.eventName.innerText = result.name;
 					this.refs.eventstartdate.innerText = result.date_start;
@@ -428,6 +430,19 @@ class divEvent extends React.Component {
 					this.refs.eventmøtested.innerText = result.area;
 					this.refs.kontaktinfo.innerText = result.contact_phone;
 					this.refs.rolelist.innerText = result.rolelist_roleID;
+
+					str = result.date_start;
+          if (str) {
+            string = str.toString();
+            array = string.split(" ");
+            this.refs.eventstartdate.innerText = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+          }
+					str = result.date_end;
+					if (str) {
+						string = str.toString();
+						array = string.split(" ");
+						this.refs.eventsluttdate.innerText = array[2]+" "+array[1]+" "+array[3] + " " + array[4];
+					}
 		})
 		this.refs.editArr.onclick = () => {
 			history.push('/editevent/');
@@ -450,8 +465,9 @@ class Calendar extends React.Component {
 		var datestart = event.startDate;
 		var dateend = event.endDate;
 		eventID = event.eventID;
-		
-		history.push('/divEvent/');
+
+		history.push('/divEvent/')
+
 	}
 	render() {
 		return (
