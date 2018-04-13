@@ -43,7 +43,7 @@ class UserService {
     });
   }
   addUser(firstname, lastname, address, email, password, city, zip, phone, age, callback) {
-    connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
+    connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age, inactive) values (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
       if (error) throw error;
 
       callback();
@@ -76,6 +76,12 @@ class UserService {
       callback(result);
     })
   }
+  getEvent(callback){
+    connection.query('SELECT eventID, name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
+  }
   search(keyword, callback){
     connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
       if (error) throw error;
@@ -93,6 +99,27 @@ class UserService {
     connection.query('UPDATE user SET inactive=0 where userID=?', [userid], (error,result) => {
       if(error) throw error;
       callback(result);
+    })
+  }
+  getCompetences(callback){
+    connection.query('SELECT * FROM competence ORDER BY title', (error,result) => {
+      if(error) throw error;
+
+      callback(result);
+    });
+  }
+  getCompetence(title, callback){
+    connection.query('SELECT * FROM competence WHERE title=?', [title], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    });
+  }
+  regCompetence(userid, compid, finished, callback){
+    connection.query('INSERT into user_has_competence (user_userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
+      if(error) throw error;
+
+      callback();
     })
   }
 }

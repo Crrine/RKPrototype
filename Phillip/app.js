@@ -424,18 +424,16 @@ class Calendar extends React.Component {
 		}
 	}
 
-setArrinfo(event) {
-	console.log(event)
-	var title = event.title;
-	var datestart = event.startDate;
-	var dateend = event.endDate;
-	eventID = event.eventID;
+	setArrinfo(event) {
+		console.log(event)
+		var title = event.title;
+		var datestart = event.startDate;
+		var dateend = event.endDate;
+		eventID = event.eventID;
 
-	let diversEvent = document.getElementById('diversEvent');
-	diversEvent.innerText = title + "\n" + datestart + "\n" + dateend + "\n" + eventID;
-	history.push('/divEvent/')
+		history.push('/divEvent/')
 
-}
+	}
 	render() {
 		return (
 			<div>

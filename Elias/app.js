@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom';
 import { Link, HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { userService } from './services';
 import {createHashHistory} from 'history';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import globalize from 'globalize';
 
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
 let userid = 0;
+let eventID = 0;
 
 class LoginPage extends React.Component {
 	render(){
@@ -142,6 +147,8 @@ class Navbar extends React.Component {
 			);
 		}else{
 			return(
+				// history.push('/loginPage/');
+				// this.forceUpdate();
 				<div>
 					<Link to='/loginPage'>Logg inn</Link>
 				</div>
@@ -162,6 +169,9 @@ class Profile extends React.Component{
 					history.push('/editprofile/'),
 					this.forceUpdate()}}>Rediger</button>
 				<button ref='btnDeactivate'>Deaktiver</button>
+				<button onClick = {() => {
+					history.push('/competence/'),
+					this.forceUpdate()}}>Kompetanse</button>
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
@@ -202,7 +212,9 @@ class Profile extends React.Component{
 			if(r == true){
 				userService.deactivateUser(userid,(result) => {
 					console.log('Deaktivert bruker - ID:' + userid);
-				});	
+					// history.push('/loginPage/');
+					// this.forceUpdate();
+				});
 			}
 		}
 	}
@@ -254,7 +266,7 @@ class EditProfile extends React.Component{
 				<button ref='btnSendEdit'>Lagre</button>
 				<button onClick = {() => {
 					history.push('/profile/'),
-					this.forceUpdate()}}>Angre</button>
+					this.forceUpdate()}}>Tilbake</button>
 			</div>
 		)
 	}
@@ -272,22 +284,74 @@ class EditProfile extends React.Component{
 			});
 
 		this.refs.btnSendEdit.onclick = () => {
-		 	let newFirstname = this.refs.editFirstName.value;
-			let newLastname = this.refs.editLastName.value;
-			let newAddress = this.refs.editAddress.value;
-			let newEmail = this.refs.editEmail.value;
-			let newPassword = this.refs.editPassword.value;
-			let newCity = this.refs.editCity.value;
-			let newZip = this.refs.editZip.value;
-			let newPhone = this.refs.editPhone.value;
-			let newAge = this.refs.editAge.value;
+			let a = confirm('Er du sikker på at du vil lagre endringene?');
+			if(a==true){
+				let newFirstname = this.refs.editFirstName.value;
+				let newLastname = this.refs.editLastName.value;
+				let newAddress = this.refs.editAddress.value;
+				let newEmail = this.refs.editEmail.value;
+				let newPassword = this.refs.editPassword.value;
+				let newCity = this.refs.editCity.value;
+				let newZip = this.refs.editZip.value;
+				let newPhone = this.refs.editPhone.value;
+				let newAge = this.refs.editAge.value;
 
-			userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
-			})
-			console.log('Oppdatert bruker - ID:');
-			alert('Brukerinformasjonen ble oppdatert');
-			history.push('/profile/');
+				userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
+				})
+				console.log('Oppdatert bruker - ID:' + userid);
+				history.push('/profile/');
+				this.forceUpdate();
+			}
+		}
+	}
+}
+
+class Competence extends React.Component{
+	render(){
+		return(
+			<div>
+				<h1>Kompetanse</h1>
+				<div>
+					<p>Legg til kompetanse:</p>
+					<form ref='compForm'>
+						<select ref='compSelect'>
+						</select>
+					</form>
+					<button ref='btnAddComp'>Legg til</button>
+					<button ref='btnProfile'>Tilbake</button>
+					<div ref='compOutput'></div>
+				</div>
+			</div>
+		)
+	}
+	componentDidMount(){
+		let compid = 0;
+
+		this.refs.btnProfile.onclick = () => {
+			history.push('/profile');
 			this.forceUpdate();
+		}
+
+		userService.getCompetences((result) => {
+			for(let comp of result){
+				let compSel = document.createElement('OPTION');
+				let compTitle = document.createTextNode(comp.title);
+
+				compSel.appendChild(compTitle);
+				this.refs.compSelect.appendChild(compSel);
+			}
+		})
+		this.refs.btnAddComp.onclick = () => {
+			let title = this.refs.compSelect.value;
+			let finished = '2018-01-01';
+
+			userService.getCompetence(title,(result) => {
+				compid = result.compID;
+			})
+			userService.regCompetence(userid, compid, finished, (result) => {
+				console.log('test');
+				console.log(compid);
+			})
 		}
 	}
 }
@@ -309,6 +373,7 @@ class Events extends React.Component {
 				<h1>Arrangementer</h1>
 				<h4>Kommende arrangementer</h4>
 				<button ref='showMoreEvents'>Vis flere</button>
+				<button ref='btnNewEvent'>Legg til arrangement</button>
 				<br /><br />
 				<div ref='upcoming'></div>
 			</div>
@@ -316,6 +381,11 @@ class Events extends React.Component {
 	}
 	componentDidMount(){
 		let i = 0;
+
+		this.refs.btnNewEvent.onclick = () => {
+			history.push('/newEvent/');
+			this.forceUpdate();
+		}
 
 		userService.getEvents((result) => {
 				for(let event of result){
@@ -337,6 +407,103 @@ class Events extends React.Component {
 	}
 }
 
+class divEvent extends React.Component {
+	render() {
+		return(
+			<div>
+			<h1>Valgt arrangement: </h1> <br />
+			arrangementets navn: <span height='300' ref='eventName'></span><br />
+			Startdato: <span ref='eventstartdate'></span><br />
+			Sluttdato: <span ref='eventsluttdate'></span><br />
+			Møtested: <span ref='eventmøtested'></span><br />
+			Kontaktinfo: <span ref='kontaktinfo'></span><br />
+			rolleliste: <span ref='rolelist'></span><br />
+			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
+			<button ref='editArr'>Rediger</button>
+			</div>
+		)
+	}
+	componentDidMount() {
+		userService.getDivEvent(eventID,(result) => {
+					this.refs.eventName.innerText = result.name;
+					this.refs.eventstartdate.innerText = result.date_start;
+					this.refs.eventsluttdate.innerText = result.date_end;
+					this.refs.eventinfo.innerText = result.description;
+					this.refs.eventmøtested.innerText = result.area;
+					this.refs.kontaktinfo.innerText = result.contact_phone;
+					this.refs.rolelist.innerText = result.rolelist_roleID;
+		})
+		this.refs.editArr.onclick = () => {
+			history.push('/editEvent/');
+		}
+	}
+}
+
+class NewEvent extends React.Component {
+	render(){
+				return(
+					<div>
+						<h1>Nytt Arrangement</h1>
+						<form>
+							<label>
+								Navn på arrangementet:<br />
+								<input ref='regArrName' type='text' /><br />
+							</label>
+							<label>
+								Startdato:<br />
+								<input ref='regStartDato' type='datetime-local' /><br />
+							</label>
+							<label>
+								sluttdato:<br />
+								<input ref='regSluttDato' type='datetime-local' /><br />
+							</label>
+							<label>
+								kontakttelefon:<br />
+								<input ref='regTlf' type='text' /><br />
+							</label>
+							<label>
+								rolelist:<br />
+								<input ref='regRoles' type='text' /><br />
+							</label>
+							<label>
+								description:<br />
+								<input ref='regDescript' type='text' /><br />
+							</label>
+							<label>
+								Møtested:<br />
+								<input ref='regMeet' type='text' /><br />
+							</label>
+						</form>
+						<button ref='btnSendArr'>Registrer</button>
+						<button ref='btnBackArr'>Tilbake</button>
+					</div>
+				)
+			}
+			componentDidMount() {
+
+				this.refs.btnBackArr.onclick = () => {
+					history.push('/events/');
+					this.forceUpdate();
+				}
+
+				this.refs.btnSendArr.onclick = () => {
+				 	let name = this.refs.regArrName.value;
+					let date_start = this.refs.regStartDato.value;
+					let date_end = this.refs.regSluttDato.value;
+					let contact_phone = this.refs.regTlf.value;
+					let rolelist_roleID = this.refs.regRoles.value;
+					let description = this.refs.regDescript.value;
+					let area = this.refs.regMeet.value;
+
+					userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
+						alert('Arrangementet er opprettet');
+						history.push('/events/');
+						this.forceUpdate();
+				})
+			}
+		}
+	}
+
 class Contact extends React.Component {
 	render(){
 		return(
@@ -348,12 +515,55 @@ class Contact extends React.Component {
 }
 
 class Calendar extends React.Component {
-	render(){
-		return(
+	constructor(props) {
+		super(props);
+		this.state = {
+		events:[],
+		}
+	}
+
+	setArrinfo(event) {
+		console.log(event)
+		var title = event.title;
+		var datestart = event.startDate;
+		var dateend = event.endDate;
+		eventID = event.eventID;
+
+		history.push('/divEvent/')
+
+	}
+	render() {
+		return (
 			<div>
-				<h1>Kalender</h1>
-			</div>
+			<BigCalendar
+											messages={{next:"Neste",previous:"Tilbake",today:"I dag",month:"Måned",week:"Uke",work_week:"Jobbuke",day:"Dag",agenda:"Agenda", date:"Dato", time:"Tid", event:"Arrangement"}}
+											events={this.state.events}
+											step={60}
+											startAccessor='startDate'
+											endAccessor='endDate'
+											showMultiDayTimes
+											defaultDate={new Date()}
+											style={{height: 400}}
+											onSelectEvent={event => this.setArrinfo(event) == {divEvent}}
+										/>
+										<div>
+										<button ref='CreateEvent'>Lag nytt arrangement</button>
+										</div>
+										</div>
 		);
+	}
+	componentDidMount() {
+		this.refs.CreateEvent.onclick = () => {
+			history.push('/nyttEvent/');
+			this.forceUpdate();
+		}
+	}
+	componentWillMount() {
+			userService.getEvent((result) => {
+				console.log(result);
+					eventID = result[0].eventID;
+			this.setState({events: result});
+		})
 	}
 }
 
@@ -408,8 +618,11 @@ ReactDOM.render((
 				<Route excat path='/profile' component={Profile}/>
 				<Route excat path='/editprofile' component={EditProfile}/>
 				<Route excat path='/events' component={Events}/>
+				<Route excat path='/divEvent' component={divEvent}/>
+				<Route excat path='/newEvent' component={NewEvent}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
+				<Route excat path='/competence' component={Competence}/>
       </Switch>
     </div>
   </HashRouter>
