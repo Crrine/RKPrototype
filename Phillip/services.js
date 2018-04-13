@@ -56,6 +56,13 @@ class UserService {
       callback();
     });
   }
+  editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, callback) {
+    connection.query('UPDATE event SET name=?, date_start=?, date_end=?, contact_phone=?, rolelist_roleID=?, area=?, description=? WHERE eventID=?', [newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, eventID], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
   deleteUser(id){
     connection.query('DELETE * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;

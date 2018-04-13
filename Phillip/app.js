@@ -333,22 +333,23 @@ class Contact extends React.Component {
 	}
 }
 
-class editEvent extends React.Component {
-	render() {
+class EditEvent extends React.Component {
+	render(){
 		return(
 			<div>
 			<form>
+			<h1>Rediger arrangement </h1>
 				<label>
 					Navn på arrangementet:<br />
 					<input ref='editArrName' type='text' /><br />
 				</label>
 				<label>
 					Startdato:<br />
-					<input ref='editStartDato' type='date' /><br />
+					<input ref='editStartDato' type='datetime-local' /><br />
 				</label>
 				<label>
 					sluttdato:<br />
-					<input ref='editSluttDato' type='date' /><br />
+					<input ref='editSluttDato' type='datetime-local' /><br />
 				</label>
 				<label>
 					kontakttelefon:<br />
@@ -359,29 +360,47 @@ class editEvent extends React.Component {
 					<input ref='editRoles' type='text' /><br />
 				</label>
 				<label>
-					description:<br />
-					<input ref='editDescript' type='text' /><br />
-				</label>
-				<label>
 					Møtested:<br />
 					<input ref='editMeet' type='text' /><br />
 				</label>
+				<label>
+					description:<br />
+					<input ref='editDescript' type='text' /><br />
+				</label>
 			</form>
-			<button ref='btneditArr'>Registrer Arrangement</button>
+			<button ref='btneditArr'>Rediger Arrangement</button>
 		</div>
-	)
-	}
+
+	)}
+
 	componentDidMount() {
 		userService.getDivEvent(eventID,(result) => {
-					this.refs.editArrName.innerText = result.name;
-					this.refs.editStartDato.innerText = result.date_start;
-					this.refs.editSluttDato.innerText = result.date_end;
-					this.refs.editDescript.innerText = result.description;
-					this.refs.editMeet.innerText = result.area;
-					this.refs.edotTlf.innerText = result.contact_phone;
-					this.refs.editRoles.innerText = result.rolelist_roleID;
+					this.refs.editArrName.value = result.name;
+					this.refs.editStartDato.value = result.date_start;
+					this.refs.editSluttDato.value = result.date_end;
+					this.refs.editTlf.value = result.contact_phone;
+					this.refs.editRoles.value = result.rolelist_roleID;
+					this.refs.editMeet.value = result.area;
+					this.refs.editDescript.value = result.description;
 		})
+		this.refs.btneditArr.onclick = () => {
+			var newName = this.refs.editArrName.value;
+			var newStartDato = this.refs.editStartDato.value;
+			var newEndDato = this.refs.editSluttDato.value;
+			var newTlf = this.refs.editTlf.value;
+			var newrolelist = this.refs.editRoles.value;
+			var newMeet = this.refs.editMeet.value;
+			var newDesc = this.refs.editDescript.value;
+
+			userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {
+			})
+			console.log('Oppdatert Arrangement:');
+			alert('Arrangemenetet ble oppdatert');
+			history.push('/divevent/');
+			this.forceUpdate();
+		}
 	}
+
 }
 
 class divEvent extends React.Component {
@@ -389,7 +408,7 @@ class divEvent extends React.Component {
 		return(
 			<div>
 			<h1>Valgt arrangement: </h1> <br />
-			arrangementets navn: <span height='300' ref='eventName'></span><br />
+			arrangementets navn: <span ref='eventName'></span><br />
 			Startdato: <span ref='eventstartdate'></span><br />
 			Sluttdato: <span ref='eventsluttdate'></span><br />
 			Møtested: <span ref='eventmøtested'></span><br />
@@ -411,7 +430,9 @@ class divEvent extends React.Component {
 					this.refs.rolelist.innerText = result.rolelist_roleID;
 		})
 		this.refs.editArr.onclick = () => {
-			history.push('/editEvent/');
+			history.push('/editevent/');
+			this.forceUpdate();
+			console.log()
 		}
 	}
 }
@@ -423,19 +444,17 @@ class Calendar extends React.Component {
 		events:[],
 		}
 	}
+	setArrinfo(event) {
+	//	console.log(event)
+		var title = event.title;
+		var datestart = event.startDate;
+		var dateend = event.endDate;
+		eventID = event.eventID;
 
-setArrinfo(event) {
-	console.log(event)
-	var title = event.title;
-	var datestart = event.startDate;
-	var dateend = event.endDate;
-	eventID = event.eventID;
+		history.push('/divEvent/');
 
-	let diversEvent = document.getElementById('diversEvent');
-	diversEvent.innerText = title + "\n" + datestart + "\n" + dateend + "\n" + eventID;
-	history.push('/divEvent/')
 
-}
+	}
 	render() {
 		return (
 			<div>
@@ -453,7 +472,6 @@ setArrinfo(event) {
 										<div>
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
 										</div>
-										<div id='diversEvent'></div>
 										</div>
 		);
 	}
@@ -484,11 +502,11 @@ class NewEvent extends React.Component {
 							</label>
 							<label>
 								Startdato:<br />
-								<input ref='regStartDato' type='date' /><br />
+								<input ref='regStartDato' type='datetime-local' /><br />
 							</label>
 							<label>
 								sluttdato:<br />
-								<input ref='regSluttDato' type='date' /><br />
+								<input ref='regSluttDato' type='datetime-local' /><br />
 							</label>
 							<label>
 								kontakttelefon:<br />
@@ -529,8 +547,6 @@ class NewEvent extends React.Component {
 			}
 		}
 		}
-
-
 
 class Search extends React.Component {
 	render(){
@@ -576,7 +592,7 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
-				>Route exact path='editEvent' component={editEvent}/>
+				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
 				<Route exact path='/nyttEvent' component={NewEvent}/>
 				<Route exact path='/homepage' component={Homepage}/>
