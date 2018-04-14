@@ -50,11 +50,18 @@ class UserService {
     })
   }
   checkifInterested(eventID, userID, callback) {
-    connection.query('Select 1 from Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
+    connection.query('Select * from Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
     })
+  }
+  getInterested(eventID, userID, callback){
+    connection.query('SELECT * FROM Interested WHERE eventID=?', [eventID], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    });
   }
   addUser(firstname, lastname, address, email, password, city, zip, phone, age, callback) {
     connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {

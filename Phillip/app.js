@@ -417,6 +417,7 @@ class divEvent extends React.Component {
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 			<button ref='editArr'>Rediger</button>
 			<button ref='Interested'>Interresert</button>
+			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button>
 			</div>
 		)
 	}
@@ -455,6 +456,7 @@ class divEvent extends React.Component {
 			userService.checkifInterested(eventID, userID, (result) => {
 				if (result != undefined) {
 					this.refs.Interested.disabled = true;
+					this.forceUpdate();
 				}
 			})
 		})
@@ -462,8 +464,37 @@ class divEvent extends React.Component {
 			history.push('/editevent/');
 			this.forceUpdate();
 		}
+		this.refs.checkinterested.onclick = () => {
+			history.push('/acceptmembers/');
+		}
 	}
 	}
+
+class AcceptMembers extends React.Component {
+	render() {
+		return(
+			<div>
+			<h1> medlemmer </h1>
+		 	 <span ref='diversemedlemmer'></span> <br />
+			</div>
+		)
+	}
+	componentDidMount() {
+
+			userService.getInterested(eventID, userID, (result) => {
+				// this.refs.diversemedlemmer.innerText = result.eventID;
+				// for (let userID of result) {
+				// 	this.refs.diversemedlemmer.innerText += '\n' + Interested.userID;
+				// }
+				this.forceUpdate();
+				for (let user of result) {
+					userService.getUser(user.userID, (result) => {
+							this.refs.diversemedlemmer.innerText += result.firstname + "\n";
+					})
+				}
+		})
+	}
+}
 
 class Calendar extends React.Component {
 	constructor(props) {
@@ -473,14 +504,12 @@ class Calendar extends React.Component {
 		}
 	}
 	setArrinfo(event) {
-	//	console.log(event)
-		var title = event.title;
-		var datestart = event.startDate;
-		var dateend = event.endDate;
-		eventID = event.eventID;
-
-		history.push('/divEvent/')
-
+		userService.getEvent((result) => {
+			eventID = event.eventID;
+		this.setState({events: result});
+		history.push('/divEvent/');
+	})
+					// history.push('/divEvent/');
 	}
 	render() {
 		return (
@@ -494,7 +523,7 @@ class Calendar extends React.Component {
 											showMultiDayTimes
 											defaultDate={new Date()}
 											style={{height: 400}}
-											onSelectEvent={event => this.setArrinfo(event) == {divEvent}}
+											onSelectEvent={event => this.setArrinfo(event)}
 										/>
 										<div>
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
@@ -510,8 +539,7 @@ class Calendar extends React.Component {
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
-				console.log(result);
-					eventID = result[0].eventID;
+				// eventID = result[0].eventID;
 			this.setState({events: result});
 		})
 	}
@@ -619,6 +647,7 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
+				<Route exact path='/acceptmembers' component={AcceptMembers}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
 				<Route exact path='/nyttEvent' component={NewEvent}/>
