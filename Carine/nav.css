@@ -131,11 +131,19 @@ li.dropdown {
 .grid-container {
   width: 80%;
   margin: 0 auto;
-  padding-top: 80px;
+  padding-top: 30px;
   padding-bottom: 10px;
   grid-template-columns: 2fr 1fr;
   display: grid;
   grid-gap: 20px;
+}
+
+.big-container {
+  width: 80%;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  padding-top: 30px;
+  margin-top: 30px;
 }
 
 .main-wrap {
@@ -143,9 +151,9 @@ li.dropdown {
   background-color: white;
   padding: 20px;
   overflow: auto;
-  margin-top: 10px;
-  height: 600px;
+  height: 620px;
   overflow-y: scroll;
+
 }
 
 .profilvakter {
@@ -159,27 +167,20 @@ li.dropdown {
   height: 300px;
 }
 
-.nyhetsbilde {
-  float: left;
+
+.news-image {
+  width: 100%;
 }
 
-.nyhetsimg {
-  max-width: 40%;
-  min-width: 25%;
-  padding-top: 10px;
-}
-
-.nyhetstekst {
-  width: 58%;
-  float: right;
-  margin-top: -280px;
-  max-height: 300px;
+.news-text {
+  max-height: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: keep-all;
+  margin-top: -10px;
 }
 
-.tittel {
+.title {
   text-align: center;
   color: #ad0513;
   font-family: 'Old Standard TT', serif;
@@ -188,21 +189,39 @@ li.dropdown {
   margin-top: -7px;
 }
 
-.right-wrap {
+.news-left-grid {
+  grid-template-columns: 1fr 2fr;
+  display: grid;
+  grid-gap: 10px;
+}
+
+.news-right-top {
   background-color: white;
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  margin-top: 10px;
   height: 100px;
 }
 
-.aktueltarrangmenterwrap {
+.news-right-bottom {
   background-color: white;
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
   margin-top: 30px;
+  height: 450px;
+}
+
+.news-image-grid {
+  grid-template-columns: 300px;
+  display: grid;
+  grid-gap: 20px;
+}
+
+.news-text-grid {
+  grid-template-rows: 300px;
+  display: grid;
+  grid-gap: 20px;
 }
 
 .aktueltprofilbilde {
@@ -258,13 +277,13 @@ li.dropdown {
   height: 230px;
 }
 
-.aboutbg {
+.about-bg {
   background-color: white;
   padding: 20px;
-  overflow: auto;
   border-radius: 15px;
-  height: 600px;
-  margin-top: 10px;
+  height: 620px;
+  margin: auto;
+  overflow-y: scroll;
 }
 
 iframe {
@@ -272,7 +291,7 @@ iframe {
   display: block;
 }
 
-.aboutcontainer {
+.about-container {
   flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
