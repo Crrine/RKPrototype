@@ -49,8 +49,15 @@ class UserService {
       callback();
     });
   }
-  editUser(userid,firstname, lastname, address, email, password, city, zip, phone, age, callback) {
-    connection.query('UPDATE user SET (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE userID=?', [userid,firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
+  editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, callback) {
+    connection.query('UPDATE user SET firstname=?, lastname=?, address=?, email=?, password=?, city=?, zip=?, phone=?, age=? WHERE userID=?', [newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, userid], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
+  editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, callback) {
+    connection.query('UPDATE event SET name=?, date_start=?, date_end=?, contact_phone=?, rolelist_roleID=?, area=?, description=? WHERE eventID=?', [newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, eventID], (error, result) => {
       if (error) throw error;
 
       callback();
@@ -70,11 +77,41 @@ class UserService {
       callback(result[0]);
     });
   }
+  addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, callback) {
+    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area) values (?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelist_roleID, description, area], (error, resutlt) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
+  getDivEvent(eventID, callback){
+    connection.query('SELECT * FROM event WHERE eventID=?', [eventID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    });
+  }
+
   getEvents(callback){
     connection.query('SELECT * FROM event ORDER BY date_start',(error,result)=> {
       if(error) throw error;
       callback(result);
     })
+  }
+
+  getEvent(callback){
+    connection.query('SELECT eventID, name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+
+  search(keyword, callback){
+    connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    });
   }
 }
 let userService = new UserService();

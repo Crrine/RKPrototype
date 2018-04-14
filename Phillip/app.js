@@ -13,7 +13,7 @@ export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
-let userid = 0;
+let userID = 0;
 var eventID = 0;
 
 class LoginPage extends React.Component {
@@ -36,7 +36,7 @@ class LoginPage extends React.Component {
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
 						console.log("logget inn bruker - ID:" + result.userID);
-						userid = result.userID;
+						userID = result.userID;
 						loggedIn = true;
 						history.push('/Navbar/');
 					}else{
@@ -176,7 +176,7 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
- 		userService.getUser(userid,(result) => {
+ 		userService.getUser(userID,(result) => {
 			let btnShowInfoPressed = false;
 
 			this.refs.userName.innerText = result.firstname;
@@ -254,7 +254,7 @@ class EditProfile extends React.Component{
 		)
 	}
 	componentDidMount(){
-			userService.getUser(userid,(result) => {
+			userService.getUser(userID,(result) => {
 				this.refs.editFirstName.value = result.firstname;
 				this.refs.editLastName.value = result.lastname;
 				this.refs.editAddress.value = result.address;
@@ -277,7 +277,7 @@ class EditProfile extends React.Component{
 			let newPhone = this.refs.editPhone.value;
 			let newAge = this.refs.editAge.value;
 
-			userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
+			userService.editUser(userID,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
 			})
 			console.log('Oppdatert bruker - ID:');
 			alert('Brukerinformasjonen ble oppdatert');
@@ -416,9 +416,11 @@ class divEvent extends React.Component {
 			rolleliste: <span ref='rolelist'></span><br />
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 			<button ref='editArr'>Rediger</button>
+			<button ref='Interested'>Interresert</button>
 			</div>
 		)
 	}
+
 	componentDidMount() {
 		let str; let string; let array;
 
@@ -443,14 +445,25 @@ class divEvent extends React.Component {
 						array = string.split(" ");
 						this.refs.eventsluttdate.innerText = array[2]+" "+array[1]+" "+array[3] + " " + array[4];
 					}
+					this.refs.Interested.onclick = () => {
+					userService.addInterested(eventID, userID, (result) => {
+						alert('Du er meldt interresert');
+						this.refs.Interested.disabled = true;
+						this.forceUpdate();
+					})
+			}
+			userService.checkifInterested(eventID, userID, (result) => {
+				if (result != undefined) {
+					this.refs.Interested.disabled = true;
+				}
+			})
 		})
 		this.refs.editArr.onclick = () => {
 			history.push('/editevent/');
 			this.forceUpdate();
-			console.log()
 		}
 	}
-}
+	}
 
 class Calendar extends React.Component {
 	constructor(props) {

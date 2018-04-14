@@ -4,14 +4,12 @@ import { Link, HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { userService } from './services';
 import {createHashHistory} from 'history';
 import Register from './Register';
-import app from './app';
 import Navbar from './Navbar';
 export const history = createHashHistory();
 
+let loggedIn = false;
 let userid = 0;
-let loggedIn = false;
 let regPress = false;
-let loggedIn = false;
 
 	class LoginPage extends React.Component {
 	render(){

@@ -4,7 +4,6 @@ import { Link, HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { userService } from './services';
 import {createHashHistory} from 'history';
 import LoginPage from './LoginPage';
-import app from './app';
 export const history = createHashHistory();
 
 let regPress = false;
