@@ -5,6 +5,7 @@
 
 body {
   background-color: #f7eed7;
+  margin: 0;
 }
 
 #loginlogo {
@@ -47,7 +48,7 @@ body {
   margin-top: -0%;
 }
 
-#navbarbg {
+.navbarbg {
   background-color: #333;
   float: left;
   height: 63px;
@@ -59,18 +60,15 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* background-color: #333; */
 }
 
 li {
   float: left;
-  width: 13%;
   margin-top: 15px;
   font-family: 'Old Standard TT', serif;
 }
 
-li a,
-.dropbtn {
+li a, .dropbtn {
   display: inline-block;
   color: white;
   text-align: left;
@@ -78,8 +76,7 @@ li a,
   text-decoration: none;
 }
 
-li a:hover,
-.dropdown:hover .dropbtn {
+li a:hover, .dropdown:hover .dropbtn {
   background-color: red;
 }
 
@@ -112,7 +109,7 @@ li.dropdown {
   display: block;
 }
 
-#navcont {
+.navcont {
   display: inline-block;
   color: white;
   text-align: left;
@@ -125,27 +122,33 @@ li.dropdown {
   text-align: left;
 }
 
-#logo {
-  width: 90%;
+.logo {
+  width: 160px;
   margin-top: -35px;
   float: left;
 }
 
-.aktueltstorwrap {
+.grid-container {
   width: 80%;
-  margin: auto;
+  margin: 0 auto;
   padding-top: 80px;
   padding-bottom: 10px;
+  grid-template-columns: 2fr 1fr;
+  display: grid;
+  grid-gap: 20px;
 }
 
-.aktueltlitenwrap {
-  width: 37%;
-  position: inherit;
-  float: right;
+.main-wrap {
+  border-radius: 15px;
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
   margin-top: 10px;
+  height: 600px;
+  overflow-y: scroll;
 }
 
-.nyhetsboks {
+.profilvakter {
   border-radius: 15px;
   width: 57%;
   background-color: white;
@@ -153,8 +156,7 @@ li.dropdown {
   overflow: auto;
   margin-top: 10px;
   float: left;
-  height: 600px;
-  overflow-y: scroll;
+  height: 300px;
 }
 
 .nyhetsbilde {
@@ -186,12 +188,13 @@ li.dropdown {
   margin-top: -7px;
 }
 
-.aktueltprofil {
+.right-wrap {
   background-color: white;
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  height: 20%;
+  margin-top: 10px;
+  height: 100px;
 }
 
 .aktueltarrangmenterwrap {
@@ -199,21 +202,19 @@ li.dropdown {
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  height: 30%;
   margin-top: 30px;
 }
 
-#aktueltprofilbilde {
-  float: left;
-  max-width: 20%;
-  min-width: 20%;
+.aktueltprofilbilde {
+  float: right;
+  max-width: 80px;
   border-radius: 40px;
+  margin-right: 30px;
 }
 
-.aktueltprofiltekst {
-  margin-left: 30px;
+.profiltekst {
+  margin-left: 20px;
   text-align: left;
-  text-indent: 30px;
   font-size: 1.05em;
 }
 
@@ -221,11 +222,92 @@ li.dropdown {
   font-size: 0.8em
 }
 
-#arrangementertittel {
+.mellomtittel {
   text-align: left;
   color: #ad0513;
   font-family: 'Old Standard TT', serif;
   font-weight: bold;
   /* font-size: 2.5em; */
   margin-top: -5px;
+}
+
+.profilprofil {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  height: 400px;
+}
+
+.profildeaktivere {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+.profilkurs {
+  border-radius: 15px;
+  width: 57%;
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  margin-top: 30px;
+  float: left;
+  height: 230px;
+}
+
+.aboutbg {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  height: 600px;
+  margin-top: 10px;
+}
+
+iframe {
+  margin: auto;
+  display: block;
+}
+
+.aboutcontainer {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-around;
+}
+
+.abouttext {
+  margin: auto;
+  width: 500px;
+}
+
+.abouttext2 {
+  width: 33%;
+  text-align: left;
+}
+
+.aboutmediumtitle {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Old Standard TT', serif;
+  font-weight: bold;
+}
+
+.aboutbreadtext {
+  margin-top: -15px;
+  text-align: left;
+  font-size: 1em;
+}
+
+.aboutflex {
+  display: flex;
+  width: 500px;
+  margin: auto;
+}
+
+.abouttext3 {
+  margin-top: -30px;
+  width: 130px;
 }
