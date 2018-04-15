@@ -476,10 +476,10 @@ class AcceptMembers extends React.Component {
 		this.state = {
 		users: '',
 	}
-	this.update = "";
+		this.update = "";
 	}
-	render() {
-		return(
+		render() {
+			return(
 			<div>
 			<h1> medlemmer </h1>
 			<ul>
@@ -489,17 +489,17 @@ class AcceptMembers extends React.Component {
 		)
 	}
 
-deleteuser(userID) {
-	userService.deleteInterested(eventID, userID, (result) => {
+		deleteuser(userID) {
+		userService.deleteInterested(eventID, userID, (result) => {
 
 		userService.getInterested(eventID, userID, (result) => {
 			this.update = result;
 			this.jodajoda();
-		})
-	})
-}
+				})
+			})
+		}
 
-jodajoda()  {
+	jodajoda()  {
 	var pameldte = [];
 
 	for (let user of this.update) {
@@ -508,28 +508,28 @@ jodajoda()  {
 			{user.firstname}
 			<button onClick = {() => {
 				console.log(user.userID)
-				
+
 			}}>aksepter</button>
 			<button onClick = {() => {
 				this.deleteuser(user.userID)
 					this.setState((prevState) => {
 						return {user: pameldte};
-					})
-			}}>deny</button>
-			</li>
-		)
+						})
+					}}>deny</button>
+				</li>
+			)
+		}
+		this.setState ({users:pameldte})
 	}
-	this.setState ({users:pameldte})
-}
 
 	componentDidMount() {
 			userService.getInterested(eventID, userID, (result) => {
 				this.update = result;
 				this.jodajoda();
 			})
+		}
 	}
-}
-
+	
 class Calendar extends React.Component {
 	constructor(props) {
 		super(props);
