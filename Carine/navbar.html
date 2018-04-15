@@ -3,33 +3,50 @@
 <head>
   <link rel="stylesheet" type="text/css" href="nav.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <meta charset="utf-8">
   <title>Røde Kors Sanitetsvakt</title>
-  <div class="navbarbg">
-    <ul>
-      <li class="navcont"> <img class="logo" src="rodekors.png" alt="Røde Kors Sanitetsvakt"> </li>
-      <li><a href="navbar.html">Aktuelt</a></li>
-      <li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Arrangementer</a>
-        <div class="dropdown-content">
-          <a href="#">Kommende</a>
-          <a href="#">Tidligere</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <img class="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="navbar.html">Aktuelt <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Kalender</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Arrangementer
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Kommende</a>
+          <a class="dropdown-item" href="#">Tidligere</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="omoss.html">Om oss</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="profil.html" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profil
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="index.html">Logg ut</a>
         </div>
       </li>
-      <li><a href="#">Kalender</a></li>
-      <li class="dropdown">
-        <a href="omoss.html" class="dropbtn">Om oss</a>
-      </li>
-      <li class="dropdown">
-        <a href="profil.html" class="dropbtn">Min profil</a>
-        <div class="dropdown-content">
-          <a href="index.html">Logg ut</a>
-        </div>
-      </li>
-      <li> <input id="sok" type="text" placeholder="Brukersøk"> </li>
     </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Brukersøk" aria-label="Search">
+      <button class="btn btn-sm btn-outline-secondary" type="submit">Søk</button>
+    </form>
   </div>
+</nav>
 </head>
 
 <body>
@@ -60,27 +77,27 @@
 
       <div class="news-text-grid">
       <div class="news-text">
-        <h3>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h3>
+        <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
         <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
           og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
       </div>
       <div class="news-text">
-        <h3>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h3>
+        <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
         <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
           og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
       </div>
       <div class="news-text">
-        <h3>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h3>
+        <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
         <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
           og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
       </div>
       <div class="news-text">
-        <h3>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h3>
+        <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
         <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
           og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
       </div>
       <div class="news-text">
-        <h3>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h3>
+        <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
         <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
           og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
       </div>
@@ -99,7 +116,7 @@
         <p class="aktueltprofiltekst">Vaktpoeng: 14</p>
       </div>
       <div class="news-right-bottom">
-        <h2 class="mellomtittel">Kommende arrangementer</h2>
+        <h3 class="mellomtittel">Kommende arrangementer</h3>
         <div class="aktueltarrangementer">
           <a href="#">Trønderfest</a>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>

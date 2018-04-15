@@ -4,33 +4,50 @@
 <head>
   <link rel="stylesheet" type="text/css" href="nav.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <meta charset="utf-8">
   <title>Røde Kors Sanitetsvakt</title>
-  <div class="navbarbg">
-    <ul>
-      <li class="navcont"> <img class="logo" src="rodekors.png" alt="Røde Kors Sanitetsvakt"> </li>
-      <li><a href="navbar.html">Aktuelt</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropbtn">Arrangementer</a>
-        <div class="dropdown-content">
-          <a href="#">Kommende</a>
-          <a href="#">Tidligere</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <img class="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="navbar.html">Aktuelt <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Kalender</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Arrangementer
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Kommende</a>
+          <a class="dropdown-item" href="#">Tidligere</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="omoss.html">Om oss</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="profil.html" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profil
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="index.html">Logg ut</a>
         </div>
       </li>
-      <li><a href="#">Kalender</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropbtn">Om oss</a>
-      </li>
-      <li class="dropdown">
-        <a href="profil.html" class="dropbtn">Min profil</a>
-        <div class="dropdown-content">
-          <a href="index.html">Logg ut</a>
-        </div>
-      </li>
-      <li> <input id="sok" type="text" placeholder="Brukersøk"> </li>
     </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Brukersøk" aria-label="Search">
+      <button class="btn btn-sm btn-outline-secondary" type="submit">Søk</button>
+    </form>
   </div>
+</nav>
 </head>
 
 <body>

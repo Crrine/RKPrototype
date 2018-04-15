@@ -1,10 +1,5 @@
-@font-face {
-  font-family: myFirstFont;
-  src: url(https://fonts.googleapis.com/css?family=Old+Standard+TT);
-}
-
 body {
-  background-color: #f7eed7;
+  background-color: #f7eed7 !important;
   margin: 0;
 }
 
@@ -40,7 +35,7 @@ body {
   text-decoration: none;
   line-height: 1.8;
   size: 1em;
-  font-family: 'Old Standard TT', serif;
+  font-family: 'Abril Fatface', cursive;
 }
 
 #barnbilde {
@@ -48,73 +43,49 @@ body {
   margin-top: -0%;
 }
 
-.navbarbg {
-  background-color: #333;
-  float: left;
-  height: 63px;
-  width: 100%;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
 li {
-  float: left;
-  margin-top: 15px;
-  font-family: 'Old Standard TT', serif;
+  margin-left: 30px;
 }
 
-li a, .dropbtn {
-  display: inline-block;
-  color: white;
-  text-align: left;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-li a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
-}
-
-li.dropdown {
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
+.dropdown-menu .sub-menu {
+  left: 100%;
   position: absolute;
-  background-color: #f9f9f9;
-  /* min-width: 13%; */
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  top: 0;
+  visibility: hidden;
+  margin-top: -1px;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
+.dropdown-menu li:hover .sub-menu {
+  visibility: visible;
 }
 
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-menu {
   display: block;
 }
 
-.navcont {
-  display: inline-block;
-  color: white;
-  text-align: left;
-  padding: 14px 16px;
-  text-decoration: none;
+.nav-tabs .dropdown-menu,
+.nav-pills .dropdown-menu,
+.navbar .dropdown-menu {
+  margin-top: 0;
+}
+
+.navbar .sub-menu:before {
+  border-bottom: 7px solid transparent;
+  border-left: none;
+  border-right: 7px solid rgba(0, 0, 0, 0.2);
+  border-top: 7px solid transparent;
+  left: -7px;
+  top: 10px;
+}
+
+.navbar .sub-menu:after {
+  border-top: 6px solid transparent;
+  border-left: none;
+  border-right: 6px solid #fff;
+  border-bottom: 6px solid transparent;
+  left: 10px;
+  top: 11px;
+  left: -6px;
 }
 
 #sok {
@@ -123,9 +94,9 @@ li.dropdown {
 }
 
 .logo {
-  width: 160px;
-  margin-top: -35px;
+  width: 130px;
   float: left;
+  padding: 3px;
 }
 
 .grid-container {
@@ -143,7 +114,6 @@ li.dropdown {
   margin: 0 auto;
   padding-bottom: 10px;
   padding-top: 30px;
-  margin-top: 30px;
 }
 
 .main-wrap {
@@ -151,9 +121,8 @@ li.dropdown {
   background-color: white;
   padding: 20px;
   overflow: auto;
-  height: 620px;
+  height: 640px;
   overflow-y: scroll;
-
 }
 
 .profilvakter {
@@ -170,26 +139,28 @@ li.dropdown {
 
 .news-image {
   width: 100%;
+  border-radius: 5px;
 }
 
 .news-text {
-  max-height: 250px;
+  max-height: 270px;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: keep-all;
   margin-top: -10px;
+  font-size: 0.9em;
 }
 
 .title {
   text-align: center;
   color: #ad0513;
-  font-family: 'Old Standard TT', serif;
-  font-weight: bold;
+  font-family: 'Abril Fatface', cursive;
   font-size: 2.5em;
   margin-top: -7px;
 }
 
 .news-left-grid {
+  margin-top: 10px;
   grid-template-columns: 1fr 2fr;
   display: grid;
   grid-gap: 10px;
@@ -200,7 +171,8 @@ li.dropdown {
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  height: 100px;
+  height: 120px;
+  overflow: hidden;
 }
 
 .news-right-bottom {
@@ -209,11 +181,11 @@ li.dropdown {
   overflow: auto;
   border-radius: 15px;
   margin-top: 30px;
-  height: 450px;
+  height: 490px;
 }
 
 .news-image-grid {
-  grid-template-columns: 300px;
+  grid-template-columns: 270px;
   display: grid;
   grid-gap: 20px;
 }
@@ -244,8 +216,7 @@ li.dropdown {
 .mellomtittel {
   text-align: left;
   color: #ad0513;
-  font-family: 'Old Standard TT', serif;
-  font-weight: bold;
+  font-family: 'Abril Fatface', cursive;
   /* font-size: 2.5em; */
   margin-top: -5px;
 }
@@ -281,7 +252,7 @@ li.dropdown {
   background-color: white;
   padding: 20px;
   border-radius: 15px;
-  height: 620px;
+  height: 640px;
   margin: auto;
   overflow-y: scroll;
 }
@@ -310,14 +281,14 @@ iframe {
 .aboutmediumtitle {
   text-align: left;
   color: #ad0513;
-  font-family: 'Old Standard TT', serif;
-  font-weight: bold;
+  font-family: 'Abril Fatface', cursive;
+  margin-top: 10px;
 }
 
 .aboutbreadtext {
-  margin-top: -15px;
   text-align: left;
   font-size: 1em;
+  height: 70px;
 }
 
 .aboutflex {
@@ -327,6 +298,78 @@ iframe {
 }
 
 .abouttext3 {
-  margin-top: -30px;
   width: 130px;
+}
+
+.event-container {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 30px;
+    padding-bottom: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    display: grid;
+    grid-gap: 20px;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-around;
+    overflow-y: scroll;
+    height: 640px;
+}
+
+.event-bg {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  height: 190px;
+  width: 400px;
+  margin: 15px;
+}
+
+.event-title {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+}
+
+.event-timenplace {
+  font-weight: 500;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
