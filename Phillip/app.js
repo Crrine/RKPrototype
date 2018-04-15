@@ -471,28 +471,62 @@ class divEvent extends React.Component {
 	}
 
 class AcceptMembers extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+		users: '',
+	}
+	this.update = "";
+	}
 	render() {
 		return(
 			<div>
 			<h1> medlemmer </h1>
-		 	 <span ref='diversemedlemmer'></span> <br />
+			<ul>
+			{this.state.users ? this.state.users:'Ingen påmeldte'}
+			</ul>
 			</div>
 		)
 	}
-	componentDidMount() {
 
-			userService.getInterested(eventID, userID, (result) => {
-				// this.refs.diversemedlemmer.innerText = result.eventID;
-				// for (let userID of result) {
-				// 	this.refs.diversemedlemmer.innerText += '\n' + Interested.userID;
-				// }
-				this.forceUpdate();
-				for (let user of result) {
-					userService.getUser(user.userID, (result) => {
-							this.refs.diversemedlemmer.innerText += result.firstname + "\n";
-					})
-				}
+deleteuser(userID) {
+	userService.deleteInterested(eventID, userID, (result) => {
+
+		userService.getInterested(eventID, userID, (result) => {
+			this.update = result;
+			this.jodajoda();
 		})
+	})
+}
+
+jodajoda()  {
+	var pameldte = [];
+
+	for (let user of this.update) {
+		pameldte.push(
+			<li key = {user.userID}>
+			{user.firstname}
+			<button onClick = {() => {
+				console.log(user.userID)
+				
+			}}>aksepter</button>
+			<button onClick = {() => {
+				this.deleteuser(user.userID)
+					this.setState((prevState) => {
+						return {user: pameldte};
+					})
+			}}>deny</button>
+			</li>
+		)
+	}
+	this.setState ({users:pameldte})
+}
+
+	componentDidMount() {
+			userService.getInterested(eventID, userID, (result) => {
+				this.update = result;
+				this.jodajoda();
+			})
 	}
 }
 
@@ -541,6 +575,7 @@ class Calendar extends React.Component {
 			userService.getEvent((result) => {
 				// eventID = result[0].eventID;
 			this.setState({events: result});
+			this.forceUpdate();
 		})
 	}
 }
