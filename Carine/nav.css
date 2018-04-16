@@ -321,8 +321,8 @@ iframe {
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  height: 190px;
-  width: 400px;
+  height: 200px;
+  width: 540px;
   margin: 15px;
 }
 
@@ -373,3 +373,16 @@ iframe {
     text-decoration: none;
     cursor: pointer;
 }
+
+.event-short-text {
+  font-size: 0.8em;
+}
+
+.event-medium-title {
+  margin-top: -5px;
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+}
+
+::-webkit-scrollbar {display:none;}
