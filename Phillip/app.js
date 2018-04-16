@@ -13,7 +13,7 @@ export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
-let userid = 0;
+let userID = 0;
 var eventID = 0;
 
 class LoginPage extends React.Component {
@@ -36,7 +36,7 @@ class LoginPage extends React.Component {
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
 						console.log("logget inn bruker - ID:" + result.userID);
-						userid = result.userID;
+						userID = result.userID;
 						loggedIn = true;
 						history.push('/Navbar/');
 					}else{
@@ -176,7 +176,7 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
- 		userService.getUser(userid,(result) => {
+ 		userService.getUser(userID,(result) => {
 			let btnShowInfoPressed = false;
 
 			this.refs.userName.innerText = result.firstname;
@@ -254,7 +254,7 @@ class EditProfile extends React.Component{
 		)
 	}
 	componentDidMount(){
-			userService.getUser(userid,(result) => {
+			userService.getUser(userID,(result) => {
 				this.refs.editFirstName.value = result.firstname;
 				this.refs.editLastName.value = result.lastname;
 				this.refs.editAddress.value = result.address;
@@ -277,7 +277,7 @@ class EditProfile extends React.Component{
 			let newPhone = this.refs.editPhone.value;
 			let newAge = this.refs.editAge.value;
 
-			userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
+			userService.editUser(userID,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
 			})
 			console.log('Oppdatert bruker - ID:');
 			alert('Brukerinformasjonen ble oppdatert');
@@ -376,8 +376,8 @@ class EditEvent extends React.Component {
 	componentDidMount() {
 		userService.getDivEvent(eventID,(result) => {
 					this.refs.editArrName.value = result.name;
-					this.refs.editStartDato.value = result.date_start;
-					this.refs.editSluttDato.value = result.date_end;
+					this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
+					this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
 					this.refs.editTlf.value = result.contact_phone;
 					this.refs.editRoles.value = result.rolelist_roleID;
 					this.refs.editMeet.value = result.area;
@@ -416,10 +416,15 @@ class divEvent extends React.Component {
 			rolleliste: <span ref='rolelist'></span><br />
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 			<button ref='editArr'>Rediger</button>
+			<button ref='Interested'>Interresert</button>
+			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button>
 			</div>
 		)
 	}
+
 	componentDidMount() {
+		let str; let string; let array;
+
 		userService.getDivEvent(eventID,(result) => {
 					this.refs.eventName.innerText = result.name;
 					this.refs.eventstartdate.innerText = result.date_start;
@@ -428,15 +433,103 @@ class divEvent extends React.Component {
 					this.refs.eventmøtested.innerText = result.area;
 					this.refs.kontaktinfo.innerText = result.contact_phone;
 					this.refs.rolelist.innerText = result.rolelist_roleID;
+
+					str = result.date_start;
+          if (str) {
+            string = str.toString();
+            array = string.split(" ");
+            this.refs.eventstartdate.innerText = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+          }
+					str = result.date_end;
+					if (str) {
+						string = str.toString();
+						array = string.split(" ");
+						this.refs.eventsluttdate.innerText = array[2]+" "+array[1]+" "+array[3] + " " + array[4];
+					}
+					this.refs.Interested.onclick = () => {
+					userService.addInterested(eventID, userID, (result) => {
+						alert('Du er meldt interresert');
+						this.refs.Interested.disabled = true;
+						this.forceUpdate();
+					})
+			}
+			userService.checkifInterested(eventID, userID, (result) => {
+				if (result != undefined) {
+					this.refs.Interested.disabled = true;
+					this.forceUpdate();
+				}
+			})
 		})
 		this.refs.editArr.onclick = () => {
 			history.push('/editevent/');
 			this.forceUpdate();
-			console.log()
+		}
+		this.refs.checkinterested.onclick = () => {
+			history.push('/acceptmembers/');
 		}
 	}
-}
+	}
 
+class AcceptMembers extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+		users: '',
+	}
+		this.update = "";
+	}
+		render() {
+			return(
+			<div>
+			<h1> medlemmer </h1>
+			<ul>
+			{this.state.users ? this.state.users:'Ingen påmeldte'}
+			</ul>
+			</div>
+		)
+	}
+
+		deleteuser(userID) {
+		userService.deleteInterested(eventID, userID, (result) => {
+
+		userService.getInterested(eventID, userID, (result) => {
+			this.update = result;
+			this.jodajoda();
+				})
+			})
+		}
+
+	jodajoda()  {
+	var pameldte = [];
+
+	for (let user of this.update) {
+		pameldte.push(
+			<li key = {user.userID}>
+			{user.firstname}
+			<button onClick = {() => {
+				console.log(user.userID)
+
+			}}>aksepter</button>
+			<button onClick = {() => {
+				this.deleteuser(user.userID)
+					this.setState((prevState) => {
+						return {user: pameldte};
+						})
+					}}>deny</button>
+				</li>
+			)
+		}
+		this.setState ({users:pameldte})
+	}
+
+	componentDidMount() {
+			userService.getInterested(eventID, userID, (result) => {
+				this.update = result;
+				this.jodajoda();
+			})
+		}
+	}
+	
 class Calendar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -445,6 +538,7 @@ class Calendar extends React.Component {
 		}
 	}
 	setArrinfo(event) {
+<<<<<<< HEAD
 	//	console.log(event)
 		var title = event.title;
 		var datestart = event.startDate;
@@ -465,6 +559,14 @@ class Calendar extends React.Component {
 
 
 
+=======
+		userService.getEvent((result) => {
+			eventID = event.eventID;
+		this.setState({events: result});
+		history.push('/divEvent/');
+	})
+					// history.push('/divEvent/');
+>>>>>>> 586ffda7ae0ed60acf8ed93037b857c23e1c3e57
 	}
 	render() {
 		return (
@@ -478,7 +580,7 @@ class Calendar extends React.Component {
 											showMultiDayTimes
 											defaultDate={new Date()}
 											style={{height: 400}}
-											onSelectEvent={event => this.setArrinfo(event) == {divEvent}}
+											onSelectEvent={event => this.setArrinfo(event)}
 										/>
 										<div>
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
@@ -494,9 +596,9 @@ class Calendar extends React.Component {
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
-				console.log(result);
-					eventID = result[0].eventID;
+				// eventID = result[0].eventID;
 			this.setState({events: result});
+			this.forceUpdate();
 		})
 	}
 }
@@ -603,6 +705,7 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
+				<Route exact path='/acceptmembers' component={AcceptMembers}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
 				<Route exact path='/nyttEvent' component={NewEvent}/>
