@@ -571,15 +571,21 @@ class AcceptMembers extends React.Component {
 		super();
 		this.state = {
 		users: '',
+		userhasevent: '',
 	}
 		this.update = "";
+		this.hasevent = "";
 	}
 		render() {
 			return(
 			<div>
-			<h1> medlemmer </h1>
+			<h1> påmeldte medlemmer </h1>
 			<ul>
-			{this.state.users ? this.state.users:'Ingen påmeldte'}
+			{this.state.userhasevent ? this.state.userhasevent:'Ingen påmeldte'}
+			</ul>
+			<h1> Interreserte medlemmer </h1>
+			<ul>
+			{this.state.users ? this.state.users:'Ingen Interreserte'}
 			</ul>
 			</div>
 		)
@@ -587,7 +593,6 @@ class AcceptMembers extends React.Component {
 
 		deleteuser(userid) {
 		userService.deleteInterested(eventID, userid, (result) => {
-
 		userService.getInterested(eventID, userid, (result) => {
 			this.update = result;
 			this.jodajoda();
@@ -595,33 +600,51 @@ class AcceptMembers extends React.Component {
 			})
 		}
 
+		hentbrukere() {
+			var pameldte = [];
+
+			for (let user of this.hasevent) {
+			pameldte.push(
+				<li key = {user.userID}>
+				{user.firstname + " " + user.lastname}
+				</li>
+			)
+		}
+		this.setState ({userhasevent: pameldte})
+		}
+
 	jodajoda()  {
-	var pameldte = [];
+	var int = [];
 
 	for (let user of this.update) {
-		pameldte.push(
+		int.push(
 			<li key = {user.userID}>
 			{user.firstname}
 			<button onClick = {() => {
-				console.log(user.userID)
-
+					this.hentbrukere(user.userID);
 			}}>aksepter</button>
 			<button onClick = {() => {
 				this.deleteuser(user.userID)
 					this.setState((prevState) => {
-						return {user: pameldte};
+						return {user: int};
 						})
 					}}>deny</button>
 				</li>
 			)
 		}
-		this.setState ({users:pameldte})
+		this.setState ({users:int})
 	}
 
 	componentDidMount() {
 			userService.getInterested(eventID, userid, (result) => {
 				this.update = result;
 				this.jodajoda();
+			})
+			userService.getUserHasEvent(userid, eventID, (result) => {
+				console.log(result)
+				this.hasevent = result;
+				this.jodajoda();
+				this.hentbrukere();
 			})
 		}
 	}

@@ -63,6 +63,16 @@ class UserService {
       callback(result);
     });
   }
+
+getUserHasEvent(userID, eventID, callback) {
+  connection.query('SELECT * FROM user_has_event INNER JOIN user ON (user_has_event.userID = user.userID) WHERE eventID=?', [eventID], (error, result) => {
+    if (error) throw error;
+
+    callback(result);
+  })
+}
+
+
   deleteInterested(eventID, userID, callback) {
     connection.query('DELETE FROM Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
       if (error) throw error;
