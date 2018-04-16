@@ -13,18 +13,23 @@ export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
-let userID = 0;
-var eventID = 0;
+let userid = 0;
+let admin = false;
+let eventID = 0;
 
 class LoginPage extends React.Component {
 	render(){
 		return (
 			<div>
 				<h1>Innlogging</h1>
-				<input type='text' ref='inpUser' placeholder='brukernavn' />
+				<input type='text' ref='inpUser' placeholder='epost' />
 				<input type='password' ref='inpPassword' placeholder='passord' /><span />
 				<button ref='btnLogin'>Logg inn</button>
-				<button ref='btnReg'>Ny bruker</button>
+				<button ref='btnReg'>Ny bruker</button><br /><br />
+				<div ref='loginOutput'></div>
+				<button ref='btnForgotPassword' hidden onClick = {() => {
+					history.push('/forgotPassword/'),
+					this.forceUpdate()}}>glemt passord</button>
 			</div>
 		);
 	}
@@ -36,12 +41,14 @@ class LoginPage extends React.Component {
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
 						console.log("logget inn bruker - ID:" + result.userID);
-						userID = result.userID;
+						userid = result.userID;
 						loggedIn = true;
 						history.push('/Navbar/');
 					}else{
 						console.log("mislykket innlogging");
 						loggedIn = false;
+						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
+						this.refs.btnForgotPassword.hidden = false;
 					}
 				})
 			}
@@ -49,6 +56,18 @@ class LoginPage extends React.Component {
 				regPress = true;
 				history.push('/register/');
 			}
+		}
+	}
+
+class ForgotPassword extends React.Component{
+		render(){
+			return(
+				<div>
+					<h1>Glemt passord</h1>
+					<p>Venligst skriv inn din epostadresse, så vil vi sende deg en nytt passord</p>
+					<input type='text' ref='inpMail' />
+				</div>
+			)
 		}
 	}
 
@@ -161,10 +180,17 @@ class Profile extends React.Component{
 				<h1>Din profil</h1>
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
+				<span ref='userPoints'></span><br />
+				Kommende arrangementer:<br />
+				<span ref='upcomingEvents'></span>
 				<button ref='btnShowInfo'>Vis info</button>
 				<button onClick = {() => {
 					history.push('/editprofile/'),
 					this.forceUpdate()}}>Rediger</button>
+				<button ref='btnDeactivate'>Deaktiver</button>
+				<button onClick = {() => {
+					history.push('/competence/'),
+					this.forceUpdate()}}>Kompetanse</button>
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
@@ -176,12 +202,20 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
- 		userService.getUser(userID,(result) => {
+		userService.getUpcomingEvents(userid,(result) => {
+			for(let event of result){
+				this.refs.upcomingEvents.innerText += event.name + '\n';
+				console.log(event);
+			}
+		})
+
+ 		userService.getUser(userid,(result) => {
 			let btnShowInfoPressed = false;
 
 			this.refs.userName.innerText = result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
 			this.refs.userEmail.innerText = result.email;
+			this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
 
 			this.refs.btnShowInfo.onclick = () => {
 				if(btnShowInfoPressed == false){
@@ -200,6 +234,16 @@ class Profile extends React.Component{
 				}
 			}
 		});
+		this.refs.btnDeactivate.onclick = () => {
+			let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
+			if(r == true){
+				userService.deactivateUser(userid,(result) => {
+					console.log('Deaktivert bruker - ID:' + userid);
+					// history.push('/loginPage/');
+					// this.forceUpdate();
+				});
+			}
+		}
 	}
 }
 
@@ -249,12 +293,12 @@ class EditProfile extends React.Component{
 				<button ref='btnSendEdit'>Lagre</button>
 				<button onClick = {() => {
 					history.push('/profile/'),
-					this.forceUpdate()}}>Angre</button>
+					this.forceUpdate()}}>Tilbake</button>
 			</div>
 		)
 	}
 	componentDidMount(){
-			userService.getUser(userID,(result) => {
+			userService.getUser(userid,(result) => {
 				this.refs.editFirstName.value = result.firstname;
 				this.refs.editLastName.value = result.lastname;
 				this.refs.editAddress.value = result.address;
@@ -267,22 +311,74 @@ class EditProfile extends React.Component{
 			});
 
 		this.refs.btnSendEdit.onclick = () => {
-		 	let newFirstname = this.refs.editFirstName.value;
-			let newLastname = this.refs.editLastName.value;
-			let newAddress = this.refs.editAddress.value;
-			let newEmail = this.refs.editEmail.value;
-			let newPassword = this.refs.editPassword.value;
-			let newCity = this.refs.editCity.value;
-			let newZip = this.refs.editZip.value;
-			let newPhone = this.refs.editPhone.value;
-			let newAge = this.refs.editAge.value;
+			let a = confirm('Er du sikker på at du vil lagre endringene?');
+			if(a==true){
+				let newFirstname = this.refs.editFirstName.value;
+				let newLastname = this.refs.editLastName.value;
+				let newAddress = this.refs.editAddress.value;
+				let newEmail = this.refs.editEmail.value;
+				let newPassword = this.refs.editPassword.value;
+				let newCity = this.refs.editCity.value;
+				let newZip = this.refs.editZip.value;
+				let newPhone = this.refs.editPhone.value;
+				let newAge = this.refs.editAge.value;
 
-			userService.editUser(userID,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
-			})
-			console.log('Oppdatert bruker - ID:');
-			alert('Brukerinformasjonen ble oppdatert');
-			history.push('/profile/');
+				userService.editUser(userid,newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {
+				})
+				console.log('Oppdatert bruker - ID:' + userid);
+				history.push('/profile/');
+				this.forceUpdate();
+			}
+		}
+	}
+}
+
+class Competence extends React.Component{
+	render(){
+		return(
+			<div>
+				<h1>Kompetanse</h1>
+				<div>
+					<p>Legg til kompetanse:</p>
+					<form ref='compForm'>
+						<select ref='compSelect'>
+						</select>
+					</form>
+					<button ref='btnAddComp'>Legg til</button>
+					<button ref='btnProfile'>Tilbake</button>
+					<div ref='compOutput'></div>
+				</div>
+			</div>
+		)
+	}
+	componentDidMount(){
+		let compid = 0;
+
+		this.refs.btnProfile.onclick = () => {
+			history.push('/profile');
 			this.forceUpdate();
+		}
+
+		userService.getCompetences((result) => {
+			for(let comp of result){
+				let compSel = document.createElement('OPTION');
+				let compTitle = document.createTextNode(comp.title);
+
+				compSel.appendChild(compTitle);
+				this.refs.compSelect.appendChild(compSel);
+			}
+		})
+		this.refs.btnAddComp.onclick = () => {
+			let title = this.refs.compSelect.value;
+			let finished = '2018-01-01';
+
+			userService.getCompetence(title,(result) => {
+				compid = result.compID;
+			})
+			userService.regCompetence(userid, compid, finished, (result) => {
+				console.log('test');
+				console.log(compid);
+			})
 		}
 	}
 }
@@ -447,13 +543,13 @@ class divEvent extends React.Component {
 						this.refs.eventsluttdate.innerText = array[2]+" "+array[1]+" "+array[3] + " " + array[4];
 					}
 					this.refs.Interested.onclick = () => {
-					userService.addInterested(eventID, userID, (result) => {
+					userService.addInterested(eventID, userid, (result) => {
 						alert('Du er meldt interresert');
 						this.refs.Interested.disabled = true;
 						this.forceUpdate();
 					})
 			}
-			userService.checkifInterested(eventID, userID, (result) => {
+			userService.checkifInterested(eventID, userid, (result) => {
 				if (result != undefined) {
 					this.refs.Interested.disabled = true;
 					this.forceUpdate();
@@ -489,10 +585,10 @@ class AcceptMembers extends React.Component {
 		)
 	}
 
-		deleteuser(userID) {
-		userService.deleteInterested(eventID, userID, (result) => {
+		deleteuser(userid) {
+		userService.deleteInterested(eventID, userid, (result) => {
 
-		userService.getInterested(eventID, userID, (result) => {
+		userService.getInterested(eventID, userid, (result) => {
 			this.update = result;
 			this.jodajoda();
 				})
@@ -523,13 +619,13 @@ class AcceptMembers extends React.Component {
 	}
 
 	componentDidMount() {
-			userService.getInterested(eventID, userID, (result) => {
+			userService.getInterested(eventID, userid, (result) => {
 				this.update = result;
 				this.jodajoda();
 			})
 		}
 	}
-	
+
 class Calendar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -538,35 +634,17 @@ class Calendar extends React.Component {
 		}
 	}
 	setArrinfo(event) {
-<<<<<<< HEAD
-	//	console.log(event)
 		var title = event.title;
 		var datestart = event.startDate;
 		var dateend = event.endDate;
 		eventID = event.eventID;
 
-
-	setArrinfo(event) {
-		console.log(event)
-		var title = event.title;
-		var datestart = event.startDate;
-		var dateend = event.endDate;
-		eventID = event.eventID;
-
-		history.push('/divEvent/')
-
-		history.push('/divEvent/');
-
-
-
-=======
 		userService.getEvent((result) => {
 			eventID = event.eventID;
 		this.setState({events: result});
 		history.push('/divEvent/');
 	})
-					// history.push('/divEvent/');
->>>>>>> 586ffda7ae0ed60acf8ed93037b857c23e1c3e57
+
 	}
 	render() {
 		return (
@@ -662,49 +740,68 @@ class NewEvent extends React.Component {
 		}
 
 class Search extends React.Component {
-	render(){
-		return(
-			<div>
-				<h1>Brukersøk</h1>
-				<input ref='searchField' type="text" placeholder="navn, epost, tlf" />
-				<button ref='btnSearch'>Søk</button>
-				<div ref='output'>
-				</div>
-			</div>
-		);
-		//brukere skal kunne søke opp epost og telefonnummer
-	}
-	componentDidMount(){
-		this.refs.btnSearch.onclick = () => {
-			let keyword = this.refs.searchField.value;
-			userService.search(keyword, (result) => {
-				this.refs.output.innerText = '';
-				console.log(result);
+			render(){
+				return(
+					<div>
+						<h1>Brukersøk</h1>
+						<input ref='searchField' type="text" placeholder="navn, epost, tlf" />
+						<button ref='btnSearch'>Søk</button>
+						<div ref='output'>
+						</div>
+					</div>
+				);
+				//Sørg for at når man går ut av profilen, endres userid tilbake til admin
+			}
+			componentDidMount(){
+				this.refs.btnSearch.onclick = () => {
+					let keyword = this.refs.searchField.value;
 
-				if(result==''){
-					this.refs.output.innerText = '\n' + 'Ingen resultater';
+					userService.search(keyword, (result) => {
+						this.refs.output.innerText = '';
+						console.log(result);
+
+						if(result==''){
+							this.refs.output.innerText = '\n' + 'Ingen resultater';
+						}
+
+						for(let user of result){
+							let clickedUser = user.userID;
+							let divUser = document.createElement('DIV');
+							let btnUser = document.createElement('BUTTON');
+							let btnUserTxt = document.createTextNode('rediger');
+
+							btnUser.appendChild(btnUserTxt);
+							btnUser.setAttribute('id', user.userID);
+
+							btnUser.onclick = () => {
+								sendToUser(clickedUser);
+							}
+
+							let divUserTxt = document.createTextNode(user.firstname + ' ' + user.lastname + ' ' +
+								'epost: ' + user.email + ' ' +
+								'telefon: ' + user.phone);
+
+								divUser.appendChild(divUserTxt);
+								divUser.appendChild(btnUser);
+								this.refs.output.appendChild(divUser);
+							}
+
+							function sendToUser(id){
+										userid = id;
+										history.push('/profile/');
+
+									}
+						})
+					}
 				}
-
-				for(let user of result){
-					// let divOutput = document.createElement('DIV');
-
-					this.refs.output.innerText += '\n' + user.firstname + ' ' + user.lastname + '\n' +
-						'epost: ' + user.email + '\n' +
-						'telefon: ' + user.phone + '\n';
-
-					// this.refs.output.appendChild(divOutput);
-					// divOutput.innerText += '\n'; //Fjern dette når du legger til if-en
-				}
-			})
-		}
-	}
-}
+			}
 
 ReactDOM.render((
   <HashRouter>
     <div>
       <Navbar />
       <Switch>
+				<Route excat path='/forgotPassword' component={ForgotPassword}/>
 				<Route exact path='/acceptmembers' component={AcceptMembers}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
@@ -718,6 +815,7 @@ ReactDOM.render((
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
+				<Route excat path='/competence' component={Competence}/>
       </Switch>
     </div>
   </HashRouter>

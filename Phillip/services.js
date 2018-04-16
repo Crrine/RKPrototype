@@ -99,7 +99,7 @@ class UserService {
     });
   }
   loginUser(email, password, callback){
-    connection.query('SELECT userID FROM user WHERE email = ? AND password =?', [email, password], (error, result) => {
+    connection.query('SELECT userID FROM user WHERE email = ? AND password =? AND inactive=0', [email, password], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
@@ -134,6 +134,50 @@ class UserService {
     })
   }
 
+  getUpcomingEvents(userid,callback){
+    connection.query('SELECT * FROM event INNER JOIN user_has_event ON event.eventID = user_has_event.event_eventID WHERE user_userID =? ORDER BY event.date_start', [userid], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    })
+  }
+
+  deactivateUser(userid, callback){
+    connection.query('UPDATE user SET inactive=1 where userID=?', [userid], (error,result) => {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+
+  activateUser(userid, callback){
+    connection.query('UPDATE user SET inactive=0 where userID=?', [userid], (error,result) => {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+
+  getCompetences(callback){
+  connection.query('SELECT * FROM competence ORDER BY title', (error,result) => {
+    if(error) throw error;
+
+    callback(result);
+  });
+}
+
+getCompetence(title, callback){
+  connection.query('SELECT * FROM competence WHERE title=?', [title], (error,result) => {
+    if(error) throw error;
+
+    callback(result[0]);
+  });
+}
+regCompetence(userid, compid, finished, callback){
+  connection.query('INSERT into user_has_competence (user_userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
+    if(error) throw error;
+
+    callback();
+  })
+}
   search(keyword, callback){
     connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
       if (error) throw error;
