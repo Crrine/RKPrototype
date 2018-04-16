@@ -82,6 +82,20 @@ class UserService {
       callback(result);
     })
   }
+  getDivEvent(eventID, callback){
+    connection.query('SELECT * FROM event WHERE eventID=?', [eventID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    });
+  }
+  getUpcomingEvents(userid,callback){
+    connection.query('SELECT * FROM event INNER JOIN user_has_event ON event.eventID = user_has_event.event_eventID WHERE user_userID =? ORDER BY event.date_start', [userid], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    })
+  }
   search(keyword, callback){
     connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
       if (error) throw error;

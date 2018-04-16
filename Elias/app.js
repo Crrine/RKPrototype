@@ -12,6 +12,7 @@ export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
+let admin = false;
 let userid = 0;
 let eventID = 0;
 
@@ -23,7 +24,11 @@ class LoginPage extends React.Component {
 				<input type='text' ref='inpUser' placeholder='epost' />
 				<input type='password' ref='inpPassword' placeholder='passord' /><span />
 				<button ref='btnLogin'>Logg inn</button>
-				<button ref='btnReg'>Ny bruker</button>
+				<button ref='btnReg'>Ny bruker</button><br /><br />
+				<div ref='loginOutput'></div>
+				<button ref='btnForgotPassword' hidden onClick = {() => {
+					history.push('/forgotPassword/'),
+					this.forceUpdate()}}>glemt passord</button>
 			</div>
 		);
 	}
@@ -41,6 +46,8 @@ class LoginPage extends React.Component {
 					}else{
 						console.log("mislykket innlogging");
 						loggedIn = false;
+						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
+						this.refs.btnForgotPassword.hidden = false;
 					}
 				})
 			}
@@ -50,6 +57,18 @@ class LoginPage extends React.Component {
 			}
 		}
 	}
+
+class ForgotPassword extends React.Component{
+	render(){
+		return(
+			<div>
+				<h1>Glemt passord</h1>
+				<p>Venligst skriv inn din epostadresse, så vil vi sende deg en nytt passord</p>
+				<input type='text' ref='inpMail' />
+			</div>
+		)
+	}
+}
 
 class Register extends React.Component {
 	render(){
@@ -164,6 +183,9 @@ class Profile extends React.Component{
 				<h1>Din profil</h1>
 				<span ref='userName'></span><br />
 				<span ref='userEmail'></span><br />
+				<span ref='userPoints'></span><br />
+				Kommende arrangementer:<br />
+				<span ref='upcomingEvents'></span>
 				<button ref='btnShowInfo'>Vis info</button>
 				<button onClick = {() => {
 					history.push('/editprofile/'),
@@ -183,12 +205,20 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
+		userService.getUpcomingEvents(userid,(result) => {
+			for(let event of result){
+				this.refs.upcomingEvents.innerText += event.name + '\n';
+				console.log(event);
+			}
+		})
+
  		userService.getUser(userid,(result) => {
 			let btnShowInfoPressed = false;
 
 			this.refs.userName.innerText = result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
 			this.refs.userEmail.innerText = result.email;
+			this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
 
 			this.refs.btnShowInfo.onclick = () => {
 				if(btnShowInfoPressed == false){
@@ -391,12 +421,24 @@ class Events extends React.Component {
 				for(let event of result){
 					let divEvent = document.createElement('DIV');
 
+					let btnEvent = document.createElement('BUTTON');
+					let btnEventTxt = document.createTextNode('Informasjon');
+					let clickedEvent = event.eventID;
+
+					btnEvent.appendChild(btnEventTxt);
+					btnEvent.setAttribute('id', event.eventID);
+
+					btnEvent.onclick = () => {
+						sendToEvent(clickedEvent);
+					}
+
 					divEvent.innerText = event.name + '\n' +
 						'Lokasjon: ' + event.area + '\n' +
 						'Kontakttelefon: ' + event.contact_phone + '\n';
 
+					divEvent.appendChild(btnEvent);
 					this.refs.upcoming.appendChild(divEvent);
-					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+					// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 					i++;
 					if(i==5){
 						return;
@@ -404,6 +446,11 @@ class Events extends React.Component {
 					}
 			}
 		})
+		function sendToEvent(id){
+					eventID = id;
+					history.push('/divEvent/');
+
+				}
 	}
 }
 
@@ -420,6 +467,7 @@ class divEvent extends React.Component {
 			rolleliste: <span ref='rolelist'></span><br />
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 			<button ref='editArr'>Rediger</button>
+			<button ref='backToArr'>Arrangementer</button>
 			</div>
 		)
 	}
@@ -435,6 +483,10 @@ class divEvent extends React.Component {
 		})
 		this.refs.editArr.onclick = () => {
 			history.push('/editEvent/');
+		}
+		this.refs.backToArr.onclick = () => {
+			history.push('/events/');
+			this.forceUpdate();
 		}
 	}
 }
@@ -521,15 +573,26 @@ class Calendar extends React.Component {
 		events:[],
 		}
 	}
+	// setArrinfo(event) {
+	// //	console.log(event)
+	// 	var title = event.title;
+	// 	var datestart = event.startDate;
+	// 	var dateend = event.endDate;
+	// 	eventID = event.eventID;
+
 
 	setArrinfo(event) {
-		console.log(event)
+		console.log(event);
 		var title = event.title;
 		var datestart = event.startDate;
 		var dateend = event.endDate;
 		eventID = event.eventID;
 
-		history.push('/divEvent/')
+		history.push('/divEvent/');
+
+		// history.push('/divEvent/');
+
+
 
 	}
 	render() {
@@ -578,11 +641,12 @@ class Search extends React.Component {
 				</div>
 			</div>
 		);
-		//brukere skal kunne søke opp epost og telefonnummer
+		//Sørg for at når man går ut av profilen, endres userid tilbake til admin
 	}
 	componentDidMount(){
 		this.refs.btnSearch.onclick = () => {
 			let keyword = this.refs.searchField.value;
+
 			userService.search(keyword, (result) => {
 				this.refs.output.innerText = '';
 				console.log(result);
@@ -592,19 +656,36 @@ class Search extends React.Component {
 				}
 
 				for(let user of result){
-					// let divOutput = document.createElement('DIV');
+					let clickedUser = user.userID;
+					let divUser = document.createElement('DIV');
+					let btnUser = document.createElement('BUTTON');
+					let btnUserTxt = document.createTextNode('rediger');
 
-					this.refs.output.innerText += '\n' + user.firstname + ' ' + user.lastname + '\n' +
-						'epost: ' + user.email + '\n' +
-						'telefon: ' + user.phone + '\n';
+					btnUser.appendChild(btnUserTxt);
+					btnUser.setAttribute('id', user.userID);
 
-					// this.refs.output.appendChild(divOutput);
-					// divOutput.innerText += '\n'; //Fjern dette når du legger til if-en
-				}
-			})
+					btnUser.onclick = () => {
+						sendToUser(clickedUser);
+					}
+
+					let divUserTxt = document.createTextNode(user.firstname + ' ' + user.lastname + ' ' +
+						'epost: ' + user.email + ' ' +
+						'telefon: ' + user.phone);
+
+						divUser.appendChild(divUserTxt);
+						divUser.appendChild(btnUser);
+						this.refs.output.appendChild(divUser);
+					}
+
+					function sendToUser(id){
+								userid = id;
+								history.push('/profile/');
+
+							}
+				})
+			}
 		}
 	}
-}
 
 ReactDOM.render((
   <HashRouter>
@@ -613,6 +694,7 @@ ReactDOM.render((
       <Switch>
 				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>
+				<Route excat path='/forgotPassword' component={ForgotPassword}/>
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
 				<Route excat path='/profile' component={Profile}/>
