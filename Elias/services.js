@@ -70,8 +70,14 @@ class UserService {
       callback(result[0]);
     });
   }
-  getEvents(callback){
-    connection.query('SELECT * FROM event ORDER BY date_start',(error,result)=> {
+  getComingEvents(thisDate, callback){
+    connection.query('SELECT * FROM event WHERE date_end > ? ORDER BY date_start', [thisDate],(error,result)=> {
+      if(error) throw error;
+      callback(result);
+    })
+  }
+  getPastEvents(thisDate, callback){
+    connection.query('SELECT * FROM event WHERE date_end < ? ORDER BY date_start', [thisDate], (error, result) => {
       if(error) throw error;
       callback(result);
     })
@@ -90,11 +96,18 @@ class UserService {
     });
   }
   getUpcomingEvents(userid,callback){
-    connection.query('SELECT * FROM event INNER JOIN user_has_event ON event.eventID = user_has_event.event_eventID WHERE user_userID =? ORDER BY event.date_start', [userid], (error, result) => {
+    connection.query('SELECT * FROM event INNER JOIN user_has_event ON event.eventID = user_has_event.eventID WHERE userID =? ORDER BY event.date_start', [userid], (error, result) => {
       if (error) throw error;
 
       callback(result);
     })
+  }
+  addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, callback) {
+    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award) values (?, ?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelistid, description, area, point_award], (error, resutlt) => {
+      if (error) throw error;
+
+      callback();
+    });
   }
   search(keyword, callback){
     connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
@@ -135,6 +148,34 @@ class UserService {
 
       callback();
     })
+  }
+  getUserComp(userid, callback){
+    connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE user_userID =?', [userid], (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+  getRolelists(callback){
+    connection.query('SELECT * FROM rolelist ORDER BY name', (error,result) => {
+      if(error) throw error;
+
+      callback(result);
+    });
+  }
+  getRolelist(rolelistName, callback){
+    connection.query('SELECT * FROM rolelist WHERE name=?', [rolelistName], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    });
+  }
+  getRolelistName(rolelistid, callback){
+    connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    });
   }
 }
 let userService = new UserService();

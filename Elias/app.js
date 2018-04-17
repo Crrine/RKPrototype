@@ -65,8 +65,12 @@ class ForgotPassword extends React.Component{
 				<h1>Glemt passord</h1>
 				<p>Venligst skriv inn din epostadresse, så vil vi sende deg en nytt passord</p>
 				<input type='text' ref='inpMail' />
+				<button ref='sendPass'>Send</button>
 			</div>
 		)
+	}
+	componentDidMount(){
+
 	}
 }
 
@@ -208,7 +212,6 @@ class Profile extends React.Component{
 		userService.getUpcomingEvents(userid,(result) => {
 			for(let event of result){
 				this.refs.upcomingEvents.innerText += event.name + '\n';
-				console.log(event);
 			}
 		})
 
@@ -377,12 +380,17 @@ class Competence extends React.Component{
 
 			userService.getCompetence(title,(result) => {
 				compid = result.compID;
+				userService.regCompetence(userid, compid, finished, (result) => {
+					console.log(compid);
+				})
 			})
-			userService.regCompetence(userid, compid, finished, (result) => {
-				console.log('test');
-				console.log(compid);
-			})
+			this.forceUpdate(); // Skriv en tekst her om at det er sendt til godkjenning
 		}
+		userService.getUserComp(userid, (result) => {
+			for (let usercomp of result){
+				this.refs.compOutput.innerText += usercomp.title + '\n';
+			}
+		})
 	}
 }
 
@@ -402,7 +410,7 @@ class Events extends React.Component {
 			<div>
 				<h1>Arrangementer</h1>
 				<h4>Kommende arrangementer</h4>
-				<button ref='showMoreEvents'>Vis flere</button>
+				<button ref='showPreEvents'>Tidligere</button>
 				<button ref='btnNewEvent'>Legg til arrangement</button>
 				<br /><br />
 				<div ref='upcoming'></div>
@@ -410,49 +418,84 @@ class Events extends React.Component {
 		);
 	}
 	componentDidMount(){
-		let i = 0;
+		let btnPressed = false;
+		let thisDate = new Date();
+		console.log(thisDate);
 
 		this.refs.btnNewEvent.onclick = () => {
 			history.push('/newEvent/');
 			this.forceUpdate();
 		}
 
-		userService.getEvents((result) => {
-				for(let event of result){
-					let divEvent = document.createElement('DIV');
+		this.refs.showPreEvents.onclick = () => {
+			if(btnPressed == false){
+				this.refs.upcoming.innerText = '';
+				userService.getComingEvents(thisDate, (result) => {
+						for(let event of result){
+							let divEvent = document.createElement('DIV');
 
-					let btnEvent = document.createElement('BUTTON');
-					let btnEventTxt = document.createTextNode('Informasjon');
-					let clickedEvent = event.eventID;
+							let btnEvent = document.createElement('BUTTON');
+							let btnEventTxt = document.createTextNode('Informasjon');
+							let clickedEvent = event.eventID;
 
-					btnEvent.appendChild(btnEventTxt);
-					btnEvent.setAttribute('id', event.eventID);
+							btnEvent.appendChild(btnEventTxt);
+							btnEvent.setAttribute('id', event.eventID);
 
-					btnEvent.onclick = () => {
-						sendToEvent(clickedEvent);
+							btnEvent.onclick = () => {
+								sendToEvent(clickedEvent);
+							}
+
+							divEvent.innerText += event.name + '\n' +
+								'Lokasjon: ' + event.area + '\n' +
+								'Kontakttelefon: ' + event.contact_phone + '\n';
+
+							divEvent.appendChild(btnEvent);
+							this.refs.upcoming.appendChild(divEvent);
+							// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 					}
+					btnPressed = true;
+					this.refs.showPreEvents.innerText = 'Tidligere';
+				})
+			}else{
+				this.refs.upcoming.innerText = '';
+				userService.getPastEvents(thisDate, (result) => {
+						for(let event of result){
+							let divEvent = document.createElement('DIV');
 
-					divEvent.innerText = event.name + '\n' +
-						'Lokasjon: ' + event.area + '\n' +
-						'Kontakttelefon: ' + event.contact_phone + '\n';
+							let btnEvent = document.createElement('BUTTON');
+							let btnEventTxt = document.createTextNode('Informasjon');
+							let clickedEvent = event.eventID;
 
-					divEvent.appendChild(btnEvent);
-					this.refs.upcoming.appendChild(divEvent);
-					// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-					i++;
-					if(i==5){
-						return;
-						//Viser bare de 5 kommende arrangementene
+							btnEvent.appendChild(btnEventTxt);
+							btnEvent.setAttribute('id', event.eventID);
+
+							btnEvent.onclick = () => {
+								sendToEvent(clickedEvent);
+							}
+
+							divEvent.innerText = event.name + '\n' +
+								'Lokasjon: ' + event.area + '\n' +
+								'Kontakttelefon: ' + event.contact_phone + '\n';
+
+							divEvent.appendChild(btnEvent);
+							this.refs.upcoming.appendChild(divEvent);
+							// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 					}
+					btnPressed = false;
+					this.refs.showPreEvents.innerText = 'Kommende';
+				})
 			}
-		})
+		}
+
+		this.refs.showPreEvents.click();
+
 		function sendToEvent(id){
 					eventID = id;
 					history.push('/divEvent/');
 
 				}
-	}
-}
+			}
+		}
 
 class divEvent extends React.Component {
 	render() {
@@ -479,7 +522,12 @@ class divEvent extends React.Component {
 					this.refs.eventinfo.innerText = result.description;
 					this.refs.eventmøtested.innerText = result.area;
 					this.refs.kontaktinfo.innerText = result.contact_phone;
-					this.refs.rolelist.innerText = result.rolelist_roleID;
+
+					let rolelistid = result.rolelist_roleID;
+
+					userService.getRolelistName(rolelistid, (result) => {
+						this.refs.rolelist.innerText = result.name;
+					})
 		})
 		this.refs.editArr.onclick = () => {
 			history.push('/editEvent/');
@@ -514,8 +562,9 @@ class NewEvent extends React.Component {
 								<input ref='regTlf' type='text' /><br />
 							</label>
 							<label>
-								rolelist:<br />
-								<input ref='regRoles' type='text' /><br />
+								Vaktlag:<br />
+									<select ref='rolelistSelect'>
+									</select><br />
 							</label>
 							<label>
 								description:<br />
@@ -525,6 +574,10 @@ class NewEvent extends React.Component {
 								Møtested:<br />
 								<input ref='regMeet' type='text' /><br />
 							</label>
+							<label>
+								Vaktpoeng:<br />
+								<input ref='regPoints' type='number' /><br />
+							</label>
 						</form>
 						<button ref='btnSendArr'>Registrer</button>
 						<button ref='btnBackArr'>Tilbake</button>
@@ -532,6 +585,16 @@ class NewEvent extends React.Component {
 				)
 			}
 			componentDidMount() {
+				let rolelistid = 0;
+				userService.getRolelists((result) => {
+					for(let rolelist of result){
+						let rolelistSel = document.createElement('OPTION');
+						let rolelistName = document.createTextNode(rolelist.name);
+
+						rolelistSel.appendChild(rolelistName);
+						this.refs.rolelistSelect.appendChild(rolelistSel);
+					}
+				})
 
 				this.refs.btnBackArr.onclick = () => {
 					history.push('/events/');
@@ -543,14 +606,20 @@ class NewEvent extends React.Component {
 					let date_start = this.refs.regStartDato.value;
 					let date_end = this.refs.regSluttDato.value;
 					let contact_phone = this.refs.regTlf.value;
-					let rolelist_roleID = this.refs.regRoles.value;
 					let description = this.refs.regDescript.value;
 					let area = this.refs.regMeet.value;
+					let point_award = this.refs.regPoints.value;
 
-					userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
-						alert('Arrangementet er opprettet');
-						history.push('/events/');
-						this.forceUpdate();
+					let rolelistName = this.refs.rolelistSelect.value;
+
+					userService.getRolelist(rolelistName,(result) => {
+						rolelistid = result.rolelistID;
+
+						userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, (result) => {
+							alert('Arrangementet er opprettet');
+							history.push('/events/');
+							this.forceUpdate();
+					})
 				})
 			}
 		}
