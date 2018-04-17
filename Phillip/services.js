@@ -71,7 +71,13 @@ getUserHasEvent(userID, eventID, callback) {
     callback(result);
   })
 }
+addUserHasEvent(userID, eventID, callback) {
+  connection.query('INSERT INTO user_has_event (userID, eventID) values (?, ?)', [userID, eventID], (error, result) => {
+    if (error) throw error;
 
+    callback();
+  })
+}
 
   deleteInterested(eventID, userID, callback) {
     connection.query('DELETE FROM Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {

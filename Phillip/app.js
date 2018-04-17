@@ -20,7 +20,7 @@ let eventID = 0;
 class LoginPage extends React.Component {
 	render(){
 		return (
-			<div>
+			<div className="yolo">
 				<h1>Innlogging</h1>
 				<input type='text' ref='inpUser' placeholder='epost' />
 				<input type='password' ref='inpPassword' placeholder='passord' /><span />
@@ -600,6 +600,15 @@ class AcceptMembers extends React.Component {
 			})
 		}
 
+		addUser(userid) {
+			userService.addUserHasEvent(userid, eventID, (result) => {
+				userService.getUserHasEvent(userid, eventID, (result) => {
+					this.hasevent = result;
+					this.hentbrukere();
+				})
+			})
+		}
+
 		hentbrukere() {
 			var pameldte = [];
 
@@ -610,7 +619,7 @@ class AcceptMembers extends React.Component {
 				</li>
 			)
 		}
-		this.setState ({userhasevent: pameldte})
+		this.setState ({userhasevent:pameldte})
 		}
 
 	jodajoda()  {
@@ -621,13 +630,11 @@ class AcceptMembers extends React.Component {
 			<li key = {user.userID}>
 			{user.firstname}
 			<button onClick = {() => {
-					this.hentbrukere(user.userID);
+				this.addUser(user.userID)
+				this.deleteuser(user.userID)
 			}}>aksepter</button>
 			<button onClick = {() => {
 				this.deleteuser(user.userID)
-					this.setState((prevState) => {
-						return {user: int};
-						})
 					}}>deny</button>
 				</li>
 			)
@@ -643,7 +650,6 @@ class AcceptMembers extends React.Component {
 			userService.getUserHasEvent(userid, eventID, (result) => {
 				console.log(result)
 				this.hasevent = result;
-				this.jodajoda();
 				this.hentbrukere();
 			})
 		}
