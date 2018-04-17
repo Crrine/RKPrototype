@@ -56,8 +56,16 @@ class UserService {
       callback(result[0]);
     })
   }
+
+  checkifUserHasEvent(eventID, userID, callback) {
+    connection.query('SELECT * FROM user_has_event WHERE eventID = ? AND userID = ?' , [eventID, userID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    })
+  }
   getInterested(eventID, userID, callback){
-    connection.query('SELECT * FROM Interested INNER JOIN user ON (Interested.userID = user.userID) WHERE eventID=?', [eventID], (error, result) => {
+    connection.query('SELECT * FROM Interested INNER JOIN user ON (Interested.userID = user.userID) WHERE eventID=? ORDER BY user.points', [eventID], (error, result) => {
       if (error) throw error;
 
       callback(result);
@@ -150,8 +158,8 @@ addUserHasEvent(userID, eventID, callback) {
     })
   }
 
-  getUpcomingEvents(userid,callback){
-    connection.query('SELECT * FROM event INNER JOIN user_has_event ON event.eventID = user_has_event.event_eventID WHERE user_userID =? ORDER BY event.date_start', [userid], (error, result) => {
+  getUpcomingEvents(userID,callback){
+    connection.query('SELECT * FROM event INNER JOIN user_has_event ON (event.eventID = user_has_event.eventID) WHERE userID =? ORDER BY event.date_start', [userID], (error, result) => {
       if (error) throw error;
 
       callback(result);

@@ -174,6 +174,9 @@ class Navbar extends React.Component {
 }
 
 class Profile extends React.Component{
+	constructor() {
+		super();
+	}
 	render(){
 		return(
 			<div>
@@ -205,13 +208,11 @@ class Profile extends React.Component{
 		userService.getUpcomingEvents(userid,(result) => {
 			for(let event of result){
 				this.refs.upcomingEvents.innerText += event.name + '\n';
-				console.log(event);
 			}
 		})
 
- 		userService.getUser(userid,(result) => {
+ 		userService.getUser(this.props.userid ? this.props.userid : userid, (result) => {
 			let btnShowInfoPressed = false;
-
 			this.refs.userName.innerText = result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
 			this.refs.userEmail.innerText = result.email;
@@ -513,7 +514,8 @@ class divEvent extends React.Component {
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 			<button ref='editArr'>Rediger</button>
 			<button ref='Interested'>Interresert</button>
-			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button>
+			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button><br />
+			<span ref="hasevent"></span>
 			</div>
 		)
 	}
@@ -555,6 +557,13 @@ class divEvent extends React.Component {
 					this.forceUpdate();
 				}
 			})
+			userService.checkifUserHasEvent(eventID, userid, (result) => {
+				if (result != undefined) {
+					this.refs.Interested.hidden = true;
+					this.refs.hasevent.innerText = "Du er meldt på dette arrangementet";
+					this.forceUpdate();
+				}
+			})
 		})
 		this.refs.editArr.onclick = () => {
 			history.push('/editevent/');
@@ -579,7 +588,7 @@ class AcceptMembers extends React.Component {
 		render() {
 			return(
 			<div>
-			<h1> påmeldte medlemmer </h1>
+			<h1> Påmeldte medlemmer </h1>
 			<ul>
 			{this.state.userhasevent ? this.state.userhasevent:'Ingen påmeldte'}
 			</ul>
@@ -615,7 +624,9 @@ class AcceptMembers extends React.Component {
 			for (let user of this.hasevent) {
 			pameldte.push(
 				<li key = {user.userID}>
+				<Link to={'/profile/'}>
 				{user.firstname + " " + user.lastname}
+				</Link>
 				</li>
 			)
 		}
@@ -648,7 +659,6 @@ class AcceptMembers extends React.Component {
 				this.jodajoda();
 			})
 			userService.getUserHasEvent(userid, eventID, (result) => {
-				console.log(result)
 				this.hasevent = result;
 				this.hentbrukere();
 			})
@@ -816,9 +826,7 @@ class Search extends React.Component {
 							}
 
 							function sendToUser(id){
-										userid = id;
-										history.push('/profile/');
-
+										history.push('/profile/',);
 									}
 						})
 					}
@@ -830,7 +838,7 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
-				<Route excat path='/forgotPassword' component={ForgotPassword}/>
+				<Route exact path='/forgotPassword' component={ForgotPassword}/>
 				<Route exact path='/acceptmembers' component={AcceptMembers}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
@@ -839,7 +847,7 @@ ReactDOM.render((
 				<Route excat path='/loginPage' component={LoginPage}/>
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
-				<Route excat path='/profile' component={Profile}/>
+				<Route exact path='/profile/:userid' component={Profile}/>
 				<Route excat path='/editprofile' component={EditProfile}/>
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>
