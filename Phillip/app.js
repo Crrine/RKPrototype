@@ -13,9 +13,10 @@ export const history = createHashHistory();
 
 let loggedIn = false;
 let regPress = false;
-let userid = 0;
+let userid = null;
 let admin = false;
-let eventID = 0;
+let eventID = null;
+let viewid = null;
 
 class LoginPage extends React.Component {
 	render(){
@@ -174,9 +175,83 @@ class Navbar extends React.Component {
 }
 
 class Profile extends React.Component{
-	constructor() {
-		super();
+	render(){
+		return(
+			<div>
+				<h1></h1>
+				<span ref='userName'></span><br />
+				<span ref='userEmail'></span><br />
+				<span ref='userPoints'></span><br />
+				Kommende arrangementer:<br />
+				<span ref='upcomingEvents'></span>
+				<button ref='btnShowInfo'>Vis info</button>
+				<button onClick = {() => {
+					history.push('/editprofile/'),
+					this.forceUpdate()}}>Rediger</button>
+				<button ref='btnDeactivate'>Deaktiver</button>
+				<button onClick = {() => {
+					history.push('/competence/'),
+					this.forceUpdate()}}>Kompetanse</button>
+				<div ref='showInfo'>
+					<span ref='userAddress'></span><br />
+					<span ref='userCity'></span><br />
+					<span ref='userZip'></span><br />
+					<span ref='userPhone'></span><br />
+					<span ref='userAge'></span><br />
+				</div>
+			</div>
+		);
 	}
+
+	componentWillUnmount() {
+		viewid = 0;
+	}
+
+	componentDidMount(){
+		userService.getUpcomingEvents(viewid ? viewid : userid,(result) => {
+			for(let event of result){
+				this.refs.upcomingEvents.innerText += event.name + '\n';
+			}
+		})
+
+ 		userService.getUser(viewid ? viewid : userid, (result) => {
+			let btnShowInfoPressed = false;
+			this.refs.userName.innerText = result.firstname;
+			this.refs.userName.innerText += " " + result.lastname;
+			this.refs.userEmail.innerText = result.email;
+			this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
+
+			this.refs.btnShowInfo.onclick = () => {
+				if(btnShowInfoPressed == false){
+					this.refs.showInfo.innerText =
+					" Adresse: " + result.address + '\n' +
+					" By: " + result.city + '\n' +
+					" Postnummer: " + result.zip + '\n' +
+					" Tlf: " + result.phone + '\n' +
+					" Alder: " + result.age + '\n';
+					this.refs.btnShowInfo.innerText = "Skjul info";
+					btnShowInfoPressed = true;
+				}else{
+					this.refs.showInfo.innerText = "";
+					this.refs.btnShowInfo.innerText = "Vis info";
+					btnShowInfoPressed = false;
+				}
+			}
+		});
+		this.refs.btnDeactivate.onclick = () => {
+			let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
+			if(r == true){
+				userService.deactivateUser(userid,(result) => {
+					console.log('Deaktivert bruker - ID:' + userid);
+					// history.push('/loginPage/');
+					// this.forceUpdate();
+				});
+			}
+		}
+	}
+}
+
+class AndresProfil extends React.Component{
 	render(){
 		return(
 			<div>
@@ -204,6 +279,9 @@ class Profile extends React.Component{
 			</div>
 		);
 	}
+
+
+
 	componentDidMount(){
 		userService.getUpcomingEvents(userid,(result) => {
 			for(let event of result){
@@ -211,7 +289,7 @@ class Profile extends React.Component{
 			}
 		})
 
- 		userService.getUser(this.props.userid ? this.props.userid : userid, (result) => {
+ 		userService.getUser(viewid, (result) => {
 			let btnShowInfoPressed = false;
 			this.refs.userName.innerText = result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
@@ -624,12 +702,17 @@ class AcceptMembers extends React.Component {
 			for (let user of this.hasevent) {
 			pameldte.push(
 				<li key = {user.userID}>
-				<Link to={'/profile/'}>
-				{user.firstname + " " + user.lastname}
+				<Link onClick = {() => {
+					viewid = user.userID;
+				}} to={'/profile/'}>
+				{
+					user.firstname + " " + user.lastname
+				}
 				</Link>
 				</li>
 			)
 		}
+
 		this.setState ({userhasevent:pameldte})
 		}
 
@@ -701,6 +784,7 @@ class Calendar extends React.Component {
 										/>
 										<div>
 										<button ref='CreateEvent'>Lag nytt arrangement</button>
+										<button ref="Passiv">Vær kjempe passiv</button>
 										</div>
 										</div>
 		);
@@ -710,15 +794,56 @@ class Calendar extends React.Component {
 			history.push('/nyttEvent/');
 			this.forceUpdate();
 		}
+		this.refs.Passiv.onclick = () => {
+			history.push('/passiv/');
+			this.forceUpdate();
+		}
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
+				console.log(result)
 				// eventID = result[0].eventID;
 			this.setState({events: result});
 			this.forceUpdate();
 		})
 	}
-}
+	}
+
+class Passiv extends React.Component {
+		render() {
+			return (
+				<div>
+				<h1> Velg passiv dato </h1>
+				<form>
+				<label>
+					Startdato:<br />
+					<input ref='passivdato' type='date' /><br />
+				</label>
+				<label>
+					sluttdato:<br />
+					<input ref='passivenddato' type='date' /><br />
+					</label>
+					</form>
+				<button ref="passivbutton"> vær kjempe passiv</button>
+				</div>
+			);
+		}
+		componentDidMount() {
+
+			this.refs.passivbutton.onclick = () => {
+			var userID = userid;
+			var date_Start = this.refs.passivdato.value;
+			var date_End = this.refs.passivenddato.value;
+
+			userService.getUser(userid, (result) => {
+				userService.addPassive(userid, date_Start, date_End, (result) => {
+					alert ('Du er lagt passiv mellom ' + date_Start + " til " + date_End)
+					history.push('/calendar/');
+				})
+			})
+		}
+	}
+	}
 
 class NewEvent extends React.Component {
 	render(){
@@ -754,12 +879,17 @@ class NewEvent extends React.Component {
 								Møtested:<br />
 								<input ref='regMeet' type='text' /><br />
 							</label>
+							<label>
+							points:
+							<input ref="points" type="number" /> <br />
+							</label>
 						</form>
 						<button ref='btnSendArr'>Registrer Arrangement</button>
 					</div>
 				)
 			}
 			componentDidMount() {
+
 				this.refs.btnSendArr.onclick = () => {
 				 	let name = this.refs.regArrName.value;
 					let date_start = this.refs.regStartDato.value;
@@ -768,8 +898,9 @@ class NewEvent extends React.Component {
 					let rolelist_roleID = this.refs.regRoles.value;
 					let description = this.refs.regDescript.value;
 					let area = this.refs.regMeet.value;
+					let point_award = this.refs.points.value;
 
-					userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, (result) => {
+					userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award, (result) => {
 						alert('Arrangementet er opprettet');
 						history.push('/Navbar/');
 						this.forceUpdate();
@@ -838,16 +969,18 @@ ReactDOM.render((
     <div>
       <Navbar />
       <Switch>
+				<Route exact path='/passiv' component={Passiv}/>
 				<Route exact path='/forgotPassword' component={ForgotPassword}/>
 				<Route exact path='/acceptmembers' component={AcceptMembers}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
 				<Route exact path='/nyttEvent' component={NewEvent}/>
+				<Route exact path='/andresprofil' component={AndresProfil}/>
 				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
-				<Route exact path='/profile/:userid' component={Profile}/>
+				<Route exact path='/profile' component={Profile}/>
 				<Route excat path='/editprofile' component={EditProfile}/>
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>

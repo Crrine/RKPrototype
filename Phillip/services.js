@@ -87,6 +87,14 @@ addUserHasEvent(userID, eventID, callback) {
   })
 }
 
+addPassive(userID, date_Start, date_End, callback) {
+  connection.query('INSERT INTO passiv (userID, date_Start, date_End) values (?, ?, ?)', [userID, date_Start, date_End], (error, result) => {
+    if (error) throw error;
+
+    callback();
+  })
+}
+
   deleteInterested(eventID, userID, callback) {
     connection.query('DELETE FROM Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
       if (error) throw error;
@@ -129,8 +137,8 @@ addUserHasEvent(userID, eventID, callback) {
       callback(result[0]);
     });
   }
-  addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, callback) {
-    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area) values (?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelist_roleID, description, area], (error, resutlt) => {
+  addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award, callback) {
+    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award) values (?, ?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award], (error, resutlt) => {
       if (error) throw error;
 
       callback();
