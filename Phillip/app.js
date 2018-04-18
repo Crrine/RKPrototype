@@ -6,19 +6,24 @@ import {createHashHistory} from 'history';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import globalize from 'globalize';
+import { NavLink } from 'react-router-dom';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
 export const history = createHashHistory();
 
-let loggedIn = false;
 let regPress = false;
 let userid = null;
 let admin = false;
 let eventID = null;
 let viewid = null;
+let redid = null;
 
 class LoginPage extends React.Component {
+	constructor() {
+		super();
+		this.userisloggedin;
+	}
 	render(){
 		return (
 			<div className="yolo">
@@ -42,14 +47,15 @@ class LoginPage extends React.Component {
 				userService.loginUser(inpUser, inpPassword, (result) => {
 					if(result != undefined){
 						console.log("logget inn bruker - ID:" + result.userID);
-						userid = result.userID;
-						loggedIn = true;
+						this.userisloggedin = userService.browseruser()
+						userid = this.userisloggedin.userID;
 						history.push('/Navbar/');
 					}else{
 						console.log("mislykket innlogging");
-						loggedIn = false;
 						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
 						this.refs.btnForgotPassword.hidden = false;
+
+						userService.emptystorage();
 					}
 				})
 			}
@@ -67,8 +73,12 @@ class ForgotPassword extends React.Component{
 					<h1>Glemt passord</h1>
 					<p>Venligst skriv inn din epostadresse, så vil vi sende deg en nytt passord</p>
 					<input type='text' ref='inpMail' />
+					<button ref='sendPass'>Send</button>
 				</div>
 			)
+		}
+		componentDidMount(){
+
 		}
 	}
 
@@ -145,27 +155,71 @@ class Register extends React.Component {
 }
 
 class Navbar extends React.Component {
+	constructor() {
+		super();
+		this.userisloggedin
+	}
 	render(){
-		if(loggedIn){
+		this.userisloggedin = userService.browseruser();
+		if(this.userisloggedin){
 			return(
 				<div>
-					<h1>Navigasjonsbaren</h1>
-					<nav>
-						<Link to='/profile'>Din profil</Link><br />
-						<Link to='/homepage'>Aktuelle saker</Link><br />
-						<Link to='/events'>Arrangementer</Link><br />
-						<Link to='/calendar'>Kalender</Link><br />
-						<Link to='/nyttEvent'>NyttEvent</Link><br />
-						<Link to='/contact'>Kontakt oss</Link><br />
-						<Link to='/search'>Brukersøk</Link><br />
-						<button ref='logout' onClick = {() => {
-							loggedIn = false, history.push('/loginPage/'), console.log('logget ut bruker'),
-							this.forceUpdate()}}>Logg ut</button><br />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet" />
+						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous" />
+						<meta charSet="utf-8" />
+						<title>Røde Kors Sanitetsvakt</title>
+
+						<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+							<img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt" />
+							<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span className="navbar-toggler-icon"></span>
+							</button>
+							<div className="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul className="navbar-nav mr-auto">
+									<li className="nav-item">
+										<NavLink exact to='/homepage' className="nav-link">Aktuelt <span className="sr-only">(current)</span></NavLink>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/calendar' className="nav-link" href="#">Kalender</NavLink>
+									</li>
+									<li className="nav-item dropdown">
+										<NavLink exact to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Arrangementer
+										</NavLink>
+										<div className="dropdown-menu" aria-labelledby="navbarDropdown">
+										<NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									 Kommende
+											</NavLink>
+										 <NavLink exact to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 Tidligere
+										</NavLink>
+										</div>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/contact' className="nav-link" href="#">Om oss</NavLink>
+									</li>
+									<li className="nav-item dropdown">
+										<NavLink exact to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Profil
+										</NavLink>
+										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+											<a className="dropdown-item" href="index.html">Logg ut</a>
+										</div>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
+									</li>
+								</ul>
+
+							</div>
 					</nav>
 				</div>
 			);
 		}else{
 			return(
+				// history.push('/loginPage/');
+				// this.forceUpdate();
 				<div>
 					<Link to='/loginPage'>Logg inn</Link>
 				</div>
@@ -175,6 +229,10 @@ class Navbar extends React.Component {
 }
 
 class Profile extends React.Component{
+	constructor() {
+		super();
+		this.userisloggedin
+	}
 	render(){
 		return(
 			<div>
@@ -187,11 +245,13 @@ class Profile extends React.Component{
 				<button ref='btnShowInfo'>Vis info</button>
 				<button onClick = {() => {
 					history.push('/editprofile/'),
+					redid = viewid;
 					this.forceUpdate()}}>Rediger</button>
 				<button ref='btnDeactivate'>Deaktiver</button>
 				<button onClick = {() => {
 					history.push('/competence/'),
-					this.forceUpdate()}}>Kompetanse</button>
+					this.forceUpdate()}}>Kompetanse</button><br />
+					<span ref="passive"></span>
 				<div ref='showInfo'>
 					<span ref='userAddress'></span><br />
 					<span ref='userCity'></span><br />
@@ -211,6 +271,23 @@ class Profile extends React.Component{
 		userService.getUpcomingEvents(viewid ? viewid : userid,(result) => {
 			for(let event of result){
 				this.refs.upcomingEvents.innerText += event.name + '\n';
+			}
+		})
+		this.userisloggedin = userService.browseruser();
+		userid = this.userisloggedin.userID;
+
+		userService.checkifPassive(userid, (result) => {
+			let str; let string; let array;
+			if (result != undefined) {
+
+				this.refs.passive.innerText = result.date_End;
+
+				str = result.date_End;
+				if (str) {
+					string = str.toString();
+					array = string.split(" ");
+					this.refs.passive.innerText = "Du er fortsatt passiv til " + array[2]+" "+array[1]+" "+array[3];
+				}
 			}
 		})
 
@@ -245,88 +322,17 @@ class Profile extends React.Component{
 					console.log('Deaktivert bruker - ID:' + userid);
 					// history.push('/loginPage/');
 					// this.forceUpdate();
-				});
-			}
-		}
-	}
-}
-
-class AndresProfil extends React.Component{
-	render(){
-		return(
-			<div>
-				<h1>Din profil</h1>
-				<span ref='userName'></span><br />
-				<span ref='userEmail'></span><br />
-				<span ref='userPoints'></span><br />
-				Kommende arrangementer:<br />
-				<span ref='upcomingEvents'></span>
-				<button ref='btnShowInfo'>Vis info</button>
-				<button onClick = {() => {
-					history.push('/editprofile/'),
-					this.forceUpdate()}}>Rediger</button>
-				<button ref='btnDeactivate'>Deaktiver</button>
-				<button onClick = {() => {
-					history.push('/competence/'),
-					this.forceUpdate()}}>Kompetanse</button>
-				<div ref='showInfo'>
-					<span ref='userAddress'></span><br />
-					<span ref='userCity'></span><br />
-					<span ref='userZip'></span><br />
-					<span ref='userPhone'></span><br />
-					<span ref='userAge'></span><br />
-				</div>
-			</div>
-		);
-	}
-
-
-
-	componentDidMount(){
-		userService.getUpcomingEvents(userid,(result) => {
-			for(let event of result){
-				this.refs.upcomingEvents.innerText += event.name + '\n';
-			}
-		})
-
- 		userService.getUser(viewid, (result) => {
-			let btnShowInfoPressed = false;
-			this.refs.userName.innerText = result.firstname;
-			this.refs.userName.innerText += " " + result.lastname;
-			this.refs.userEmail.innerText = result.email;
-			this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
-
-			this.refs.btnShowInfo.onclick = () => {
-				if(btnShowInfoPressed == false){
-					this.refs.showInfo.innerText =
-					" Adresse: " + result.address + '\n' +
-					" By: " + result.city + '\n' +
-					" Postnummer: " + result.zip + '\n' +
-					" Tlf: " + result.phone + '\n' +
-					" Alder: " + result.age + '\n';
-					this.refs.btnShowInfo.innerText = "Skjul info";
-					btnShowInfoPressed = true;
-				}else{
-					this.refs.showInfo.innerText = "";
-					this.refs.btnShowInfo.innerText = "Vis info";
-					btnShowInfoPressed = false;
+					});
 				}
 			}
-		});
-		this.refs.btnDeactivate.onclick = () => {
-			let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
-			if(r == true){
-				userService.deactivateUser(userid,(result) => {
-					console.log('Deaktivert bruker - ID:' + userid);
-					// history.push('/loginPage/');
-					// this.forceUpdate();
-				});
-			}
 		}
 	}
-}
 
 class EditProfile extends React.Component{
+	constructor() {
+		super();
+		this.userisloggedin
+	}
 	render(){
 		return(
 			<div>
@@ -377,7 +383,11 @@ class EditProfile extends React.Component{
 		)
 	}
 	componentDidMount(){
-			userService.getUser(userid,(result) => {
+
+		this.userisloggedin = userService.browseruser();
+		userid = this.userisloggedin.userID;
+
+			userService.getUser(redid ? redid : userid,(result) => {
 				this.refs.editFirstName.value = result.firstname;
 				this.refs.editLastName.value = result.lastname;
 				this.refs.editAddress.value = result.address;
@@ -409,6 +419,9 @@ class EditProfile extends React.Component{
 				this.forceUpdate();
 			}
 		}
+	}
+	componentWillUnmount() {
+		redid = null;
 	}
 }
 
@@ -453,12 +466,17 @@ class Competence extends React.Component{
 
 			userService.getCompetence(title,(result) => {
 				compid = result.compID;
+				userService.regCompetence(userid, compid, finished, (result) => {
+					console.log(compid);
+				})
 			})
-			userService.regCompetence(userid, compid, finished, (result) => {
-				console.log('test');
-				console.log(compid);
-			})
+			this.forceUpdate(); // Skriv en tekst her om at det er sendt til godkjenning
 		}
+		userService.getUserComp(userid, (result) => {
+			for (let usercomp of result){
+				this.refs.compOutput.innerText += usercomp.title + '\n';
+			}
+		})
 	}
 }
 
@@ -466,10 +484,122 @@ class Homepage extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>Aktuelle saker</h1>
+
+
+				<div className="grid-container">
+					<div className="main-wrap">
+						<h1 className="title">Aktuelle saker</h1>
+
+						<div className="news-left-grid">
+
+						<div className="news-image-grid">
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+						</div>
+
+						<div className="news-text-grid">
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+					</div>
+
+					</div>
+
+
+					</div>
+
+
+			<div>
+					<div className="news-right-top">
+							<img className="aktueltprofilbilde" src="profilepicture.jpg" alt="" />
+							<p className="aktueltprofiltekst">Per Ole Finsnes</p>
+							<p className="aktueltprofiltekst">Vaktpoeng: 14</p>
+						</div>
+						<div className="news-right-bottom">
+							<h3 className="mellomtittel">Kommende arrangementer</h3>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
+}
+
+class EarlierEvents extends React.Component {
+		render(){
+			return(
+				<div>
+					<h1>Arrangementer</h1>
+					<h4>Tidligere arrangementer</h4>
+					<div ref='earlier'></div>
+				</div>
+			);
+		}
+		componentDidMount(){
+			userService.getEarlierEvents((result) => {
+				for(let event of result){
+					let divEvent = document.createElement('DIV');
+
+					divEvent.innerText = event.name + '\n' +
+						'Lokasjon: ' + event.area + '\n' +
+						'Kontakttelefon: ' + event.contact_phone + '\n';
+
+					this.refs.earlier.appendChild(divEvent);
+					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+				}
+			})
+		}
 }
 
 class Events extends React.Component {
@@ -483,7 +613,7 @@ class Events extends React.Component {
 		);
 	}
 	componentDidMount(){
-		userService.getEvents((result) => {
+		userService.getUpcomingevents((result) => {
 			for(let event of result){
 				let divEvent = document.createElement('DIV');
 
@@ -502,7 +632,93 @@ class Contact extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>Kontakt oss</h1>
+			<div className="big-container">
+				<div className="about-bg">
+					<h2 className="title">Lokalforeninger i Trondheimsområdet</h2>
+
+					<div className="about-container">
+					<div>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.8060229100615!2d10.414399016240537!3d63.410782283268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d31c71f115b5d%3A0x5273344a7d7ea94a!2sTrondheim+R%C3%B8de+Kors!5e0!3m2!1sno!2sno!4v1523533302113"
+						width="500" height="300" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+						<div className="abouttext">
+							<h3 className="aboutmediumtitle">Trondheim Røde Kors</h3>
+							<p className="aboutbreadtext">Med over 1000 frivillige og flere enn 20 aktiviteter er vi til stede for andre mennesker og sårbare grupper i byen vår.</p>
+						</div>
+
+							<div>
+						<div className="aboutflex">
+							<div className="abouttext2">
+								<h4 className="aboutmediumtitle">Adresse</h4>
+							</div>
+							<div className="abouttext2">
+								<h4 className="aboutmediumtitle">Telefon</h4>
+							</div>
+							<div className="abouttext2">
+								<h4 className="aboutmediumtitle">Epost</h4>
+							</div>
+						</div>
+						<div className="aboutflex">
+							<div className="abouttext2">
+								<div className="abouttext3">
+									<p>Nardoveien 4 B 7032 Trondheim</p>
+								</div>
+							</div>
+							<div className="abouttext2">
+								<div className="abouttext3">
+									<p>73 94 93 00</p>
+								</div>
+							</div>
+							<div className="abouttext2">
+								<div className="abouttext3">
+									<p>post@trondheim-redcross.no</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<div>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.4153630771596!2d10.774810216042496!3d63.41705568381125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d3c5135aa3aef%3A0xf02afa00572e3186!2sHesttr%C3%B8a+1%2C+7550+Hommelvik!5e0!3m2!1sno!2sno!4v1523533990024"
+						width="500" height="300" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+						<div className="abouttext">
+							<h3 className="aboutmediumtitle">Malvik Røde Kors</h3>
+							<p className="aboutbreadtext">I over 73 år har Malvik Røde Kors og våre frivillige stilt opp for å hjelpe til i lokalsamfunnet. Det tenker vi å fortsette med, og da trenger vi flere frivillige.</p>
+						</div>
+
+						<div>
+							<div className="aboutflex">
+								<div className="abouttext2">
+									<h4 className="aboutmediumtitle">Adresse</h4>
+								</div>
+								<div className="abouttext2">
+									<h4 className="aboutmediumtitle">Telefon</h4>
+								</div>
+								<div className="abouttext2">
+									<h4 className="aboutmediumtitle">Epost</h4>
+								</div>
+							</div>
+							<div className="aboutflex">
+								<div className="abouttext2">
+									<div className="abouttext3">
+										<p>Hesttrøa 1 <br /> 7550 Hommelvik</p>
+									</div>
+								</div>
+								<div className="abouttext2">
+									<div className="abouttext3">
+										<p>73 94 93 45</p>
+									</div>
+								</div>
+								<div className="abouttext2">
+									<div className="abouttext3">
+										<p>malvik@strk-redcross.no</p>
+									</div>
+								</div>
+							</div>
+							</div>
+					</div>
+					</div>
+				</div>
+			</div>
 			</div>
 		);
 	}
@@ -648,12 +864,12 @@ class divEvent extends React.Component {
 			this.forceUpdate();
 		}
 		this.refs.checkinterested.onclick = () => {
-			history.push('/acceptmembers/');
+			history.push('/vaktliste/');
 		}
 	}
 	}
 
-class AcceptMembers extends React.Component {
+class Vaktliste extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -687,6 +903,10 @@ class AcceptMembers extends React.Component {
 			})
 		}
 
+		deletefromvakt(userid) {
+
+		}
+
 		addUser(userid) {
 			userService.addUserHasEvent(userid, eventID, (result) => {
 				userService.getUserHasEvent(userid, eventID, (result) => {
@@ -709,6 +929,7 @@ class AcceptMembers extends React.Component {
 					user.firstname + " " + user.lastname
 				}
 				</Link>
+
 				</li>
 			)
 		}
@@ -846,67 +1067,89 @@ class Passiv extends React.Component {
 	}
 
 class NewEvent extends React.Component {
-	render(){
-				return(
-					<div>
-						<h1>Nytt Arrangement</h1>
-						<form>
-							<label>
-								Navn på arrangementet:<br />
-								<input ref='regArrName' type='text' /><br />
-							</label>
-							<label>
-								Startdato:<br />
-								<input ref='regStartDato' type='datetime-local' /><br />
-							</label>
-							<label>
-								sluttdato:<br />
-								<input ref='regSluttDato' type='datetime-local' /><br />
-							</label>
-							<label>
-								kontakttelefon:<br />
-								<input ref='regTlf' type='text' /><br />
-							</label>
-							<label>
-								rolelist:<br />
-								<input ref='regRoles' type='text' /><br />
-							</label>
-							<label>
-								description:<br />
-								<input ref='regDescript' type='text' /><br />
-							</label>
-							<label>
-								Møtested:<br />
-								<input ref='regMeet' type='text' /><br />
-							</label>
-							<label>
-							points:
-							<input ref="points" type="number" /> <br />
-							</label>
-						</form>
-						<button ref='btnSendArr'>Registrer Arrangement</button>
-					</div>
-				)
-			}
-			componentDidMount() {
+		render(){
+					return(
+						<div>
+							<h1>Nytt Arrangement</h1>
+							<form>
+								<label>
+									Navn på arrangementet:<br />
+									<input ref='regArrName' type='text' /><br />
+								</label>
+								<label>
+									Startdato:<br />
+									<input ref='regStartDato' type='datetime-local' /><br />
+								</label>
+								<label>
+									sluttdato:<br />
+									<input ref='regSluttDato' type='datetime-local' /><br />
+								</label>
+								<label>
+									kontakttelefon:<br />
+									<input ref='regTlf' type='text' /><br />
+								</label>
+								<label>
+									Vaktlag:<br />
+										<select ref='rolelistSelect'>
+										</select><br />
+								</label>
+								<label>
+									description:<br />
+									<input ref='regDescript' type='text' /><br />
+								</label>
+								<label>
+									Møtested:<br />
+									<input ref='regMeet' type='text' /><br />
+								</label>
+								<label>
+									Vaktpoeng:<br />
+									<input ref='regPoints' type='number' /><br />
+								</label>
+							</form>
+							<button ref='btnSendArr'>Registrer</button>
+							<button ref='btnBackArr'>Tilbake</button>
+						</div>
+					)
+				}
+				componentDidMount() {
+					let rolelistid = 0;
+					userService.getRolelists((result) => {
+						for(let rolelist of result){
+							let rolelistSel = document.createElement('OPTION');
+							let rolelistName = document.createTextNode(rolelist.name);
 
-				this.refs.btnSendArr.onclick = () => {
-				 	let name = this.refs.regArrName.value;
-					let date_start = this.refs.regStartDato.value;
-					let date_end = this.refs.regSluttDato.value;
-					let contact_phone = this.refs.regTlf.value;
-					let rolelist_roleID = this.refs.regRoles.value;
-					let description = this.refs.regDescript.value;
-					let area = this.refs.regMeet.value;
-					let point_award = this.refs.points.value;
-
-					userService.addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award, (result) => {
-						alert('Arrangementet er opprettet');
-						history.push('/Navbar/');
-						this.forceUpdate();
+							rolelistSel.appendChild(rolelistName);
+							this.refs.rolelistSelect.appendChild(rolelistSel);
+						}
 					})
+
+					this.refs.btnBackArr.onclick = () => {
+						history.push('/events/');
+						this.forceUpdate();
+					}
+
+					this.refs.btnSendArr.onclick = () => {
+					 	let name = this.refs.regArrName.value;
+						let date_start = this.refs.regStartDato.value;
+						let date_end = this.refs.regSluttDato.value;
+						let contact_phone = this.refs.regTlf.value;
+						let description = this.refs.regDescript.value;
+						let area = this.refs.regMeet.value;
+						let point_award = this.refs.regPoints.value;
+
+						let rolelistName = this.refs.rolelistSelect.value;
+
+						userService.getRolelist(rolelistName,(result) => {
+							rolelistid = result.rolelistID;
+
+							userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, (result) => {
+								alert('Arrangementet er opprettet');
+								history.push('/events/');
+								this.forceUpdate();
+						})
+					})
+				}
 			}
-		}
 		}
 
 class Search extends React.Component {
@@ -957,6 +1200,7 @@ class Search extends React.Component {
 							}
 
 							function sendToUser(id){
+								viewid = id;
 										history.push('/profile/',);
 									}
 						})
@@ -971,17 +1215,17 @@ ReactDOM.render((
       <Switch>
 				<Route exact path='/passiv' component={Passiv}/>
 				<Route exact path='/forgotPassword' component={ForgotPassword}/>
-				<Route exact path='/acceptmembers' component={AcceptMembers}/>
+				<Route exact path='/vaktliste' component={Vaktliste}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
 				<Route exact path='/nyttEvent' component={NewEvent}/>
-				<Route exact path='/andresprofil' component={AndresProfil}/>
 				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
 				<Route exact path='/profile' component={Profile}/>
 				<Route excat path='/editprofile' component={EditProfile}/>
+				<Route exact path='/earlierevents' component={EarlierEvents}/>
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>

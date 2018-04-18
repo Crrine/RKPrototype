@@ -31,10 +31,29 @@ class UserService {
   getUsers(callback){
     connection.query('SELECT * FROM user', (error, result) => {
       if(error) throw error;
-
       callback(result);
     });
   }
+
+  emptystorage() {
+    sessionStorage.clear();
+  }
+
+  browseruser() {
+    let item = sessionStorage.getItem('userisloggedin'); // Get User-object from browser
+    if(!item) return null;
+
+    return JSON.parse(item);
+  }
+
+  getRolelist(rolelistName, callback){
+    connection.query('SELECT * FROM rolelist WHERE name=?', [rolelistName], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    });
+  }
+
   getUser(id, callback){
     connection.query('SELECT * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;
@@ -51,6 +70,14 @@ class UserService {
   }
   checkifInterested(eventID, userID, callback) {
     connection.query('Select * from Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
+  checkifPassive(userID, callback) {
+    connection.query('SELECT * from passiv INNER JOIN user ON (passiv.userID = user.userID) WHERE user.userID = ? AND date_Start < CURDATE() AND date_End > CURDATE()', [userID], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
@@ -131,14 +158,16 @@ addPassive(userID, date_Start, date_End, callback) {
     });
   }
   loginUser(email, password, callback){
-    connection.query('SELECT userID FROM user WHERE email = ? AND password =? AND inactive=0', [email, password], (error, result) => {
+    connection.query('SELECT * FROM user WHERE email = ? AND password =? AND inactive=0', [email, password], (error, result) => {
       if (error) throw error;
+
+      sessionStorage.setItem('userisloggedin', JSON.stringify(result[0])); // Store User-object in browser
 
       callback(result[0]);
     });
   }
-  addEvent(name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award, callback) {
-    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award) values (?, ?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award], (error, resutlt) => {
+  addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, callback) {
+    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award) values (?, ?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelistid, description, area, point_award], (error, resutlt) => {
       if (error) throw error;
 
       callback();
@@ -159,6 +188,22 @@ addPassive(userID, date_Start, date_End, callback) {
     })
   }
 
+  getUpcomingevents(callback) {
+    connection.query('SELECT * FROM event WHERE date_start >= CURDATE() ORDER BY date_start', (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+
+  getEarlierEvents(callback) {
+    connection.query('SELECT * FROM event WHERE date_start <= CURDATE() ORDER BY date_end', (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+
   getEvent(callback){
     connection.query('SELECT eventID, name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
       if(error) throw error;
@@ -166,8 +211,8 @@ addPassive(userID, date_Start, date_End, callback) {
     })
   }
 
-  getUpcomingEvents(userID,callback){
-    connection.query('SELECT * FROM event INNER JOIN user_has_event ON (event.eventID = user_has_event.eventID) WHERE userID =? ORDER BY event.date_start', [userID], (error, result) => {
+  getUpcomingEvents(userid,callback){
+    connection.query('SELECT * FROM event INNER JOIN user_has_event ON (event.eventID = user_has_event.eventID) WHERE userID =? ORDER BY event.date_start', [userid], (error, result) => {
       if (error) throw error;
 
       callback(result);
@@ -194,6 +239,14 @@ addPassive(userID, date_Start, date_End, callback) {
 
     callback(result);
   });
+}
+
+getUserComp(userid, callback){
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE user_userID =?', [userid], (error, result) => {
+    if(error) throw error;
+
+    callback(result);
+  })
 }
 
 getCompetence(title, callback){
