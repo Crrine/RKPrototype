@@ -43,7 +43,7 @@ class LoginPage extends React.Component {
 						console.log("logget inn bruker - ID:" + result.userID);
 						userid = result.userID;
 						loggedIn = true;
-						history.push('/Navbar/');
+						history.push('/homepage/');
 					}else{
 						console.log("mislykket innlogging");
 						loggedIn = false;
@@ -435,7 +435,93 @@ class Homepage extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>Aktuelle saker</h1>
+
+
+				<div className="grid-container">
+					<div className="main-wrap">
+						<h1 className="title">Aktuelle saker</h1>
+
+						<div className="news-left-grid">
+
+						<div className="news-image-grid">
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+							<div>
+								<img className="news-image" src="jemen.jpg" alt="" />
+							</div>
+						</div>
+
+						<div className="news-text-grid">
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+						<div className="news-text">
+							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
+								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+						</div>
+					</div>
+
+					</div>
+
+
+					</div>
+
+
+			<div>
+					<div className="news-right-top">
+							<img className="aktueltprofilbilde" src="profilepicture.jpg" alt="" />
+							<p className="aktueltprofiltekst">Per Ole Finsnes</p>
+							<p className="aktueltprofiltekst">Vaktpoeng: 14</p>
+						</div>
+						<div className="news-right-bottom">
+							<h3 className="mellomtittel">Kommende arrangementer</h3>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div className="aktueltarrangementer">
+								<a href="#">Trønderfest</a>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -457,7 +543,6 @@ class Events extends React.Component {
 	componentDidMount(){
 		let btnPressed = false;
 		let thisDate = new Date();
-		console.log(thisDate);
 
 		this.refs.btnNewEvent.onclick = () => {
 			history.push('/newEvent/');
@@ -735,7 +820,93 @@ class Contact extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>Kontakt oss</h1>
+			<div className="big-container">
+				<div className="about-bg">
+					<h2 className="title">Lokalforeninger i Trondheimsområdet</h2>
+
+					<div className="about-container">
+					<div>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.8060229100615!2d10.414399016240537!3d63.410782283268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d31c71f115b5d%3A0x5273344a7d7ea94a!2sTrondheim+R%C3%B8de+Kors!5e0!3m2!1sno!2sno!4v1523533302113"
+						width="500" height="300" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+						<div className="abouttext">
+							<h3 className="aboutmediumtitle">Trondheim Røde Kors</h3>
+							<p className="aboutbreadtext">Med over 1000 frivillige og flere enn 20 aktiviteter er vi til stede for andre mennesker og sårbare grupper i byen vår.</p>
+						</div>
+
+							<div>
+						<div className="aboutflex">
+							<div className="abouttext2">
+								<h4 className="aboutmediumtitle">Adresse</h4>
+							</div>
+							<div className="abouttext2">
+								<h4 className="aboutmediumtitle">Telefon</h4>
+							</div>
+							<div className="abouttext2">
+								<h4 className="aboutmediumtitle">Epost</h4>
+							</div>
+						</div>
+						<div className="aboutflex">
+							<div className="abouttext2">
+								<div className="abouttext3">
+									<p>Nardoveien 4 B 7032 Trondheim</p>
+								</div>
+							</div>
+							<div className="abouttext2">
+								<div className="abouttext3">
+									<p>73 94 93 00</p>
+								</div>
+							</div>
+							<div className="abouttext2">
+								<div className="abouttext3">
+									<p>post@trondheim-redcross.no</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<div>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.4153630771596!2d10.774810216042496!3d63.41705568381125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d3c5135aa3aef%3A0xf02afa00572e3186!2sHesttr%C3%B8a+1%2C+7550+Hommelvik!5e0!3m2!1sno!2sno!4v1523533990024"
+						width="500" height="300" frameBorder="0" style={{border:0}} allowFullScreen></iframe>
+						<div className="abouttext">
+							<h3 className="aboutmediumtitle">Malvik Røde Kors</h3>
+							<p className="aboutbreadtext">I over 73 år har Malvik Røde Kors og våre frivillige stilt opp for å hjelpe til i lokalsamfunnet. Det tenker vi å fortsette med, og da trenger vi flere frivillige.</p>
+						</div>
+
+						<div>
+							<div className="aboutflex">
+								<div className="abouttext2">
+									<h4 className="aboutmediumtitle">Adresse</h4>
+								</div>
+								<div className="abouttext2">
+									<h4 className="aboutmediumtitle">Telefon</h4>
+								</div>
+								<div className="abouttext2">
+									<h4 className="aboutmediumtitle">Epost</h4>
+								</div>
+							</div>
+							<div className="aboutflex">
+								<div className="abouttext2">
+									<div className="abouttext3">
+										<p>Hesttrøa 1 <br /> 7550 Hommelvik</p>
+									</div>
+								</div>
+								<div className="abouttext2">
+									<div className="abouttext3">
+										<p>73 94 93 45</p>
+									</div>
+								</div>
+								<div className="abouttext2">
+									<div className="abouttext3">
+										<p>malvik@strk-redcross.no</p>
+									</div>
+								</div>
+							</div>
+							</div>
+					</div>
+					</div>
+				</div>
+			</div>
 			</div>
 		);
 	}
@@ -757,7 +928,6 @@ class Calendar extends React.Component {
 
 
 	setArrinfo(event) {
-		console.log(event);
 		var title = event.title;
 		var datestart = event.startDate;
 		var dateend = event.endDate;
@@ -792,13 +962,12 @@ class Calendar extends React.Component {
 	}
 	componentDidMount() {
 		this.refs.CreateEvent.onclick = () => {
-			history.push('/nyttEvent/');
+			history.push('/newEvent/');
 			this.forceUpdate();
 		}
 	}
 	componentWillMount() {
 			userService.getEvent((result) => {
-				console.log(result);
 					eventID = result[0].eventID;
 			this.setState({events: result});
 		})
