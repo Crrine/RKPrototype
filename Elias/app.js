@@ -6,6 +6,7 @@ import {createHashHistory} from 'history';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import globalize from 'globalize';
+import { NavLink } from 'react-router-dom';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 export const history = createHashHistory();
@@ -154,17 +155,53 @@ class Navbar extends React.Component {
 		if(loggedIn){
 			return(
 				<div>
-					<h1>Navigasjonsbaren</h1>
-					<nav>
-						<Link to='/profile'>Din profil</Link><br />
-						<Link to='/homepage'>Aktuelle saker</Link><br />
-						<Link to='/events'>Arrangementer</Link><br />
-						<Link to='/calendar'>Kalender</Link><br />
-						<Link to='/contact'>Kontakt oss</Link><br />
-						<Link to='/search'>Brukersøk</Link><br />
-						<button ref='logout' onClick = {() => {
-							loggedIn = false, history.push('/loginPage/'), console.log('logget ut bruker'),
-							this.forceUpdate()}}>Logg ut</button><br />
+
+						<link rel="stylesheet" type="text/css" href="nav.css" />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet" />
+						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous" />
+						<meta charSet="utf-8" />
+						<title>Røde Kors Sanitetsvakt</title>
+
+						<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+							<img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt" />
+							<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span className="navbar-toggler-icon"></span>
+							</button>
+							<div className="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul className="navbar-nav mr-auto">
+									<li className="nav-item">
+										<NavLink exact to='/homepage' className="nav-link">Aktuelt <span className="sr-only">(current)</span></NavLink>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/calendar' className="nav-link" href="#">Kalender</NavLink>
+									</li>
+									<li className="nav-item dropdown">
+										<NavLink exact to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Arrangementer
+										</NavLink>
+										<div className="dropdown-menu" aria-labelledby="navbarDropdown">
+											<a className="dropdown-item" href="#">Kommende</a>
+											<a className="dropdown-item" href="#">Tidligere</a>
+										</div>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/contact' className="nav-link" href="#">Om oss</NavLink>
+									</li>
+									<li className="nav-item dropdown">
+										<NavLink exact to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Profil
+										</NavLink>
+										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+											<a className="dropdown-item" href="index.html">Logg ut</a>
+										</div>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
+									</li>
+								</ul>
+
+							</div>
 					</nav>
 				</div>
 			);
@@ -539,6 +576,75 @@ class divEvent extends React.Component {
 	}
 }
 
+class EditEvent extends React.Component {
+	render(){
+		return(
+			<div>
+			<form>
+			<h1>Rediger arrangement </h1>
+				<label>
+					Navn på arrangementet:<br />
+					<input ref='editArrName' type='text' /><br />
+				</label>
+				<label>
+					Startdato:<br />
+					<input ref='editStartDato' type='datetime-local' /><br />
+				</label>
+				<label>
+					sluttdato:<br />
+					<input ref='editSluttDato' type='datetime-local' /><br />
+				</label>
+				<label>
+					kontakttelefon:<br />
+					<input ref='editTlf' type='text' /><br />
+				</label>
+				<label>
+					rolelist:<br />
+					<input ref='editRoles' type='text' /><br />
+				</label>
+				<label>
+					Møtested:<br />
+					<input ref='editMeet' type='text' /><br />
+				</label>
+				<label>
+					description:<br />
+					<input ref='editDescript' type='text' /><br />
+				</label>
+			</form>
+			<button ref='btneditArr'>Rediger Arrangement</button>
+		</div>
+	)}
+
+	componentDidMount() {
+		userService.getDivEvent(eventID,(result) => {
+					this.refs.editArrName.value = result.name;
+					this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
+					this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
+					this.refs.editTlf.value = result.contact_phone;
+					this.refs.editRoles.value = result.rolelist_roleID;
+					this.refs.editMeet.value = result.area;
+					this.refs.editDescript.value = result.description;
+		})
+		this.refs.btneditArr.onclick = () => {
+			var newName = this.refs.editArrName.value;
+			var newStartDato = this.refs.editStartDato.value;
+			var newEndDato = this.refs.editSluttDato.value;
+			var newTlf = this.refs.editTlf.value;
+			var newrolelist = this.refs.editRoles.value;
+			var newMeet = this.refs.editMeet.value;
+			var newDesc = this.refs.editDescript.value;
+
+			userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {
+			})
+			console.log('Oppdatert Arrangement:');
+			alert('Arrangemenetet ble oppdatert');
+			history.push('/divevent/');
+			this.forceUpdate();
+		}
+	}
+
+}
+
 class NewEvent extends React.Component {
 	render(){
 				return(
@@ -771,6 +877,7 @@ ReactDOM.render((
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/divEvent' component={divEvent}/>
 				<Route excat path='/newEvent' component={NewEvent}/>
+				<Route excat path='/editEvent' component={EditEvent}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
 				<Route excat path='/competence' component={Competence}/>
@@ -785,3 +892,17 @@ ReactDOM.render((
 //Sende tilbakemelding etter registrering
 //Spesifiser at man må logge inn med email
 //Må kunne bruke enter til søk, logg inn, registrer, etc
+
+
+// <h1>Navigasjonsbaren</h1>
+// <nav>
+// 	<Link to='/profile'>Din profil</Link><br />
+// 	<Link to='/homepage'>Aktuelle saker</Link><br />
+// 	<Link to='/events'>Arrangementer</Link><br />
+// 	<Link to='/calendar'>Kalender</Link><br />
+// 	<Link to='/contact'>Kontakt oss</Link><br />
+// 	<Link to='/search'>Brukersøk</Link><br />
+// 	<button ref='logout' onClick = {() => {
+// 		loggedIn = false, history.push('/loginPage/'), console.log('logget ut bruker'),
+// 		this.forceUpdate()}}>Logg ut</button><br />
+// </nav>
