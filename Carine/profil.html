@@ -1,70 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="nav.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
-    <meta charset="utf-8">
-    <title>Røde Kors Sanitetsvakt</title>
-    <div class="navbarbg">
-      <ul>
-        <li class="navcont"> <img class="logo" src="rodekors.png" alt="Røde Kors Sanitetsvakt"> </li>
-        <li><a href="navbar.html">Aktuelt</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropbtn">Arrangementer</a>
-          <div class="dropdown-content">
-            <a href="#">Kommende</a>
-            <a href="#">Tidligere</a>
-          </div>
-        </li>
-        <li><a href="#">Kalender</a></li>
-        <li class="dropdown">
-          <a href="omoss.html" class="dropbtn">Om oss</a>
-        </li>
-        <li class="dropdown">
-          <a href="profil.html" class="dropbtn">Min profil</a>
-          <div class="dropdown-content">
-            <a href="index.html">Logg ut</a>
-          </div>
-        </li>
-        <li> <input id="sok" type="text" placeholder="Brukersøk"> </li>
-      </ul>
-    </div>
-  </head>
+<head>
+  <link rel="stylesheet" type="text/css" href="nav.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <title>Røde Kors Sanitetsvakt</title>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <img class="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="navbar.html">Aktuelt <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Kalender</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Arrangementer
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Kommende</a>
+          <a class="dropdown-item" href="#">Tidligere</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="omoss.html">Om oss</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="profil.html" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profil
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="index.html">Logg ut</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Brukersøk" aria-label="Search">
+      <button class="btn btn-sm btn-outline-secondary" type="submit">Søk</button>
+    </form>
+  </div>
+</nav>
+</head>
   <body>
 
-  <div class="storwrap">
-
-    <div class="profilvakter">
-      <h1 class="mellomtittel">Kommende vakter</h1>
+  <div class="grid-container">
+<div>
+    <div class="profile-events">
+      <h1 class="medium-title">Kommende vakter</h1>
     </div>
 
-
-  <div class="aktueltlitenwrap">
-    <div class="profilprofil">
-      <h3 class="mellomtittel">Personalia</h3>
-      <img class="aktueltprofilbilde" src="profilepicture.jpg" alt="">
-      <p class="aktueltprofiltekst">Per Ole Finsnes</p>
-      <p class="aktueltprofiltekst">Vaktpoeng: 14</p>
-      <p class="aktueltprofiltekst">Fødselsdato:</p>
-      <p class="aktueltprofiltekst">Adresse:</p>
-      <p class="aktueltprofiltekst">Postnr:</p>
-      <p class="aktueltprofiltekst">Telefon:</p>
-      <p class="aktueltprofiltekst">Epost:</p>
+    <div class="profile-course-registration">
+      <h2 class="medium-title">Registrere kurs?</h2>
+      <p>Hvilken kvalifisering gjelder det:</p>
+      <input type="text" />
+      <p>Dokumentasjon på kvalifikasjon:</p>
+      <input type="file" />
+      <br> <button type="button">Send inn</button>
     </div>
-  </div>
-
-    <div class="profilkurs">
-      <h1 class="mellomtittel">Registrere kurs?</h1>
-    </div>
-
-    <div class="aktueltlitenwrap">
-    <div class="profildeaktivere">
-      <h3 class="mellomtittel">Deaktivere profil?</h3>
-      <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under. Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
-      <button type="button">Ja, jeg ønsker å deaktivere min profil</button>
-    </div>
-  </div>
 </div>
+
+
+
+  <div>
+  <div>
+    <div class="profile-bg">
+      <h3 class="medium-title">Personalia</h3>
+      <img class="profile-picture" src="profilepicture.jpg" alt="">
+      <p class="profile-text">Per Ole Finsnes</p>
+      <p class="profile-text">Vaktpoeng: 14</p>
+      <p class="profile-text">Fødselsdato:</p>
+      <p class="profile-text">Adresse:</p>
+      <p class="profile-text">Postnr:</p>
+      <p class="profile-text">Telefon:</p>
+      <p class="profile-text">Epost:</p>
+    </div>
+  </div>
+
+      <div >
+        <div class="profile-deactivate">
+          <h3 class="medium-title">Deaktivere profil?</h3>
+          <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under. Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
+          <button type="button">Ja, jeg ønsker å deaktivere min profil</button>
+        </div>
+    </div>
+  </div>
+ </div>
   </body>
 </html>
