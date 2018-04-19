@@ -70,18 +70,6 @@ class UserService {
       callback(result[0]);
     });
   }
-  getComingEvents(thisDate, callback){
-    connection.query('SELECT * FROM event WHERE date_end > ? ORDER BY date_start', [thisDate],(error,result)=> {
-      if(error) throw error;
-      callback(result);
-    })
-  }
-  getPastEvents(thisDate, callback){
-    connection.query('SELECT * FROM event WHERE date_end < ? ORDER BY date_start', [thisDate], (error, result) => {
-      if(error) throw error;
-      callback(result);
-    })
-  }
   getEvent(callback){
     connection.query('SELECT eventID, name AS title, date_start AS startDate, date_end AS endDate FROM event',(error,result)=> {
       if(error) throw error;
@@ -95,9 +83,16 @@ class UserService {
       callback(result[0]);
     });
   }
-  getUpcomingEvents(userid,callback){
-    connection.query('SELECT * FROM event INNER JOIN user_has_event ON event.eventID = user_has_event.eventID WHERE userID =? ORDER BY event.date_start', [userid], (error, result) => {
-      if (error) throw error;
+  getUpcomingevents(callback) {
+  connection.query('SELECT * FROM event WHERE date_start >= CURDATE() ORDER BY date_start', (error, result) => {
+    if(error) throw error;
+
+    callback(result);
+  })
+}
+  getEarlierEvents(callback) {
+    connection.query('SELECT * FROM event WHERE date_start <= CURDATE() ORDER BY date_end', (error, result) => {
+      if(error) throw error;
 
       callback(result);
     })

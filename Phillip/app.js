@@ -191,7 +191,7 @@ class Navbar extends React.Component {
 										<NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									 Kommende
 											</NavLink>
-										 <NavLink exact to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 <NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 Tidligere
 										</NavLink>
 										</div>

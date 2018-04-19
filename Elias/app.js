@@ -181,8 +181,12 @@ class Navbar extends React.Component {
 											Arrangementer
 										</NavLink>
 										<div className="dropdown-menu" aria-labelledby="navbarDropdown">
-											<a className="dropdown-item" href="#">Kommende</a>
-											<a className="dropdown-item" href="#">Tidligere</a>
+										<NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									 Kommende
+											</NavLink>
+										 <NavLink exact to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 Tidligere
+										</NavLink>
 										</div>
 									</li>
 									<li className="nav-item">
@@ -246,7 +250,7 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
-		userService.getUpcomingEvents(userid,(result) => {
+		userService.getUpcomingevents(userid,(result) => {
 			for(let event of result){
 				this.refs.upcomingEvents.innerText += event.name + '\n';
 			}
@@ -533,91 +537,180 @@ class Events extends React.Component {
 			<div>
 				<h1>Arrangementer</h1>
 				<h4>Kommende arrangementer</h4>
-				<button ref='showPreEvents'>Tidligere</button>
-				<button ref='btnNewEvent'>Legg til arrangement</button>
-				<br /><br />
 				<div ref='upcoming'></div>
 			</div>
 		);
 	}
 	componentDidMount(){
-		let btnPressed = false;
-		let thisDate = new Date();
+		userService.getUpcomingevents((result) => {
+			for(let event of result){
+				let divEvent = document.createElement('DIV');
 
-		this.refs.btnNewEvent.onclick = () => {
-			history.push('/newEvent/');
-			this.forceUpdate();
-		}
+				divEvent.innerText = event.name + '\n' +
+					'Lokasjon: ' + event.area + '\n' +
+					'Kontakttelefon: ' + event.contact_phone + '\n';
 
-		this.refs.showPreEvents.onclick = () => {
-			if(btnPressed == false){
-				this.refs.upcoming.innerText = '';
-				userService.getComingEvents(thisDate, (result) => {
-						for(let event of result){
-							let divEvent = document.createElement('DIV');
-
-							let btnEvent = document.createElement('BUTTON');
-							let btnEventTxt = document.createTextNode('Informasjon');
-							let clickedEvent = event.eventID;
-
-							btnEvent.appendChild(btnEventTxt);
-							btnEvent.setAttribute('id', event.eventID);
-
-							btnEvent.onclick = () => {
-								sendToEvent(clickedEvent);
-							}
-
-							divEvent.innerText += event.name + '\n' +
-								'Lokasjon: ' + event.area + '\n' +
-								'Kontakttelefon: ' + event.contact_phone + '\n';
-
-							divEvent.appendChild(btnEvent);
-							this.refs.upcoming.appendChild(divEvent);
-							// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-					}
-					btnPressed = true;
-					this.refs.showPreEvents.innerText = 'Tidligere';
-				})
-			}else{
-				this.refs.upcoming.innerText = '';
-				userService.getPastEvents(thisDate, (result) => {
-						for(let event of result){
-							let divEvent = document.createElement('DIV');
-
-							let btnEvent = document.createElement('BUTTON');
-							let btnEventTxt = document.createTextNode('Informasjon');
-							let clickedEvent = event.eventID;
-
-							btnEvent.appendChild(btnEventTxt);
-							btnEvent.setAttribute('id', event.eventID);
-
-							btnEvent.onclick = () => {
-								sendToEvent(clickedEvent);
-							}
-
-							divEvent.innerText = event.name + '\n' +
-								'Lokasjon: ' + event.area + '\n' +
-								'Kontakttelefon: ' + event.contact_phone + '\n';
-
-							divEvent.appendChild(btnEvent);
-							this.refs.upcoming.appendChild(divEvent);
-							// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-					}
-					btnPressed = false;
-					this.refs.showPreEvents.innerText = 'Kommende';
-				})
+				this.refs.upcoming.appendChild(divEvent);
+				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 			}
+		})
+	}
+}
+
+class EarlierEvents extends React.Component {
+		render(){
+			return(
+				<div>
+					<h1>Arrangementer</h1>
+					<h4>Tidligere arrangementer</h4>
+					<div ref='earlier'></div>
+				</div>
+			);
 		}
+		componentDidMount(){
+			userService.getEarlierEvents((result) => {
+				for(let event of result){
+					let divEvent = document.createElement('DIV');
 
-		this.refs.showPreEvents.click();
+					divEvent.innerText = event.name + '\n' +
+						'Lokasjon: ' + event.area + '\n' +
+						'Kontakttelefon: ' + event.contact_phone + '\n';
 
-		function sendToEvent(id){
-					eventID = id;
-					history.push('/divEvent/');
-
+					this.refs.earlier.appendChild(divEvent);
+					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 				}
-			}
+			})
 		}
+}
+
+	// 		<div>
+	// 			<h1>Arrangementer</h1>
+	// 			<h4>Kommende arrangementer</h4>
+	// 			<button ref='showPreEvents'>Tidligere</button>
+	// 			<button ref='btnNewEvent'>Legg til arrangement</button>
+	// 			<br /><br />
+	// 			<div></div>
+	//
+	// 			<div className="event-container" ref='upcoming'>
+	//
+	// 			    <div className="event-bg">
+	// 			      <h4 className="aboutmediumtitle">Trønderfest</h4>
+	// 			      <p className="event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+	// 						<h4 className='aboutmediumtitle'>test</h4>
+	// 						<p className=""></p>
+	//
+	// 			<button id="myBtn">Open Modal</button>
+	//
+	//
+	// 			<div id="myModal" className="modal">
+	//
+	//
+	// 			  <div className="modal-content">
+	// 			    <span className="close">&times;</span>
+	// 			    <p>Some text in the Modal..</p>
+	// 			  </div>
+	//
+	// 			</div>
+	// 			    </div>
+	// 			</div>
+	// 			<h4 className='aboutmediumtitle'>test</h4>
+	// 		</div>
+	// 	);
+	// }
+	// componentDidMount(){
+	// 	let btnPressed = false;
+	// 	let thisDate = new Date();
+	//
+	// 	this.refs.btnNewEvent.onclick = () => {
+	// 		history.push('/newEvent/');
+	// 		this.forceUpdate();
+	// 	}
+	//
+	// 	this.refs.showPreEvents.onclick = () => {
+	// 		if(btnPressed == false){
+	// 			this.refs.upcoming.innerText = '';
+	// 			userService.getComingEvents(thisDate, (result) => {
+	// 					for(let event of result){
+	// 						let divEvent = document.createElement('DIV');
+	// 							divEvent.className = 'event-bg';
+	//
+	// 						let btnEvent = document.createElement('BUTTON');
+	// 						let btnEventTxt = document.createTextNode('Informasjon');
+	// 						let clickedEvent = event.eventID;
+	//
+	// 						btnEvent.appendChild(btnEventTxt);
+	// 						btnEvent.setAttribute('id', event.eventID);
+	//
+	// 						let titleEvent = document.createElement('h4');
+	// 						titleEvent.className = 'aboutmediumtitle';
+	// 						titleEvent.innerText = event.name;
+	//
+	// 						btnEvent.onclick = () => {
+	// 							sendToEvent(clickedEvent);
+	// 						}
+	//
+	// 						divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+	//
+	// 						divEvent.innerText +=
+	// 							'Lokasjon: ' + event.area + '\n' +
+	// 							'Kontakttelefon: ' + event.contact_phone + '\n';
+	//
+	//
+	//
+	// 						divEvent.appendChild(btnEvent);
+	// 						this.refs.upcoming.appendChild(divEvent);
+	// 						// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+	// 				}
+	// 				btnPressed = true;
+	// 				this.refs.showPreEvents.innerText = 'Tidligere';
+	// 			})
+	// 		}else{
+	// 			this.refs.upcoming.innerText = '';
+	// 			userService.getPastEvents(thisDate, (result) => {
+	// 					for(let event of result){
+	// 						let divEvent = document.createElement('DIV');
+	// 						divEvent.className = 'event-bg';
+	//
+	// 						let btnEvent = document.createElement('BUTTON');
+	// 						let btnEventTxt = document.createTextNode('Informasjon');
+	// 						let clickedEvent = event.eventID;
+	//
+	// 						btnEvent.appendChild(btnEventTxt);
+	// 						btnEvent.setAttribute('id', event.eventID);
+	//
+	// 						let titleEvent = document.createElement('h4');
+	// 						titleEvent.className = 'aboutmediumtitle';
+	// 						titleEvent.innerText = event.name;
+	//
+	// 						divEvent.appendChild(titleEvent);
+	//
+	// 						btnEvent.onclick = () => {
+	// 							sendToEvent(clickedEvent);
+	// 						}
+	//
+	// 						divEvent.innerText += '\n' +
+	// 							'Lokasjon: ' + event.area + '\n' +
+	// 							'Kontakttelefon: ' + event.contact_phone + '\n';
+	//
+	// 						divEvent.appendChild(btnEvent);
+	// 						this.refs.upcoming.appendChild(divEvent);
+	// 						// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+	// 				}
+	// 				btnPressed = false;
+	// 				this.refs.showPreEvents.innerText = 'Kommende';
+	// 			})
+	// 		}
+	// 	}
+	//
+	// 	this.refs.showPreEvents.click();
+	//
+	// 	function sendToEvent(id){
+	// 				eventID = id;
+	// 				history.push('/divEvent/');
+	//
+	// 			}
+	// 		}
+	// 	}
 
 class divEvent extends React.Component {
 	render() {
@@ -1050,6 +1143,7 @@ ReactDOM.render((
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
 				<Route excat path='/competence' component={Competence}/>
+				<Route exact path='/earlierevents' component={EarlierEvents}/>
       </Switch>
     </div>
   </HashRouter>
