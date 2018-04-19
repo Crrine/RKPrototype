@@ -12,6 +12,7 @@
     "moment": "^2.21.0",
     "mysql": "^2.15.0",
     "npm": "^5.8.0",
+    "password-reset": "^0.1.4",
     "rc-calendar": "^9.6.0",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",

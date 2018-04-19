@@ -35,6 +35,22 @@ class UserService {
     });
   }
 
+  getInactiveUsers(inactive, callback) {
+    connection.query('SELECT * FROM user WHERE inactive = 1', (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+
+  changeUser(inactive, userID, callback) {
+    connection.query('UPDATE user SET inactive = ? WHERE userID = ?', [inactive, userID], (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+
   emptystorage() {
     sessionStorage.clear();
   }
@@ -54,6 +70,38 @@ class UserService {
     });
   }
 
+  addRole(name, description, callback) {
+    connection.query('INSERT INTO rolelist (name, description) values (?, ?)', [name, description], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    })
+  }
+
+  editRole(rolelistID, editname, editDescription, callback) {
+    connection.query('UPDATE rolelist SET name=?, description=? WHERE rolelistID=?', [editname, editDescription, rolelistID], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    });
+  }
+
+  getThisRoleList(rolelistID, callback) {
+    connection.query('SELECT * FROM rolelist WHERE rolelistID = ?', [rolelistID], (error, result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
+  getRolelists(callback){
+  connection.query('SELECT * FROM rolelist ORDER BY name', (error,result) => {
+    if(error) throw error;
+
+    callback(result);
+  });
+}
+
   getUser(id, callback){
     connection.query('SELECT * FROM user WHERE userID=?', [id], (error, result) => {
       if (error) throw error;
@@ -70,6 +118,14 @@ class UserService {
   }
   checkifInterested(eventID, userID, callback) {
     connection.query('Select * from Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
+  checkIfAdmin(userid, admin, callback) {
+    connection.query('SELECT * FROM user WHERE userID =? AND admin != null', [userid], (error, result) => {
       if (error) throw error;
 
       callback(result[0]);
@@ -213,6 +269,14 @@ addPassive(userID, date_Start, date_End, callback) {
 
   getUpcomingEvents(userid,callback){
     connection.query('SELECT * FROM event INNER JOIN user_has_event ON (event.eventID = user_has_event.eventID) WHERE userID =? ORDER BY event.date_start', [userid], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    })
+  }
+
+  getEarlierUserEvents(userid,callback){
+    connection.query('SELECT * FROM event INNER JOIN user_has_event ON (event.eventID = user_has_event.eventID) WHERE userID =? AND date_start <= CURDATE() ORDER BY event.date_start', [userid], (error, result) => {
       if (error) throw error;
 
       callback(result);

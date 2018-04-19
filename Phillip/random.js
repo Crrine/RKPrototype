@@ -163,8 +163,6 @@ class Navbar extends React.Component {
 	render(){
 		this.userisloggedin = userService.browseruser();
 		if(this.userisloggedin){
-			if(this.userisloggedin.admin == 1) {
-			}
 			return(
 				<div>
 						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -216,7 +214,6 @@ class Navbar extends React.Component {
 									<li className="nav-item">
 										<NavLink exact to='/admin' className="nav-link" href="#">Admin</NavLink>
 									</li>
-								}
 								</ul>
 
 							</div>
@@ -1421,10 +1418,6 @@ class NewEvent extends React.Component {
 		}
 
 class Search extends React.Component {
-	constructor() {
-		super();
-		this.userisloggedin
-	}
 			render(){
 				return(
 					<div>
@@ -1438,13 +1431,12 @@ class Search extends React.Component {
 				//Sørg for at når man går ut av profilen, endres userid tilbake til admin
 			}
 			componentDidMount(){
-				this.userisloggedin = userService.browseruser();
-
 				this.refs.btnSearch.onclick = () => {
 					let keyword = this.refs.searchField.value;
 
 					userService.search(keyword, (result) => {
 						this.refs.output.innerText = '';
+						console.log(result);
 
 						if(result==''){
 							this.refs.output.innerText = '\n' + 'Ingen resultater';
@@ -1455,6 +1447,7 @@ class Search extends React.Component {
 							let divUser = document.createElement('DIV');
 							let btnUser = document.createElement('BUTTON');
 							let btnUserTxt = document.createTextNode('rediger');
+
 							btnUser.appendChild(btnUserTxt);
 							btnUser.setAttribute('id', user.userID);
 
@@ -1467,17 +1460,15 @@ class Search extends React.Component {
 								'telefon: ' + user.phone);
 
 								divUser.appendChild(divUserTxt);
-								if (this.userisloggedin.admin == 1) {
 								divUser.appendChild(btnUser);
-							}
 								this.refs.output.appendChild(divUser);
 							}
-							})
 
 							function sendToUser(id){
 								viewid = id;
 										history.push('/editotherprofile/',);
 									}
+						})
 					}
 				}
 			}
