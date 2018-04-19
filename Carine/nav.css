@@ -382,6 +382,32 @@ iframe {
   padding: 20px;
   overflow: auto;
   height: 350px;
+  overflow-y: scroll;
+}
+
+.profile-events-grid {
+  grid-template-columns: 50% 50%;
+  display: grid;
+  grid-gap: 20px;
+}
+
+.profile-events-minor-grid{
+  display: grid;
+  grid-template-rows: 100px 100px 100px;
+  grid-gap: 3px;
+
+}
+
+.profile-event-timenplace {
+  font-weight: 700;
+  font-size: 0.7em;
+  margin-top: -5px;
+}
+
+.profile-event-text {
+  font-weight: 500;
+  font-size: 0.7em;
+  margin-top: -13px;
 }
 
 .profile-course-registration {
