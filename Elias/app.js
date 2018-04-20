@@ -30,6 +30,34 @@ class LoginPage extends React.Component {
 				<button ref='btnForgotPassword' hidden onClick = {() => {
 					history.push('/forgotPassword/'),
 					this.forceUpdate()}}>glemt passord</button>
+
+					<div className="container">
+        <div className="login-wrap">
+
+        <div>
+          <img id="login-logo" src="rodekors-01.png" alt="Logo" />
+        <form>
+          <div className="form-group">
+            <label htmlFor="usr">Epost:</label>
+            <input type="text" className="form-control" id="usr" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="pwd">Passord:</label>
+            <input type="password" className="form-control" id="pwd" />
+          </div>
+        </form>
+        <div className="login-grid">
+          <div>
+            <a href="glemt.html">Glemt passord?</a> <br />
+            <a href="#">Registrer ny bruker?</a>
+          </div>
+          <div>
+            <button id="login-button" type="button" className="btn btn-danger">Logg inn</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
 			</div>
 		);
 	}
@@ -176,18 +204,8 @@ class Navbar extends React.Component {
 									<li className="nav-item">
 										<NavLink exact to='/calendar' className="nav-link" href="#">Kalender</NavLink>
 									</li>
-									<li className="nav-item dropdown">
-										<NavLink exact to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Arrangementer
-										</NavLink>
-										<div className="dropdown-menu" aria-labelledby="navbarDropdown">
-										<NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									 Kommende
-											</NavLink>
-										 <NavLink exact to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										 Tidligere
-										</NavLink>
-										</div>
+									<li className="nav-item">
+										<NavLink exact to='/events' className="nav-link">Arrangementer<span className="sr-only">(current)</span></NavLink>
 									</li>
 									<li className="nav-item">
 										<NavLink exact to='/contact' className="nav-link" href="#">Om oss</NavLink>
@@ -214,9 +232,14 @@ class Navbar extends React.Component {
 				// history.push('/loginPage/');
 				// this.forceUpdate();
 				<div>
-					<Link to='/loginPage'>Logg inn</Link>
 				</div>
 			)
+		}
+	}
+	componentDidMount(){
+		if(!loggedIn){
+			history.push('/loginPage');
+			this.forceUpdate();
 		}
 	}
 }
@@ -250,7 +273,7 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
-		userService.getUpcomingevents(userid,(result) => {
+		userService.getUpcomingEvents(userid,(result) => {
 			for(let event of result){
 				this.refs.upcomingEvents.innerText += event.name + '\n';
 			}
@@ -439,8 +462,6 @@ class Homepage extends React.Component {
 	render(){
 		return(
 			<div>
-
-
 				<div className="grid-container">
 					<div className="main-wrap">
 						<h1 className="title">Aktuelle saker</h1>
@@ -500,217 +521,286 @@ class Homepage extends React.Component {
 
 
 			<div>
-					<div className="news-right-top">
+					<div className="news-right-top" ref='usrDiv'>
 							<img className="aktueltprofilbilde" src="profilepicture.jpg" alt="" />
-							<p className="aktueltprofiltekst">Per Ole Finsnes</p>
-							<p className="aktueltprofiltekst">Vaktpoeng: 14</p>
+							<p className="aktueltprofiltekst" ref='usrName'>Per Ole Finsnes</p>
+							<p className="aktueltprofiltekst" ref='usrPoints'>Vaktpoeng: 14</p>
 						</div>
 						<div className="news-right-bottom">
 							<h3 className="mellomtittel">Kommende arrangementer</h3>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<div className="aktueltarrangementer" ref='upcoming'>
+
 							</div>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
+
 						</div>
 					</div>
 				</div>
 			</div>
 		);
 	}
-}
-
-class Events extends React.Component {
-	render(){
-		return(
-			<div>
-				<h1>Arrangementer</h1>
-				<h4>Kommende arrangementer</h4>
-				<div ref='upcoming'></div>
-			</div>
-		);
-	}
 	componentDidMount(){
-		userService.getUpcomingevents((result) => {
-			for(let event of result){
-				let divEvent = document.createElement('DIV');
-
-				divEvent.innerText = event.name + '\n' +
-					'Lokasjon: ' + event.area + '\n' +
-					'Kontakttelefon: ' + event.contact_phone + '\n';
-
-				this.refs.upcoming.appendChild(divEvent);
-				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+			this.refs.usrDiv.onclick = () => {
+				history.push('/profile');
+				this.forceUpdate();
 			}
-		})
-	}
-}
 
-class EarlierEvents extends React.Component {
-		render(){
-			return(
-				<div>
-					<h1>Arrangementer</h1>
-					<h4>Tidligere arrangementer</h4>
-					<div ref='earlier'></div>
-				</div>
-			);
-		}
-		componentDidMount(){
-			userService.getEarlierEvents((result) => {
-				for(let event of result){
-					let divEvent = document.createElement('DIV');
+			userService.getUser(userid, (result) => {
+				this.refs.usrName.innerText = result.firstname + ' ' + result.lastname;
+				this.refs.usrPoints.innerText = 'Vaktpoeng: ' + result.points;
+			})
 
-					divEvent.innerText = event.name + '\n' +
-						'Lokasjon: ' + event.area + '\n' +
-						'Kontakttelefon: ' + event.contact_phone + '\n';
 
-					this.refs.earlier.appendChild(divEvent);
-					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+			userService.getUpcomingevents((result) => {
+					for(let event of result){
+						let divEvent = document.createElement('DIV');
+							divEvent.className = 'aktueltarrangementer';
+
+						let btnEvent = document.createElement('BUTTON');
+						let btnEventTxt = document.createTextNode('Informasjon');
+						let clickedEvent = event.eventID;
+
+						btnEvent.appendChild(btnEventTxt);
+						btnEvent.setAttribute('id', event.eventID);
+
+						let titleEvent = document.createElement('span');
+						// titleEvent.setAttribute('href', '/#');
+						titleEvent.className = "blueTxt";
+						titleEvent.innerText = event.name;
+
+
+						btnEvent.onclick = () => {
+							sendToEvent(clickedEvent);
+						}
+
+						divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+						let eventTxt = document.createElement('P');
+
+						eventTxt.innerText += '\n' +
+							'Lokasjon: ' + event.area + '\n' +
+							'Kontakttelefon: ' + event.contact_phone + '\n' +
+							'Startdato: ' + event.date_start;
+
+						divEvent.appendChild(eventTxt);
+
+						// divEvent.appendChild(btnEvent);
+						this.refs.upcoming.appendChild(divEvent);
+						// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 				}
 			})
 		}
 }
 
-	// 		<div>
-	// 			<h1>Arrangementer</h1>
-	// 			<h4>Kommende arrangementer</h4>
-	// 			<button ref='showPreEvents'>Tidligere</button>
-	// 			<button ref='btnNewEvent'>Legg til arrangement</button>
-	// 			<br /><br />
-	// 			<div></div>
-	//
-	// 			<div className="event-container" ref='upcoming'>
-	//
-	// 			    <div className="event-bg">
-	// 			      <h4 className="aboutmediumtitle">Trønderfest</h4>
-	// 			      <p className="event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-	// 						<h4 className='aboutmediumtitle'>test</h4>
-	// 						<p className=""></p>
-	//
-	// 			<button id="myBtn">Open Modal</button>
-	//
-	//
-	// 			<div id="myModal" className="modal">
-	//
-	//
-	// 			  <div className="modal-content">
-	// 			    <span className="close">&times;</span>
-	// 			    <p>Some text in the Modal..</p>
-	// 			  </div>
-	//
-	// 			</div>
-	// 			    </div>
-	// 			</div>
-	// 			<h4 className='aboutmediumtitle'>test</h4>
-	// 		</div>
-	// 	);
-	// }
-	// componentDidMount(){
-	// 	let btnPressed = false;
-	// 	let thisDate = new Date();
-	//
-	// 	this.refs.btnNewEvent.onclick = () => {
-	// 		history.push('/newEvent/');
-	// 		this.forceUpdate();
-	// 	}
-	//
-	// 	this.refs.showPreEvents.onclick = () => {
-	// 		if(btnPressed == false){
-	// 			this.refs.upcoming.innerText = '';
-	// 			userService.getComingEvents(thisDate, (result) => {
-	// 					for(let event of result){
-	// 						let divEvent = document.createElement('DIV');
-	// 							divEvent.className = 'event-bg';
-	//
-	// 						let btnEvent = document.createElement('BUTTON');
-	// 						let btnEventTxt = document.createTextNode('Informasjon');
-	// 						let clickedEvent = event.eventID;
-	//
-	// 						btnEvent.appendChild(btnEventTxt);
-	// 						btnEvent.setAttribute('id', event.eventID);
-	//
-	// 						let titleEvent = document.createElement('h4');
-	// 						titleEvent.className = 'aboutmediumtitle';
-	// 						titleEvent.innerText = event.name;
-	//
-	// 						btnEvent.onclick = () => {
-	// 							sendToEvent(clickedEvent);
-	// 						}
-	//
-	// 						divEvent.appendChild(titleEvent); //Fiks men lag en p for info
-	//
-	// 						divEvent.innerText +=
-	// 							'Lokasjon: ' + event.area + '\n' +
-	// 							'Kontakttelefon: ' + event.contact_phone + '\n';
-	//
-	//
-	//
-	// 						divEvent.appendChild(btnEvent);
-	// 						this.refs.upcoming.appendChild(divEvent);
-	// 						// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-	// 				}
-	// 				btnPressed = true;
-	// 				this.refs.showPreEvents.innerText = 'Tidligere';
-	// 			})
-	// 		}else{
-	// 			this.refs.upcoming.innerText = '';
-	// 			userService.getPastEvents(thisDate, (result) => {
-	// 					for(let event of result){
-	// 						let divEvent = document.createElement('DIV');
-	// 						divEvent.className = 'event-bg';
-	//
-	// 						let btnEvent = document.createElement('BUTTON');
-	// 						let btnEventTxt = document.createTextNode('Informasjon');
-	// 						let clickedEvent = event.eventID;
-	//
-	// 						btnEvent.appendChild(btnEventTxt);
-	// 						btnEvent.setAttribute('id', event.eventID);
-	//
-	// 						let titleEvent = document.createElement('h4');
-	// 						titleEvent.className = 'aboutmediumtitle';
-	// 						titleEvent.innerText = event.name;
-	//
-	// 						divEvent.appendChild(titleEvent);
-	//
-	// 						btnEvent.onclick = () => {
-	// 							sendToEvent(clickedEvent);
-	// 						}
-	//
-	// 						divEvent.innerText += '\n' +
-	// 							'Lokasjon: ' + event.area + '\n' +
-	// 							'Kontakttelefon: ' + event.contact_phone + '\n';
-	//
-	// 						divEvent.appendChild(btnEvent);
-	// 						this.refs.upcoming.appendChild(divEvent);
-	// 						// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-	// 				}
-	// 				btnPressed = false;
-	// 				this.refs.showPreEvents.innerText = 'Kommende';
-	// 			})
-	// 		}
-	// 	}
-	//
-	// 	this.refs.showPreEvents.click();
-	//
-	// 	function sendToEvent(id){
-	// 				eventID = id;
-	// 				history.push('/divEvent/');
-	//
-	// 			}
-	// 		}
-	// 	}
+
+// class Events extends React.Component {
+// 	render(){
+// 		return(
+// 			<div>
+// 			<div className="event-container">
+//
+// 					<div className="event-bg">
+// 						<h4 className="aboutmediumtitle">Trønderfest</h4>
+// 						<p className="event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+// 						<p className=""></p>
+//
+// 			<button id="myBtn">Open Modal</button>
+//
+// 			<div id="myModal" className="modal">
+//
+// 				<div className="modal-content">
+// 					<span className="close">&times;</span>
+// 					<p>Some text in the Modal..</p>
+// 				</div>
+//
+// 			</div>
+// 					</div>
+// 					<div className="event-bg">
+// 					<div ref='upcoming'></div>
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					<div className="event-bg">
+//
+// 					</div>
+// 					</div>
+// 			</div>
+// 		);
+// 	}
+// 	componentDidMount(){
+// 		userService.getUpcomingevents((result) => {
+// 			for(let event of result){
+// 				let divEvent = document.createElement('DIV');
+//
+// 				divEvent.innerText = event.name + '\n' +
+// 					'Lokasjon: ' + event.area + '\n' +
+// 					'Kontakttelefon: ' + event.contact_phone + '\n';
+//
+// 				this.refs.upcoming.appendChild(divEvent);
+// 				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+// 			}
+// 		})
+// 	}
+// }
+//
+// class EarlierEvents extends React.Component {
+// 		render(){
+// 			return(
+// 				<div>
+// 					<h1>Arrangementer</h1>
+// 					<h4>Tidligere arrangementer</h4>
+// 					<div ref='earlier'></div>
+// 				</div>
+// 			);
+// 		}
+// 		componentDidMount(){
+// 			userService.getEarlierEvents((result) => {
+// 				for(let event of result){
+// 					let divEvent = document.createElement('DIV');
+//
+// 					divEvent.innerText = event.name + '\n' +
+// 						'Lokasjon: ' + event.area + '\n' +
+// 						'Kontakttelefon: ' + event.contact_phone + '\n';
+//
+// 					this.refs.earlier.appendChild(divEvent);
+// 					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+// 				}
+// 			})
+// 		}
+// }
+
+class Events extends React.Component{
+	render(){
+		return(
+			<div>
+				<h1>Arrangementer</h1>
+				<h4>Kommende arrangementer</h4>
+				<button ref='showPreEvents'>Tidligere</button>
+				<button ref='btnNewEvent'>Legg til arrangement</button>
+				<br /><br />
+
+				<div className="event-container" ref='upcoming'></div>
+			</div>
+		);
+		}
+		componentDidMount(){
+		let btnPressed = false;
+		// let thisDate = new Date();
+
+		this.refs.btnNewEvent.onclick = () => {
+			history.push('/newEvent/');
+			this.forceUpdate();
+		}
+
+		this.refs.showPreEvents.onclick = () => {
+			if(btnPressed == false){
+				this.refs.upcoming.innerText = '';
+				userService.getUpcomingevents((result) => {
+						for(let event of result){
+							let divEvent = document.createElement('DIV');
+								divEvent.className = 'event-bg';
+
+							let btnEvent = document.createElement('BUTTON');
+							let btnEventTxt = document.createTextNode('Informasjon');
+							let clickedEvent = event.eventID;
+
+							btnEvent.appendChild(btnEventTxt);
+							btnEvent.setAttribute('id', event.eventID);
+
+							let titleEvent = document.createElement('H4');
+							titleEvent.className = "eventmediumtitle";
+							titleEvent.innerText = event.name;
+
+
+							btnEvent.onclick = () => {
+								sendToEvent(clickedEvent);
+							}
+
+							divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+							let eventTxt = document.createElement('P');
+
+							eventTxt.innerText += '\n' +
+								'Lokasjon: ' + event.area + '\n' +
+								'Kontakttelefon: ' + event.contact_phone + '\n' +
+								'Startdato: ' + event.date_start;
+
+							divEvent.appendChild(eventTxt);
+
+							divEvent.appendChild(btnEvent);
+							this.refs.upcoming.appendChild(divEvent);
+							// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+					}
+					btnPressed = true;
+					this.refs.showPreEvents.innerText = 'Tidligere';
+				})
+			}else{
+				this.refs.upcoming.innerText = '';
+				userService.getPastEvents((result) => {
+						for(let event of result){
+							let divEvent = document.createElement('DIV');
+							divEvent.className = 'event-bg';
+
+							let btnEvent = document.createElement('BUTTON');
+							let btnEventTxt = document.createTextNode('Informasjon');
+							let clickedEvent = event.eventID;
+
+							btnEvent.appendChild(btnEventTxt);
+							btnEvent.setAttribute('id', event.eventID);
+
+							let titleEvent = document.createElement('h4');
+							titleEvent.className = 'eventmediumtitle';
+							titleEvent.innerText = event.name;
+
+							divEvent.appendChild(titleEvent);
+
+							btnEvent.onclick = () => {
+								sendToEvent(clickedEvent);
+							}
+
+							let eventTxt = document.createElement('P');
+
+							eventTxt.innerText += '\n' +
+								'Lokasjon: ' + event.area + '\n' +
+								'Kontakttelefon: ' + event.contact_phone + '\n' +
+								'Startdato: ' + event.date_start;
+
+							divEvent.appendChild(eventTxt);
+
+							divEvent.appendChild(btnEvent);
+							this.refs.upcoming.appendChild(divEvent);
+							// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+					}
+					btnPressed = false;
+					this.refs.showPreEvents.innerText = 'Kommende';
+				})
+			}
+		}
+
+		this.refs.showPreEvents.click();
+
+		function sendToEvent(id){
+					eventID = id;
+					history.push('/divEvent/');
+
+			}
+		}
+	}
 
 class divEvent extends React.Component {
 	render() {
@@ -1143,7 +1233,6 @@ ReactDOM.render((
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
 				<Route excat path='/competence' component={Competence}/>
-				<Route exact path='/earlierevents' component={EarlierEvents}/>
       </Switch>
     </div>
   </HashRouter>

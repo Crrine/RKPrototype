@@ -285,6 +285,18 @@ iframe {
   margin-top: 10px;
 }
 
+.eventmediumtitle {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+  margin-bottom:0px;
+}
+
+.blueTxt {
+  color:blue;
+  margin-bottom:0px;
+}
+
 .aboutbreadtext {
   text-align: left;
   font-size: 1em;
@@ -316,10 +328,10 @@ iframe {
 .event-bg {
   background-color: white;
   padding: 20px;
-  overflow: auto;
+  overflow: hidden;
   border-radius: 15px;
   height: 200px;
-  width: 540px;
+  width: 450px;
   margin: 15px;
 }
 
