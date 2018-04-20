@@ -184,7 +184,7 @@ class Navbar extends React.Component {
 			return(
 				<div>
 
-						<link rel="stylesheet" type="text/css" href="nav.css" />
+						<link rel="stylesheet" type="text/css" href="../carine/nav.css" />
 						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 						<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet" />
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous" />
@@ -248,30 +248,17 @@ class Profile extends React.Component{
 	render(){
 		return(
 			<div>
-				<h1>Din profil</h1>
-				<span ref='userName'></span><br />
-				<span ref='userEmail'></span><br />
-				<span ref='userPoints'></span><br />
-				Kommende arrangementer:<br />
-				<span ref='upcomingEvents'></span>
-				<button ref='btnShowInfo'>Vis info</button>
-				<button onClick = {() => {
-					history.push('/editprofile/'),
-					this.forceUpdate()}}>Rediger</button>
-				<button ref='btnDeactivate'>Deaktiver</button>
-				<button onClick = {() => {
-					history.push('/competence/'),
-					this.forceUpdate()}}>Kompetanse</button>
-				<div ref='showInfo'>
-					<span ref='userAddress'></span><br />
-					<span ref='userCity'></span><br />
-					<span ref='userZip'></span><br />
-					<span ref='userPhone'></span><br />
-					<span ref='userAge'></span><br />
-				</div>
+			<button ref='btnShowInfo'>Vis info</button>
+			<button onClick = {() => {
+				history.push('/editprofile/'),
+				this.forceUpdate()}}>Rediger</button>
+			<button ref='btnDeactivate'>Deaktiver</button>
+			<button onClick = {() => {
+				history.push('/competence/'),
+				this.forceUpdate()}}>Kompetanse</button>
+			<div ref='showInfo'>
 
-
-
+			</div>
 
 				<div className="grid-container">
 <div>
@@ -281,36 +268,14 @@ class Profile extends React.Component{
     <div>
       <h3 className="medium-title">Kommende vakter</h3>
       <div className="profile-events-minor-grid">
-        <div>
-          <h6>Trønderfest</h6>
-          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div>
-          <h6>Trønderfest</h6>
-          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div>
-          <h6>Trønderfest</h6>
-          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-      </div>
+
+				<div ref='upcoming'></div>
+
+			</div>
     </div>
     <div>
       <h3 className="medium-title">Deltatte vakter</h3>
       <div className="profile-events-minor-grid">
-        <div>
-          <h6>Trønderfest</h6>
-          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div>
-          <h6>Trønderfest</h6>
-          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
         <div>
           <h6>Trønderfest</h6>
           <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
@@ -332,20 +297,18 @@ class Profile extends React.Component{
 
 </div>
 
-
-
   <div>
   <div>
     <div className="profile-bg">
       <h3 className="medium-title">Personalia</h3>
       <img className="profile-picture" src="profilepicture.jpg" alt="" />
-      <p className="profile-text">Per Ole Finsnes</p>
-      <p className="profile-text">Vaktpoeng: 14</p>
-      <p className="profile-text">Fødselsdato:</p>
-      <p className="profile-text">Adresse:</p>
-      <p className="profile-text">Postnr:</p>
-      <p className="profile-text">Telefon:</p>
-      <p className="profile-text">Epost:</p>
+      <p className="profile-text" ref='userName'></p>
+      <p className="profile-text" ref='userPoints'>Vaktpoeng:</p>
+      <p className="profile-text" ref='userAge'>Fødselsdato:</p>
+      <p className="profile-text" ref='userAddress'>Adresse:</p>
+      <p className="profile-text" ref='userZip'>Postnr:</p>
+      <p className="profile-text" ref='userPhone'>Telefon:</p>
+      <p className="profile-text" ref='userEmail'>Epost:</p>
     </div>
   </div>
 
@@ -364,19 +327,57 @@ class Profile extends React.Component{
 		);
 	}
 	componentDidMount(){
-		userService.getUpcomingEvents(userid,(result) => {
-			for(let event of result){
-				this.refs.upcomingEvents.innerText += event.name + '\n';
+
+		userService.getUpcomingevents((result) => {
+				for(let event of result){
+					let divEvent = document.createElement('DIV');
+						divEvent.className = 'aktueltarrangementer';
+
+					let btnEvent = document.createElement('BUTTON');
+					let btnEventTxt = document.createTextNode('Informasjon');
+					let clickedEvent = event.eventID;
+
+					btnEvent.appendChild(btnEventTxt);
+					btnEvent.setAttribute('id', event.eventID);
+
+					let titleEvent = document.createElement('span');
+					// titleEvent.setAttribute('href', '/#');
+					titleEvent.className = "blueTxt";
+					titleEvent.innerText = event.name;
+
+
+					btnEvent.onclick = () => {
+						sendToEvent(clickedEvent);
+					}
+
+					divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+					let eventTxt = document.createElement('P');
+
+					eventTxt.innerText += '\n' +
+						'Lokasjon: ' + event.area + '\n' +
+						'Kontakttelefon: ' + event.contact_phone + '\n' +
+						'Startdato: ' + event.date_start;
+
+					divEvent.appendChild(eventTxt);
+
+					// divEvent.appendChild(btnEvent);
+					this.refs.upcoming.appendChild(divEvent);
+					// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
 			}
 		})
 
  		userService.getUser(userid,(result) => {
 			let btnShowInfoPressed = false;
 
-			this.refs.userName.innerText = result.firstname;
+			this.refs.userName.innerText += result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
-			this.refs.userEmail.innerText = result.email;
-			this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
+			this.refs.userAge.innerText += " " + result.age;
+			this.refs.userPhone.innerText += " " + result.phone;
+			this.refs.userEmail.innerText += " " + result.email;
+			this.refs.userPoints.innerText += " " + result.points;
+			this.refs.userZip.innerText += " " + result.zip;
+			this.refs.userAddress.innerText += " " + result.address;
 
 			this.refs.btnShowInfo.onclick = () => {
 				if(btnShowInfoPressed == false){
