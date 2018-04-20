@@ -7,6 +7,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import globalize from 'globalize';
 import { NavLink } from 'react-router-dom';
+import mail from 'mail';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
@@ -65,7 +66,6 @@ class LoginPage extends React.Component {
 						this.userisloggedin = userService.browseruser()
 						userid = this.userisloggedin.userID;
 						history.push('/Navbar/');
-						window.location.reload()
 					}else {
 						console.log("mislykket innlogging");
 						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
@@ -94,9 +94,11 @@ class ForgotPassword extends React.Component{
 			)
 		}
 		componentDidMount(){
+			this.refs.sendPass.onclick = () => {
 
 		}
 	}
+}
 
 class Register extends React.Component {
 	render(){
@@ -148,11 +150,15 @@ class Register extends React.Component {
 					</form>
 					<span ref="feilmelding"></span> <br />
 					<button ref='btnSendReg'>Registrer</button>
+					<button ref='backtologin'>Back</button>
 				</div>
 			)
 		}
 	}	//bør man heller ha en form-action og knappen inne i formen?
 	componentDidMount(){
+		this.refs.backtologin.onclick = () => {
+			history.push('/loginPage/')
+		}
 		this.refs.btnSendReg.onclick = () => {
 		 	let firstname = this.refs.regFirstName.value;
 			let lastname = this.refs.regLastName.value;
@@ -185,7 +191,71 @@ class Navbar extends React.Component {
 	}
 	render(){
 		this.userisloggedin = userService.browseruser();
-		if(this.userisloggedin){
+		if(this.userisloggedin && this.userisloggedin.admin == 1){
+			if (this.userisloggedin.admin == 1) {
+			return(
+				<div>
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet" />
+						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous" />
+						<meta charSet="utf-8" />
+						<title>Røde Kors Sanitetsvakt</title>
+
+						<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+							<img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt" />
+							<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span className="navbar-toggler-icon"></span>
+							</button>
+							<div className="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul className="navbar-nav mr-auto">
+									<li className="nav-item">
+										<NavLink exact to='/homepage' className="nav-link">Aktuelt <span className="sr-only">(current)</span></NavLink>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/calendar' className="nav-link" href="#">Kalender</NavLink>
+									</li>
+									<li className="nav-item dropdown">
+										<NavLink exact to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Arrangementer
+										</NavLink>
+										<div className="dropdown-menu" aria-labelledby="navbarDropdown">
+										<NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									 Kommende
+											</NavLink>
+										 <NavLink exact to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 Tidligere
+										</NavLink>
+										</div>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/contact' className="nav-link" href="#">Om oss</NavLink>
+									</li>
+									<li className="nav-item dropdown">
+										<NavLink exact to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Profil
+										</NavLink>
+										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+										<NavLink exact to='/loggut' onClick = {() => {
+											userService.emptystorage();
+											history.push('/loginPage/')
+										}}>
+											Logg ut
+										</NavLink>
+										</div>
+									</li>
+									<li className="nav-item">
+										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
+									</li>
+									<li>
+									<NavLink exact to='/admin' className="nav-link" href="#">Admin</NavLink>
+									</li>
+								</ul>
+							</div>
+					</nav>
+				</div>
+			);
+		}
+		}else if (this.userisloggedin){
 			return(
 				<div>
 						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -239,16 +309,13 @@ class Navbar extends React.Component {
 										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
 									</li>
 									<div ref="adminside">
-									<li>
-									<NavLink exact to='/admin' className="nav-link" href="#">Admin</NavLink>
-									</li>
 									</div>
 								</ul>
 							</div>
 					</nav>
 				</div>
-			);
-		}else{
+			)
+		} else {
 			return(
 				// history.push('/loginPage/');
 				// this.forceUpdate();
@@ -260,12 +327,6 @@ class Navbar extends React.Component {
 	}
 	componentDidMount() {
 		this.userisloggedin = userService.browseruser();
-		if (this.userisloggedin) {
-			if (this.userisloggedin.admin !== 1) {
-					this.refs.adminside.hidden = true;
-			}
-	}
-	this.forceUpdate();
 	}
 }
 
@@ -319,7 +380,7 @@ class Profile extends React.Component{
 			}
 		})
 
-		userService.getUpcomingEvents(viewid ? viewid : userid,(result) => {
+		userService.getUpcomingEvents(userid,(result) => {
 			for(let event of result){
 				this.refs.upcomingEvents.innerText += event.name + '\n';
 			}
@@ -393,7 +454,9 @@ class EditOtherProfile extends React.Component{
 					<button onClick = {() => {
 						history.push('/competence/'),
 						redid = viewid;
-						this.forceUpdate()}}>Kompetanse</button><br />
+						this.forceUpdate()}}>Kompetanse</button>
+						<button ref="makeadmin">Gjør om til admin</button><br />
+						<span ref="utskrift"></span><br />
 						<span ref="passive"></span>
 					<div ref='showInfo'>
 						<span ref='userAddress'></span><br />
@@ -407,6 +470,23 @@ class EditOtherProfile extends React.Component{
 		}
 
 		componentDidMount(){
+					this.refs.makeadmin.onclick = () => {
+						this.refs.makeadmin.disabled = true;
+						this.refs.utskrift.innerText = 'Brukeren har nå admin egenskaper'
+						userService.getUser(viewid, (result) => {
+							let admin = 1;
+							userService.makeAdmin(admin, viewid, (result) => {
+							})
+						})
+					}
+					userService.getThisUser2(viewid, (result) => {
+						if(result.admin == 1) {
+							this.refs.makeadmin.hidden = true;
+							this.refs.utskrift.innerText = 'Brukeren er en Administrator'
+						}
+					userService.checkIfAdmin(admin, viewid, (result) => {
+					})
+				})
 			userService.getUpcomingEvents(viewid ? viewid : userid,(result) => {
 				for(let event of result){
 					this.refs.upcomingEvents.innerText += event.name + '\n';
@@ -1186,9 +1266,11 @@ class Administrator extends React.Component {
 		this.state = {
 			brukergodkjenning: '',
 			mannskapsliste: '',
+			avslattebrukere: '',
 		}
 		this.brukere = '';
 		this.liste = '';
+		this.avslatt = '';
 		}
 
 	render() {
@@ -1199,6 +1281,10 @@ class Administrator extends React.Component {
 		<ul>
 		{this.state.brukergodkjenning ? this.state.brukergodkjenning:'Alle brukere er aktivert'}
 		</ul>
+		<h5> Avslåtte brukere </h5>
+		<ul>
+		{this.state.avslattebrukere ? this.state.avslattebrukere: 'Ingen brukere er avslått'}
+		</ul>
 		<h3> roller </h3>
 		<ul>
 		{this.state.mannskapsliste}
@@ -1208,12 +1294,36 @@ class Administrator extends React.Component {
 		)
 	}
 
+	updateDenyUser(userid) {
+		let inactive = 2;
+		userService.changeUser(inactive, userid, (result) => {
+		userService.getInactiveUsers(userid, (result) => {
+				this.brukere = result;
+				this.skrivutinfo();
+				userService.getDeniedUsers(userid, (result) => {
+					this.avslatt = result;
+					this.skrivutavslatt();
+				})
+			})
+		})
+	}
+
 	updateuser(userid) {
 	let	inactive = 0;
 		userService.changeUser(inactive, userid, (result) => {
 		userService.getInactiveUsers(userid, (result) => {
 				this.brukere = result;
 				this.skrivutinfo();
+			})
+		})
+	}
+
+	updateavslatt(userid) {
+	let	inactive = 0;
+		userService.changeUser(inactive, userid, (result) => {
+		userService.getDeniedUsers(userid, (result) => {
+				this.avslatt = result;
+				this.skrivutavslatt();
 			})
 		})
 	}
@@ -1234,6 +1344,21 @@ class Administrator extends React.Component {
 		this.setState ({mannskapsliste: mannskap})
 	}
 
+	skrivutavslatt() {
+		let utskriftavslatt = []
+		for (let user of this.avslatt) {
+			utskriftavslatt.push(
+				<li key = {user.userID}>
+				{user.firstname + " " + user.lastname}
+				<button onClick = {() => {
+					this.updateavslatt(user.userID)
+				}}>Angre</button>
+					</li>
+				)
+		}
+		this.setState ({avslattebrukere: utskriftavslatt})
+	}
+
 	skrivutinfo() {
 		let utskrift = []
 		for (let user of this.brukere) {
@@ -1243,6 +1368,9 @@ class Administrator extends React.Component {
 				<button onClick = {() => {
 					this.updateuser(user.userID)
 				}}>aksepter</button>
+				<button onClick = {() => {
+					this.updateDenyUser(user.userID)
+				}}>Avslå</button>
 					</li>
 				)
 		}
@@ -1261,6 +1389,10 @@ class Administrator extends React.Component {
 		userService.getRolelists((result) => {
 			this.liste = result;
 			this.skrivutmannskapsinfo();
+		})
+		userService.getDeniedUsers(userid, (result) => {
+			this.avslatt = result;
+			this.skrivutavslatt();
 		})
 	}
 	}
