@@ -51,8 +51,24 @@ class UserService {
     })
   }
 
+  getDeniedUsers(inactive, callback) {
+    connection.query('SELECT * FROM user WHERE inactive = 2', (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+
   getThisUser(email, callback) {
     connection.query('SELECT * FROM user WHERE email = ?', [email], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
+  getThisUser2(userID, callback) {
+    connection.query('SELECT * FROM user WHERE userID = ?', [userID], (error,result) => {
       if(error) throw error;
 
       callback(result[0]);
@@ -64,6 +80,22 @@ class UserService {
       if(error) throw error;
 
       callback(result[0]);
+    })
+  }
+
+  checkIfAdmin(admin, userID, callback) {
+    connection.query('SELECT * FROM user WHERE admin = ? AND userID = ?', [admin, userID], (error, result) => {
+      if (error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
+  makeAdmin(admin, userID, callback) {
+    connection.query('UPDATE user SET admin = ? WHERE userID = ?', [admin, userID], (error, result) => {
+      if(error) throw error;
+
+      callback(result);
     })
   }
 
