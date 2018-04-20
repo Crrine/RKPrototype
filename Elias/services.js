@@ -97,6 +97,13 @@ getUpcomingEvents(userid,callback){
       callback(result);
     })
   }
+  getEarlierUserEvents(userid,callback){
+      connection.query('SELECT * FROM event INNER JOIN user_has_event ON (event.eventID = user_has_event.eventID) WHERE userID =? AND date_start <= CURDATE() ORDER BY event.date_start', [userid], (error, result) => {
+        if (error) throw error;
+
+        callback(result);
+      })
+    }
   getPastEvents(callback) {
     connection.query('SELECT * FROM event WHERE date_start <= CURDATE() ORDER BY date_end', (error, result) => {
       if(error) throw error;
@@ -152,14 +159,14 @@ getUpcomingEvents(userid,callback){
     });
   }
   regCompetence(userid, compid, finished, callback){
-    connection.query('INSERT into user_has_competence (user_userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
+    connection.query('INSERT into user_has_competence (userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
       if(error) throw error;
 
       callback();
     })
   }
   getUserComp(userid, callback){
-    connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE user_userID =?', [userid], (error, result) => {
+    connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE userID =?', [userid], (error, result) => {
       if(error) throw error;
 
       callback(result);

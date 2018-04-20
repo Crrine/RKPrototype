@@ -247,21 +247,10 @@ class Navbar extends React.Component {
 class Profile extends React.Component{
 	render(){
 		return(
-			<div>
-			<button ref='btnShowInfo'>Vis info</button>
-			<button onClick = {() => {
-				history.push('/editprofile/'),
-				this.forceUpdate()}}>Rediger</button>
-			<button ref='btnDeactivate'>Deaktiver</button>
-			<button onClick = {() => {
-				history.push('/competence/'),
-				this.forceUpdate()}}>Kompetanse</button>
-			<div ref='showInfo'>
 
-			</div>
 
 				<div className="grid-container">
-<div>
+				<div>
 
     <div className="profile-events">
       <div className="profile-events-grid">
@@ -277,25 +266,29 @@ class Profile extends React.Component{
       <h3 className="medium-title">Deltatte vakter</h3>
       <div className="profile-events-minor-grid">
         <div>
-          <h6>Trønderfest</h6>
-          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
-          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+				<div ref='earlierevents'></div>
+
         </div>
       </div>
     </div>
       </div>
     </div>
 
-    <div className="profile-course-registration">
-      <h2 className="medium-title">Registrere kurs?</h2>
-      <p>Hvilken kvalifisering gjelder det:</p>
-      <input type="text" />
-      <p>Dokumentasjon på kvalifikasjon:</p>
-      <input type="file" />
-      <br /> <button type="button">Send inn</button>
-    </div>
 
-</div>
+			<div className="profile-course-registration">
+				<h2 className="medium-title">Registrere kurs?</h2>
+				<div>
+					<p>Hvilken kvalifisering gjelder det:</p>
+					<form ref='compForm'>
+						<select ref='compSelect'>
+						</select>
+					</form>
+					<button ref='btnAddComp'>Send inn</button>
+					<div ref='compOutput'></div>
+				</div>
+			</div>
+		</div>
 
   <div>
   <div>
@@ -304,29 +297,108 @@ class Profile extends React.Component{
       <img className="profile-picture" src="profilepicture.jpg" alt="" />
       <p className="profile-text" ref='userName'></p>
       <p className="profile-text" ref='userPoints'>Vaktpoeng:</p>
-      <p className="profile-text" ref='userAge'>Fødselsdato:</p>
+      <p className="profile-text" ref='userAge'>Alder:</p>
       <p className="profile-text" ref='userAddress'>Adresse:</p>
       <p className="profile-text" ref='userZip'>Postnr:</p>
       <p className="profile-text" ref='userPhone'>Telefon:</p>
       <p className="profile-text" ref='userEmail'>Epost:</p>
-    </div>
+			<button onClick = {() => {
+				history.push('/editprofile/'),
+				this.forceUpdate()}}>Rediger</button>
+		</div>
   </div>
 
     <div>
         <div className="profile-deactivate">
           <h3 className="medium-title">Deaktivere profil?</h3>
-          <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under. Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
-          <button type="button">Ja, jeg ønsker å deaktivere min profil</button>
+          <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under, Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
+          <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere min profil</button>
         </div>
     </div>
   </div>
- </div>
+ 
 
 
 			</div>
 		);
 	}
 	componentDidMount(){
+
+
+
+		let compid = 0;
+
+		userService.getCompetences((result) => {
+			for(let comp of result){
+				let compSel = document.createElement('OPTION');
+				let compTitle = document.createTextNode(comp.title);
+
+				compSel.appendChild(compTitle);
+				this.refs.compSelect.appendChild(compSel);
+			}
+		})
+		this.refs.btnAddComp.onclick = () => {
+			let title = this.refs.compSelect.value;
+			let finished = '2018-01-01';
+
+			userService.getCompetence(title,(result) => {
+				compid = result.compID;
+				userService.regCompetence(userid, compid, finished, (result) => {
+					console.log(compid);
+					this.forceUpdate();
+				})
+			})
+			 // Skriv en tekst her om at det er sendt til godkjenning
+		}
+		userService.getUserComp(userid, (result) => {
+			for (let usercomp of result){
+				this.refs.compOutput.innerText += usercomp.title + '\n';
+			}
+		})
+
+
+
+
+
+
+		userService.getEarlierUserEvents(userid, (result) => {
+			for (let event of result){
+				let divEvent = document.createElement('DIV');
+					divEvent.className = 'aktueltarrangementer';
+
+				let btnEvent = document.createElement('BUTTON');
+				let btnEventTxt = document.createTextNode('Informasjon');
+				let clickedEvent = event.eventID;
+
+				btnEvent.appendChild(btnEventTxt);
+				btnEvent.setAttribute('id', event.eventID);
+
+				let titleEvent = document.createElement('span');
+				// titleEvent.setAttribute('href', '/#');
+				titleEvent.className = "blueTxt";
+				titleEvent.innerText = event.name;
+
+
+				btnEvent.onclick = () => {
+					sendToEvent(clickedEvent);
+				}
+
+				divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+				let eventTxt = document.createElement('P');
+
+				eventTxt.innerText += '\n' +
+					'Lokasjon: ' + event.area + '\n' +
+					'Kontakttelefon: ' + event.contact_phone + '\n' +
+					'Startdato: ' + event.date_start;
+
+				divEvent.appendChild(eventTxt);
+
+				// divEvent.appendChild(btnEvent);
+				this.refs.earlierevents.appendChild(divEvent);
+				// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+		}
+		})
 
 		userService.getUpcomingevents((result) => {
 				for(let event of result){
@@ -368,8 +440,6 @@ class Profile extends React.Component{
 		})
 
  		userService.getUser(userid,(result) => {
-			let btnShowInfoPressed = false;
-
 			this.refs.userName.innerText += result.firstname;
 			this.refs.userName.innerText += " " + result.lastname;
 			this.refs.userAge.innerText += " " + result.age;
@@ -378,23 +448,6 @@ class Profile extends React.Component{
 			this.refs.userPoints.innerText += " " + result.points;
 			this.refs.userZip.innerText += " " + result.zip;
 			this.refs.userAddress.innerText += " " + result.address;
-
-			this.refs.btnShowInfo.onclick = () => {
-				if(btnShowInfoPressed == false){
-					this.refs.showInfo.innerText =
-					" Adresse: " + result.address + '\n' +
-					" By: " + result.city + '\n' +
-					" Postnummer: " + result.zip + '\n' +
-					" Tlf: " + result.phone + '\n' +
-					" Alder: " + result.age + '\n';
-					this.refs.btnShowInfo.innerText = "Skjul info";
-					btnShowInfoPressed = true;
-				}else{
-					this.refs.showInfo.innerText = "";
-					this.refs.btnShowInfo.innerText = "Vis info";
-					btnShowInfoPressed = false;
-				}
-			}
 		});
 		this.refs.btnDeactivate.onclick = () => {
 			let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
@@ -495,60 +548,7 @@ class EditProfile extends React.Component{
 	}
 }
 
-class Competence extends React.Component{
-	render(){
-		return(
-			<div>
-				<h1>Kompetanse</h1>
-				<div>
-					<p>Legg til kompetanse:</p>
-					<form ref='compForm'>
-						<select ref='compSelect'>
-						</select>
-					</form>
-					<button ref='btnAddComp'>Legg til</button>
-					<button ref='btnProfile'>Tilbake</button>
-					<div ref='compOutput'></div>
-				</div>
-			</div>
-		)
-	}
-	componentDidMount(){
-		let compid = 0;
 
-		this.refs.btnProfile.onclick = () => {
-			history.push('/profile');
-			this.forceUpdate();
-		}
-
-		userService.getCompetences((result) => {
-			for(let comp of result){
-				let compSel = document.createElement('OPTION');
-				let compTitle = document.createTextNode(comp.title);
-
-				compSel.appendChild(compTitle);
-				this.refs.compSelect.appendChild(compSel);
-			}
-		})
-		this.refs.btnAddComp.onclick = () => {
-			let title = this.refs.compSelect.value;
-			let finished = '2018-01-01';
-
-			userService.getCompetence(title,(result) => {
-				compid = result.compID;
-				userService.regCompetence(userid, compid, finished, (result) => {
-					console.log(compid);
-				})
-			})
-			this.forceUpdate(); // Skriv en tekst her om at det er sendt til godkjenning
-		}
-		userService.getUserComp(userid, (result) => {
-			for (let usercomp of result){
-				this.refs.compOutput.innerText += usercomp.title + '\n';
-			}
-		})
-	}
-}
 
 class Homepage extends React.Component {
 	render(){
@@ -1324,7 +1324,6 @@ ReactDOM.render((
 				<Route excat path='/editEvent' component={EditEvent}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
-				<Route excat path='/competence' component={Competence}/>
       </Switch>
     </div>
   </HashRouter>
