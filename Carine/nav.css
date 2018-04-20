@@ -12,11 +12,13 @@ body {
 }
 
 .login-logo {
-  padding-bottom: 25px;
-  width: 90%;
   margin: 0 auto;
+  padding-bottom: 20px;
 }
 
+.login-logo-img {
+  width: 70%;
+}
 
 .login-wrap {
   width: 40%;
@@ -31,6 +33,19 @@ body {
   height: 70%;
 }
 
+.login-wrap-reg {
+  width: 40%;
+  background: rgba(255,255,255, 0.8);
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 50px;
+  height: 80%;
+}
+
 .login-grid {
   grid-template-columns: 50% 50%;
   display: grid;
@@ -42,6 +57,11 @@ body {
     display:block;
     margin-right:0px;
     clear:left;
+}
+
+.login-text {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 0.9em;
 }
 
 p {
@@ -414,10 +434,6 @@ iframe {
   margin-top: 30px;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 52a15089d0546f945dadd3f03a957a7743578915
 .eventmediumtitle {
   text-align: left;
   color: #ad0513;
