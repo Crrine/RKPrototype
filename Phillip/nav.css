@@ -2,11 +2,14 @@ body {
   background-color: #f7eed7 !important;
   margin: 0;
 }
-
 #loginlogo {
   width: 65%;
 }
 
+
+#yolo {
+  visibility: hidden;
+}
 .center {
   padding-top: 60px;
   margin: auto;

@@ -19,6 +19,7 @@ let eventID = null;
 let viewid = null;
 let redid = null;
 let rolelistID = null;
+let inactive = '';
 
 class LoginPage extends React.Component {
 	constructor() {
@@ -44,21 +45,35 @@ class LoginPage extends React.Component {
 		this.refs.btnLogin.onclick = () => {
 				let inpUser = this.refs.inpUser.value;
 				let inpPassword = this.refs.inpPassword.value;
+				let email = this.refs.inpUser.value;
 
-				userService.loginUser(inpUser, inpPassword, (result) => {
+				userService.getThisUser(email, (result) => {
+					let inactive = result.inactive;
+					userService.checkIfUserIsInactive(email, inactive, (result) => {
+						if (inactive == 1) {
+							this.refs.loginOutput.innerText = 'Brukeren er ikke aktivert, kontakt administator';
+							this.refs.btnForgotPassword.hidden = true;
+							userid = null;
+							userService.emptystorage();
+						}
+					})
+				})
+					userService.loginUser(inpUser, inpPassword, (result) => {
+
 					if(result != undefined){
 						console.log("logget inn bruker - ID:" + result.userID);
 						this.userisloggedin = userService.browseruser()
 						userid = this.userisloggedin.userID;
 						history.push('/Navbar/');
-					}else{
+						window.location.reload()
+					}else {
 						console.log("mislykket innlogging");
 						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
 						this.refs.btnForgotPassword.hidden = false;
 
 						userService.emptystorage();
 					}
-				})
+	})
 			}
 			this.refs.btnReg.onclick = () => {
 				regPress = true;
@@ -127,7 +142,11 @@ class Register extends React.Component {
 							Passord:<br />
 							<input ref='regPassword' type='password' /><br />
 						</label>
+						<label> gjenta passord:<br />
+						<input ref='repeatregPassword' type='password' /><br />
+						</label>
 					</form>
+					<span ref="feilmelding"></span> <br />
 					<button ref='btnSendReg'>Registrer</button>
 				</div>
 			)
@@ -145,11 +164,15 @@ class Register extends React.Component {
 			let phone = this.refs.regPhone.value;
 			let age = this.refs.regAge.value;
 
+			if (this.refs.repeatregPassword.value == this.refs.regPassword.value) {
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
 				alert('Brukeren er opprettet');
 				history.push('/loginPage/');
 				this.forceUpdate(); //Ikke bruke forceUpdate
 			})
+		} else {
+			this.refs.feilmelding.innerText = 'Passordene er ikke like';
+		}
 			// alert('Informasjonen er ugyldig'); lag noen if-error-sak
 		}
 	}
@@ -163,8 +186,6 @@ class Navbar extends React.Component {
 	render(){
 		this.userisloggedin = userService.browseruser();
 		if(this.userisloggedin){
-			if(this.userisloggedin.admin == 1) {
-			}
 			return(
 				<div>
 						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -207,18 +228,22 @@ class Navbar extends React.Component {
 											Profil
 										</NavLink>
 										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-											<a className="dropdown-item" href="index.html">Logg ut</a>
+										<NavLink exact to='/loggut' onClick = {() => {
+											userService.emptystorage();
+										}}>
+											Logg ut
+										</NavLink>
 										</div>
 									</li>
 									<li className="nav-item">
 										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
 									</li>
-									<li className="nav-item">
-										<NavLink exact to='/admin' className="nav-link" href="#">Admin</NavLink>
+									<div ref="adminside">
+									<li>
+									<NavLink exact to='/admin' className="nav-link" href="#">Admin</NavLink>
 									</li>
-								}
+									</div>
 								</ul>
-
 							</div>
 					</nav>
 				</div>
@@ -232,6 +257,15 @@ class Navbar extends React.Component {
 				</div>
 			)
 		}
+	}
+	componentDidMount() {
+		this.userisloggedin = userService.browseruser();
+		if (this.userisloggedin) {
+			if (this.userisloggedin.admin !== 1) {
+					this.refs.adminside.hidden = true;
+			}
+	}
+	this.forceUpdate();
 	}
 }
 
@@ -251,6 +285,7 @@ class Profile extends React.Component{
 				<span ref='upcomingEvents'></span>
 				tidligere deltatt arangementer:<br />
 				<span ref="earlierevents"></span>
+				<span ref="usercompetence"></span>
 				<button ref='btnShowInfo'>Vis info</button>
 				<button onClick = {() => {
 					history.push('/editprofile/'),
@@ -273,6 +308,11 @@ class Profile extends React.Component{
 	}
 
 	componentDidMount(){
+
+		userService.userHasCompetence(userid, (result) => {
+			console.log(result)
+		})
+
 		userService.getEarlierUserEvents(userid, (result) => {
 			for (let event of result) {
 				this.refs.earlierevents.innerText += event.name + '\n';
@@ -352,6 +392,7 @@ class EditOtherProfile extends React.Component{
 					<button ref='btnDeactivate'>Deaktiver</button>
 					<button onClick = {() => {
 						history.push('/competence/'),
+						redid = viewid;
 						this.forceUpdate()}}>Kompetanse</button><br />
 						<span ref="passive"></span>
 					<div ref='showInfo'>
@@ -363,10 +404,6 @@ class EditOtherProfile extends React.Component{
 					</div>
 				</div>
 			);
-		}
-
-		componentWillUnmount() {
-			viewid = 0;
 		}
 
 		componentDidMount(){
@@ -421,8 +458,8 @@ class EditOtherProfile extends React.Component{
 			this.refs.btnDeactivate.onclick = () => {
 				let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
 				if(r == true){
-					userService.deactivateUser(userid,(result) => {
-						console.log('Deaktivert bruker - ID:' + userid);
+					userService.deactivateUser(viewid,(result) => {
+						console.log('Deaktivert bruker - ID:' + viewid);
 						// history.push('/loginPage/');
 						// this.forceUpdate();
 						});
@@ -529,6 +566,10 @@ class EditProfile extends React.Component{
 }
 
 class Competence extends React.Component{
+	constructor() {
+		super();
+		this.userisloggedin;
+	}
 	render(){
 		return(
 			<div>
@@ -547,6 +588,7 @@ class Competence extends React.Component{
 		)
 	}
 	componentDidMount(){
+		this.userisloggedin = userService.browseruser();
 		let compid = 0;
 
 		this.refs.btnProfile.onclick = () => {
@@ -569,13 +611,14 @@ class Competence extends React.Component{
 
 			userService.getCompetence(title,(result) => {
 				compid = result.compID;
-				userService.regCompetence(userid, compid, finished, (result) => {
+				userService.regCompetence(redid, compid, finished, (result) => {
 					console.log(compid);
+					history.push('/EditOtherProfile');
 				})
 			})
 			this.forceUpdate(); // Skriv en tekst her om at det er sendt til godkjenning
 		}
-		userService.getUserComp(userid, (result) => {
+		userService.getUserComp(redid ? redid: userid, (result) => {
 			for (let usercomp of result){
 				this.refs.compOutput.innerText += usercomp.title + '\n';
 			}
@@ -587,14 +630,10 @@ class Homepage extends React.Component {
 	render(){
 		return(
 			<div>
-
-
 				<div className="grid-container">
 					<div className="main-wrap">
 						<h1 className="title">Aktuelle saker</h1>
-
 						<div className="news-left-grid">
-
 						<div className="news-image-grid">
 							<div>
 								<img className="news-image" src="jemen.jpg" alt="" />
@@ -612,7 +651,6 @@ class Homepage extends React.Component {
 								<img className="news-image" src="jemen.jpg" alt="" />
 							</div>
 						</div>
-
 						<div className="news-text-grid">
 						<div className="news-text">
 							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
@@ -640,14 +678,9 @@ class Homepage extends React.Component {
 								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
 						</div>
 					</div>
-
 					</div>
-
-
 					</div>
-
-
-			<div>
+					<div>
 					<div className="news-right-top">
 							<img className="aktueltprofilbilde" src="profilepicture.jpg" alt="" />
 							<p className="aktueltprofiltekst">Per Ole Finsnes</p>
@@ -898,6 +931,10 @@ class EditEvent extends React.Component {
 }
 
 class divEvent extends React.Component {
+	constructor() {
+		super();
+		this.userisloggedin;
+	}
 	render() {
 		return(
 			<div>
@@ -918,6 +955,11 @@ class divEvent extends React.Component {
 	}
 
 	componentDidMount() {
+		this.userisloggedin = userService.browseruser();
+		if (this.userisloggedin.admin !== 1) {
+			this.refs.checkinterested.hidden = true;
+			this.refs.editArr.hidden = true;
+		}
 		let str; let string; let array;
 
 		userService.getDivEvent(eventID,(result) => {
@@ -1078,6 +1120,7 @@ class Calendar extends React.Component {
 		this.state = {
 		events:[],
 		}
+		this.userisloggedin;
 	}
 	setArrinfo(event) {
 		var title = event.title;
@@ -1114,6 +1157,10 @@ class Calendar extends React.Component {
 		);
 	}
 	componentDidMount() {
+		this.userisloggedin = userService.browseruser();
+		if (this.userisloggedin.admin !== 1) {
+			this.refs.CreateEvent.hidden = true;
+		}
 		this.refs.CreateEvent.onclick = () => {
 			history.push('/nyttEvent/');
 			this.forceUpdate();
@@ -1485,7 +1532,7 @@ class Search extends React.Component {
 ReactDOM.render((
   <HashRouter>
     <div>
-      <Navbar />
+		<Navbar />
       <Switch>
 				<Route exact path='/makenewrole' component={NewRole}/>
 				<Route exact path='/changerole' component={ChangeRole}/>

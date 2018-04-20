@@ -35,11 +35,35 @@ class UserService {
     });
   }
 
+  userHasCompetence(userID, callback) {
+    connection.query('SELECT * FROM user_has_competence INNER JOIN competence ON (user_has_competence.competence_compID = competence.compID) WHERE userID = ?', [userID], (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+
   getInactiveUsers(inactive, callback) {
     connection.query('SELECT * FROM user WHERE inactive = 1', (error, result) => {
       if(error) throw error;
 
       callback(result);
+    })
+  }
+
+  getThisUser(email, callback) {
+    connection.query('SELECT * FROM user WHERE email = ?', [email], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
+  checkIfUserIsInactive(inactive, email, callback) {
+    connection.query('SELECT * FROM user WHERE inactive = ? AND email = ?', [inactive, email], (error, result) => {
+      if(error) throw error;
+
+      callback(result[0]);
     })
   }
 
@@ -306,7 +330,7 @@ addPassive(userID, date_Start, date_End, callback) {
 }
 
 getUserComp(userid, callback){
-  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE user_userID =?', [userid], (error, result) => {
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE userID =?', [userid], (error, result) => {
     if(error) throw error;
 
     callback(result);
@@ -321,7 +345,7 @@ getCompetence(title, callback){
   });
 }
 regCompetence(userid, compid, finished, callback){
-  connection.query('INSERT into user_has_competence (user_userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
+  connection.query('INSERT into user_has_competence (userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
     if(error) throw error;
 
     callback();
