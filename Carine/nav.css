@@ -191,7 +191,7 @@ li {
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  height: 120px;
+  height: 130px;
   overflow: hidden;
 }
 
@@ -200,7 +200,7 @@ li {
   padding: 20px;
   overflow: auto;
   border-radius: 15px;
-  margin-top: 30px;
+  margin-top: 20px;
   height: 490px;
 }
 
@@ -294,6 +294,17 @@ iframe {
   width: 130px;
 }
 
+.about-maps {
+  padding: 10px;
+}
+
+.eventmediumtitle {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+  margin-bottom:0px;
+}
+
 .event-container {
     width: 80%;
     margin: 0 auto;
@@ -313,7 +324,7 @@ iframe {
   border-radius: 15px;
   height: 200px;
   width: 450px;
-  margin: 15px;
+  margin: 10px;
 }
 
 .event-title {
@@ -386,7 +397,7 @@ iframe {
   background-color: white;
   padding: 20px;
   overflow: auto;
-  height: 350px;
+  height: 360px;
   overflow-y: scroll;
 }
 
@@ -421,19 +432,7 @@ iframe {
   padding: 20px;
   overflow: auto;
   height: 260px;
-  margin-top: 30px;
-}
-
-.eventmediumtitle {
-  text-align: left;
-  color: #ad0513;
-  font-family: 'Abril Fatface', cursive;
-  margin-bottom:0px;
-}
-
-.blueTxt {
-  color:blue;
-  margin-bottom:0px;
+  margin-top: 20px;
 }
 
 .profile-bg {
@@ -450,5 +449,10 @@ iframe {
   overflow: auto;
   border-radius: 15px;
   margin-top: 20px;
+  height: 220px;
+}
 
+.blueTxt {
+  color:blue;
+  margin-bottom: 0;
 }
