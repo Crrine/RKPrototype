@@ -74,7 +74,6 @@ li {
   display: block;
 } */
 
-
 .nav-tabs .dropdown-menu,
 .nav-pills .dropdown-menu,
 .navbar .dropdown-menu {
@@ -100,15 +99,15 @@ li {
   left: -6px;
 }
 
-#sok {
+/* #sok {
   margin-top: 12px;
   text-align: left;
-}
+} */
 
 .logo {
   width: 130px;
   float: left;
-  padding: 3px;
+  padding: 3px; overflow: hidden;
 }
 
 .grid-container {
@@ -136,18 +135,6 @@ li {
   height: 640px;
   overflow-y: scroll;
 }
-
-.profilvakter {
-  border-radius: 15px;
-  width: 57%;
-  background-color: white;
-  padding: 20px;
-  overflow: auto;
-  margin-top: 10px;
-  float: left;
-  height: 300px;
-}
-
 
 .news-image {
   width: 100%;
@@ -208,24 +195,24 @@ li {
   grid-gap: 20px;
 }
 
-.aktueltprofilbilde {
+.profile-picture {
   float: right;
   max-width: 80px;
   border-radius: 40px;
   margin-right: 30px;
 }
 
-.profiltekst {
+.profile-text {
   margin-left: 20px;
   text-align: left;
   font-size: 1.05em;
 }
 
-.aktueltarrangementer {
+.news-events {
   font-size: 0.8em
 }
 
-.mellomtittel {
+.medium-title {
   text-align: left;
   color: #ad0513;
   font-family: 'Abril Fatface', cursive;
@@ -233,7 +220,7 @@ li {
   margin-top: -5px;
 }
 
-.profilprofil {
+.profile-bg {
   background-color: white;
   padding: 20px;
   overflow: auto;
@@ -241,7 +228,7 @@ li {
   height: 400px;
 }
 
-.profildeaktivere {
+.profile-deactivate {
   background-color: white;
   padding: 20px;
   overflow: auto;
@@ -297,18 +284,6 @@ iframe {
   margin-top: 10px;
 }
 
-.eventmediumtitle {
-  text-align: left;
-  color: #ad0513;
-  font-family: 'Abril Fatface', cursive;
-  margin-bottom:0px;
-}
-
-.blueTxt {
-  color:blue;
-  margin-bottom:0px;
-}
-
 .aboutbreadtext {
   text-align: left;
   font-size: 1em;
@@ -340,7 +315,7 @@ iframe {
 .event-bg {
   background-color: white;
   padding: 20px;
-  overflow: hidden;
+  overflow: auto;
   border-radius: 15px;
   height: 200px;
   width: 450px;
@@ -375,7 +350,6 @@ iframe {
     box-sizing: border-box;
 }
 
-/* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
     /*margin: 15% auto;  15% from the top and centered */
@@ -412,3 +386,58 @@ iframe {
 }
 
 ::-webkit-scrollbar {display:none;}
+
+.profile-events {
+  border-radius: 15px;
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  height: 350px;
+  overflow-y: scroll;
+}
+
+.profile-events-grid {
+  grid-template-columns: 50% 50%;
+  display: grid;
+  grid-gap: 20px;
+}
+
+.profile-events-minor-grid{
+  display: grid;
+  grid-template-rows: 100px 100px 100px;
+  grid-gap: 3px;
+
+}
+
+.profile-event-timenplace {
+  font-weight: 700;
+  font-size: 0.7em;
+  margin-top: -5px;
+}
+
+.profile-event-text {
+  font-weight: 500;
+  font-size: 0.7em;
+  margin-top: -13px;
+}
+
+.profile-course-registration {
+  border-radius: 15px;
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  height: 260px;
+  margin-top: 30px;
+}
+
+.eventmediumtitle {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+  margin-bottom:0px;
+}
+
+.blueTxt {
+  color:blue;
+  margin-bottom:0px;
+}

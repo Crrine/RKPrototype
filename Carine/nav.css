@@ -429,3 +429,15 @@ iframe {
   height: 260px;
   margin-top: 30px;
 }
+
+.eventmediumtitle {
+  text-align: left;
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+  margin-bottom:0px;
+}
+
+.blueTxt {
+  color:blue;
+  margin-bottom:0px;
+}
