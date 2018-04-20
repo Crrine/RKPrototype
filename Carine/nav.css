@@ -11,7 +11,7 @@ body {
   background-size: cover;
 }
 
-#login-logo {
+.login-logo {
   padding-bottom: 25px;
   width: 90%;
   margin: 0 auto;
@@ -220,23 +220,7 @@ li {
   margin-top: -5px;
 }
 
-.profile-bg {
-  background-color: white;
-  padding: 20px;
-  overflow: auto;
-  border-radius: 15px;
-  height: 400px;
-}
-
-.profile-deactivate {
-  background-color: white;
-  padding: 20px;
-  overflow: auto;
-  border-radius: 15px;
-  margin-top: 20px;
-}
-
-.profilkurs {
+/* .profilkurs {
   border-radius: 15px;
   width: 57%;
   background-color: white;
@@ -245,7 +229,7 @@ li {
   margin-top: 30px;
   float: left;
   height: 230px;
-}
+} */
 
 .about-bg {
   background-color: white;
@@ -430,6 +414,7 @@ iframe {
   margin-top: 30px;
 }
 
+<<<<<<< HEAD
 .eventmediumtitle {
   text-align: left;
   color: #ad0513;
@@ -440,4 +425,20 @@ iframe {
 .blueTxt {
   color:blue;
   margin-bottom:0px;
+=======
+.profile-bg {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  height: 400px;
+}
+
+.profile-deactivate {
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  border-radius: 15px;
+  margin-top: 20px;
+>>>>>>> fa05d03408cd5e27d237d38b43a6084a578e2880
 }

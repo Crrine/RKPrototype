@@ -7,7 +7,9 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import globalize from 'globalize';
 import { NavLink } from 'react-router-dom';
-import mail from 'mail';
+
+const nodemailer = require('nodemailer');
+let transporter = nodemailer.createTransport(transport[, defaults])
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
@@ -95,7 +97,18 @@ class ForgotPassword extends React.Component{
 		}
 		componentDidMount(){
 			this.refs.sendPass.onclick = () => {
+				var passReset = require('pass-reset');
 
+
+	passReset.sendEmail(function(email, resets, callback) {
+    mailer.send({
+        to: "phillipaur@gmail.com",
+        from: 'rodekorstest123@gmail.com',
+        subject: 'password reset',
+        body: "Du ønsker å resette passordet"
+    });
+    callback(null, true);
+});
 		}
 	}
 }
