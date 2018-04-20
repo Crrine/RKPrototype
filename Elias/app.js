@@ -613,13 +613,13 @@ class Homepage extends React.Component {
 
 			<div>
 					<div className="news-right-top" ref='usrDiv'>
-							<img className="aktueltprofilbilde" src="profilepicture.jpg" alt="" />
-							<p className="aktueltprofiltekst" ref='usrName'>Per Ole Finsnes</p>
-							<p className="aktueltprofiltekst" ref='usrPoints'>Vaktpoeng: 14</p>
+							<img className="profile-picture" src="profilepicture.jpg" alt="" />
+							<p className="profile-text" ref='usrName'>Per Ole Finsnes</p>
+							<p className="profile-text" ref='usrPoints'>Vaktpoeng: 14</p>
 						</div>
 						<div className="news-right-bottom">
-							<h3 className="mellomtittel">Kommende arrangementer</h3>
-							<div className="aktueltarrangementer" ref='upcoming'>
+							<h3 className="medium-title">Kommende arrangementer</h3>
+							<div className="news-events" ref='upcoming'>
 
 							</div>
 

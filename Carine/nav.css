@@ -414,7 +414,6 @@ iframe {
   margin-top: 30px;
 }
 
-<<<<<<< HEAD
 .eventmediumtitle {
   text-align: left;
   color: #ad0513;
@@ -425,7 +424,7 @@ iframe {
 .blueTxt {
   color:blue;
   margin-bottom:0px;
-=======
+
 .profile-bg {
   background-color: white;
   padding: 20px;
@@ -440,5 +439,5 @@ iframe {
   overflow: auto;
   border-radius: 15px;
   margin-top: 20px;
->>>>>>> fa05d03408cd5e27d237d38b43a6084a578e2880
+
 }
