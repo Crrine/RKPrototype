@@ -269,6 +269,95 @@ class Profile extends React.Component{
 					<span ref='userPhone'></span><br />
 					<span ref='userAge'></span><br />
 				</div>
+
+
+				<div className="grid-container">
+<div>
+
+    <div className="profile-events">
+      <div className="profile-events-grid">
+    <div>
+      <h3 className="medium-title">Kommende vakter</h3>
+      <div className="profile-events-minor-grid">
+        <div>
+          <h6>Trønderfest</h6>
+          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div>
+          <h6>Trønderfest</h6>
+          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div>
+          <h6>Trønderfest</h6>
+          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 className="medium-title">Deltatte vakter</h3>
+      <div className="profile-events-minor-grid">
+        <div>
+          <h6>Trønderfest</h6>
+          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div>
+          <h6>Trønderfest</h6>
+          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div>
+          <h6>Trønderfest</h6>
+          <p className="profile-event-timenplace">Dato: 16/04/17 Tid: 15:00 - 19:00</p>
+          <p className="profile-event-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div className="profile-course-registration">
+      <h2 className="medium-title">Registrere kurs?</h2>
+      <p>Hvilken kvalifisering gjelder det:</p>
+      <input type="text" />
+      <p>Dokumentasjon på kvalifikasjon:</p>
+      <input type="file" />
+      <br /> <button type="button">Send inn</button>
+    </div>
+
+</div>
+
+
+
+  <div>
+  <div>
+    <div className="profile-bg">
+      <h3 className="medium-title">Personalia</h3>
+      <img className="profile-picture" src="profilepicture.jpg" alt="" />
+      <p className="profile-text">Per Ole Finsnes</p>
+      <p className="profile-text">Vaktpoeng: 14</p>
+      <p className="profile-text">Fødselsdato:</p>
+      <p className="profile-text">Adresse:</p>
+      <p className="profile-text">Postnr:</p>
+      <p className="profile-text">Telefon:</p>
+      <p className="profile-text">Epost:</p>
+    </div>
+  </div>
+
+    <div>
+        <div className="profile-deactivate">
+          <h3 className="medium-title">Deaktivere profil?</h3>
+          <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under. Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
+          <button type="button">Ja, jeg ønsker å deaktivere min profil</button>
+        </div>
+    </div>
+  </div>
+ </div>
+
+
 			</div>
 		);
 	}
