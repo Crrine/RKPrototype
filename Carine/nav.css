@@ -3,7 +3,7 @@ body {
   margin: 0;
 }
 
-#login-body {
+.login-body {
   background: url(loginpic.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -21,16 +21,27 @@ body {
 .login-wrap {
   width: 40%;
   background: rgba(255,255,255, 0.8);
-  margin: 0 auto;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   padding: 50px;
-  vertical-align: middle;
+  height: 70%;
 }
 
-.glemtwrap {
-  padding-top: 60px;
-  margin: auto;
-  width: 40%;
-  text-align: right;
+.login-grid {
+  grid-template-columns: 50% 50%;
+  display: grid;
+  grid-gap: 20px;
+}
+
+#login-button {
+  float:right;
+    display:block;
+    margin-right:0px;
+    clear:left;
 }
 
 p {
