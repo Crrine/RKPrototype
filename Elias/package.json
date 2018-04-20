@@ -15,6 +15,7 @@
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-big-calendar": "^0.18.0",
+    "react-body": "^0.2.0",
     "react-dom": "^16.2.0",
     "react-infinite-calendar": "^2.3.1",
     "react-input-calendar": "^0.5.2",

@@ -7,6 +7,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import globalize from 'globalize';
 import { NavLink } from 'react-router-dom';
+import {ReactBody} from 'react-body';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 export const history = createHashHistory();
@@ -21,47 +22,55 @@ class LoginPage extends React.Component {
 	render(){
 		return (
 			<div>
-				<h1>Innlogging</h1>
-				<input type='text' ref='inpUser' placeholder='epost' />
-				<input type='password' ref='inpPassword' placeholder='passord' /><span />
-				<button ref='btnLogin'>Logg inn</button>
-				<button ref='btnReg'>Ny bruker</button><br /><br />
-				<div ref='loginOutput'></div>
-				<button ref='btnForgotPassword' hidden onClick = {() => {
-					history.push('/forgotPassword/'),
-					this.forceUpdate()}}>glemt passord</button>
 
-					<div className="container">
+    <link rel="stylesheet" type="text/css" href="nav.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossOrigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossOrigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossOrigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous" />
+    <meta charSet="utf-8" />
+    <title>Røde Kors Sanitetsvakt</title>
+
+			<div className="login-body">
+      <div className="container">
         <div className="login-wrap">
-
         <div>
-          <img id="login-logo" src="rodekors-01.png" alt="Logo" />
+          <div  className="login-logo">
+          <img className="login-logo-img" src="rodekors-01.png" alt="Logo" />
+          </div>
         <form>
           <div className="form-group">
-            <label htmlFor="usr">Epost:</label>
-            <input type="text" className="form-control" id="usr" />
+            <label className="login-text">Epost:</label>
+            <input type="text" className="form-control" id="usr" ref='inpUser' />
           </div>
           <div className="form-group">
-            <label htmlFor="pwd">Passord:</label>
-            <input type="password" className="form-control" id="pwd" />
+            <label className="login-text">Passord:</label>
+            <input type="password" className="form-control" id="pwd" ref='inpPassword' />
           </div>
         </form>
         <div className="login-grid">
           <div>
-            <a href="glemt.html">Glemt passord?</a> <br />
-            <a href="#">Registrer ny bruker?</a>
+            <a href="navbar.html" ref='btnForgotPassword' onClick = {() => {history.push('/forgotPassword/'), this.forceUpdate()}}>Glemt passord?</a> <br />
+            <a href="registrer.html" ref='btnReg'>Registrer ny bruker?</a>
           </div>
           <div>
-            <button id="login-button" type="button" className="btn btn-danger">Logg inn</button>
+            <button id="login-button" type="button" className="btn btn-danger" ref='btnLogin'>Logg inn</button>
           </div>
-        </div>
+					<div ref='loginOutput'></div>
+        	</div>
         </div>
       </div>
     </div>
-			</div>
+  </div>
+	</div>
+
 		);
 	}
-	componentDidMount(){
+
+		componentDidMount(){
 		this.refs.btnLogin.onclick = () => {
 				let inpUser = this.refs.inpUser.value;
 				let inpPassword = this.refs.inpPassword.value;
@@ -76,13 +85,13 @@ class LoginPage extends React.Component {
 						console.log("mislykket innlogging");
 						loggedIn = false;
 						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
-						this.refs.btnForgotPassword.hidden = false;
 					}
 				})
 			}
 			this.refs.btnReg.onclick = () => {
 				regPress = true;
 				history.push('/register/');
+				this.forceUpdate();
 			}
 		}
 	}
@@ -105,7 +114,6 @@ class ForgotPassword extends React.Component{
 
 class Register extends React.Component {
 	render(){
-		if(regPress){
 			return(
 				<div>
 					<h1>Registrering</h1>
@@ -154,7 +162,7 @@ class Register extends React.Component {
 						this.forceUpdate()}}>Tilbake</button>
 				</div>
 			)
-		}
+
 	}	//bør man heller ha en form-action og knappen inne i formen?
 	componentDidMount(){
 		this.refs.btnSendReg.onclick = () => {
@@ -231,8 +239,7 @@ class Navbar extends React.Component {
 			return(
 				// history.push('/loginPage/');
 				// this.forceUpdate();
-				<div>
-				</div>
+				<div></div>
 			)
 		}
 	}
@@ -316,7 +323,7 @@ class Profile extends React.Component{
         </div>
     </div>
   </div>
- 
+
 
 
 			</div>
@@ -547,8 +554,6 @@ class EditProfile extends React.Component{
 		}
 	}
 }
-
-
 
 class Homepage extends React.Component {
 	render(){
