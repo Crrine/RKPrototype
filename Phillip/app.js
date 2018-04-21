@@ -142,6 +142,9 @@ class ForgotPassword extends React.Component{
           <div>
             <button id="login-button" type="button" className="btn btn-danger" ref='sendPass'>Send inn</button>
           </div>
+					<div>
+					<span ref="tilbakemelding"></span>
+					</div>
         </div>
         </div>
       </div>
@@ -177,6 +180,7 @@ class ForgotPassword extends React.Component{
 					userService.getThisUser(email, (result) => {
 						userService.updateUserPassword(password, email, (result) => {
 						})
+						if (result != undefined) {
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"Rodekors" <rodekorstest123@gmail.com>', // sender address
@@ -192,12 +196,11 @@ class ForgotPassword extends React.Component{
             return console.log(error);
         }
         console.log('Message sent: %s', info.messageId);
-        // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+				this.refs.tilbakemelding.innerText = 'Mailen er sendt, sjekk eposten din';
     			});
+				} else {
+					this.refs.tilbakemelding.innerText = 'Mailen finnes ikke i vårt register';
+				}
 				});
 			});
 		}
