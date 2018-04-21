@@ -138,60 +138,63 @@ class ForgotPassword extends React.Component{
 class Register extends React.Component {
 	render(){
 			return(
-				<div>
-					<h1>Registrering</h1>
-					<h5>Fyll ut skjemaet</h5>
-					<form>
-						<label>
-							Fornavn:<br />
-							<input ref='regFirstName' type='text' /><br />
-						</label>
-						<label>
-							Etternavn:<br />
-							<input ref='regLastName' type='text' /><br />
-						</label>
-						<label>
-							Adresse:<br />
-							<input ref='regAddress' type='text' /><br />
-						</label>
-						<label>
-							Epost:<br />
-							<input ref='regEmail' type='text' /><br />
-						</label>
-						<label>
-							By:<br />
-							<input ref='regCity' type='text' /><br />
-						</label>
-						<label>
-							Postnummer:<br />
-							<input ref='regZip' type='number' /><br />
-						</label>
-						<label>
-							Tlf:<br />
-							<input ref='regPhone' type='number' /><br />
-						</label>
-						<label>
-							Alder:<br />
-							<input ref='regAge' type='number' /><br />
-						</label>
-						<label>
-							Passord:<br />
-							<input ref='regPassword' type='password' /><br />
-						</label>
-						<label> gjenta passord:<br />
-						<input ref='repeatregPassword' type='password' /><br />
-						</label>
-					</form>
-					<span ref="feilmelding"></span> <br />
-					<button ref='btnSendReg'>Registrer</button>
-					<button ref='backtologin'>Back</button>
-				</div>
+
+				<div className="login-body">
+
+      <div className="container">
+        <div className="login-wrap-reg">
+        <div>
+          <div className="login-logo">
+          <img className="login-logo-img" src="rodekors-01.png" alt="Logo" />
+          </div>
+        <form>
+          <div className="login-grid">
+          <div className="form-group">
+            <label className="login-text">Fornavn:</label>
+            <input type="text" className="form-control" ref='regFirstName' />
+            <label className="login-text">Adresse:</label>
+            <input type="text" className="form-control" ref='regAddress' />
+            <label className="login-text">By:</label>
+            <input type="text" className="form-control"  ref='regCity' />
+            <label className="login-text">Epost:</label>
+            <input type="email" className="form-control" ref='regEmail' />
+            <label className="login-text">Passord:</label>
+            <input type="password" className="form-control" ref='regPassword' />
+          </div>
+          <div className="form-group">
+            <label className="login-text">Etternavn:</label>
+            <input type="text" className="form-control" ref='regLastName' />
+            <label className="login-text">Telefon:</label>
+            <input type="text" className="form-control" ref='regPhone' />
+            <label className="login-text">Postnr:</label>
+            <input type="number" className="form-control" ref='regZip' />
+            <label className="login-text">Alder:</label>
+            <input type="number" className="form-control" ref='regAge' />
+            <label className="login-text">Bekreft passord:</label>
+            <input type="password" className="form-control" ref='repeatregPassword' />
+          </div>
+          </div>
+        </form>
+        <div className="login-grid">
+          <div>
+            <a href="index.html">Logg inn?</a> <br />
+            <a href="glemt.html">Glemt passord?</a>
+          </div>
+          <div>
+						<span ref="feilmelding"></span> <br />
+						<button id='login-button' type="button" className="btn btn-danger" ref='btnSendReg'>Registrer</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 			)
 	}	//bør man heller ha en form-action og knappen inne i formen?
 	componentDidMount(){
-		this.refs.backtologin.onclick = () => {
-			history.push('/loginPage/')
-		}
+		
 		this.refs.btnSendReg.onclick = () => {
 		 	let firstname = this.refs.regFirstName.value;
 			let lastname = this.refs.regLastName.value;
