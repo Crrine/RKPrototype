@@ -1530,7 +1530,8 @@ class divEvent extends React.Component {
 			rolleliste: <span ref='rolelist'></span><br />
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 			<button ref='editArr'>Rediger</button>
-			<button ref='Interested'>Interresert</button>
+			<button ref='Interested'>Meld interesse</button>
+			<button ref='notInterested'>Avmeld interesse</button>
 			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button><br />
 			<span ref="hasevent"></span>
 			</div>
@@ -1540,6 +1541,7 @@ class divEvent extends React.Component {
 	componentDidMount() {
 		this.userisloggedin = userService.browseruser();
 		userid = this.userisloggedin.userID;
+		this.refs.notInterested.hidden = true;
 		if (this.userisloggedin.admin !== 1) {
 			this.refs.checkinterested.hidden = true;
 			this.refs.editArr.hidden = true;
@@ -1572,32 +1574,46 @@ class divEvent extends React.Component {
 						array = string.split(" ");
 						this.refs.eventsluttdate.innerText = array[2]+" "+array[1]+" "+array[3] + " " + array[4];
 					}
+					userService.checkifUserHasEvent(eventID, userid, (result) => {
+						if (result != undefined) {
+							this.refs.Interested.hidden = true;
+							this.refs.notInterested.hidden = true;
+							this.refs.hasevent.innerText = "Du er meldt på dette arrangementet, kontakt en administrator for å melde deg av";
+						}
+					})
+
 					this.refs.Interested.onclick = () => {
 					userService.addInterested(eventID, userid, (result) => {
-						alert('Du er meldt interresert');
-						this.refs.Interested.disabled = true;
+						this.refs.hasevent.innerText = 'Du har meldt deg interresert';
+						this.refs.Interested.hidden = true;
+						this.refs.notInterested.hidden = false;
 						this.forceUpdate();
 					})
 			}
+
 			userService.checkifInterested(eventID, userid, (result) => {
 				if (result != undefined) {
-					this.refs.Interested.disabled = true;
+					this.refs.Interested.hidden = true;
+					this.refs.notInterested.hidden = false;
 					this.refs.hasevent.innerText = 'Du er meldt interresert på arrangementet';
 					this.forceUpdate();
 				}
 			})
-			userService.checkifUserHasEvent(eventID, userid, (result) => {
-				if (result != undefined) {
-					this.refs.Interested.hidden = true;
-					this.refs.hasevent.innerText = "Du er meldt på dette arrangementet";
-					this.forceUpdate();
-				}
-			})
+
+				this.refs.notInterested.onclick = () => {
+				userService.deleteInterested(eventID, userid, (result) => {
+					this.refs.notInterested.hidden = true;
+					this.refs.Interested.hidden = false;
+					this.refs.hasevent.innerText = 'Du er ikke lenger interresert';
+				})
+			}
 		})
+
 		this.refs.editArr.onclick = () => {
 			history.push('/editevent/');
 			this.forceUpdate();
 		}
+
 		this.refs.checkinterested.onclick = () => {
 			history.push('/vaktliste/');
 		}
