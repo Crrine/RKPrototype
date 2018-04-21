@@ -1533,7 +1533,12 @@ class divEvent extends React.Component {
 					this.refs.eventinfo.innerText = result.description;
 					this.refs.eventmøtested.innerText = result.area;
 					this.refs.kontaktinfo.innerText = result.contact_phone;
-					this.refs.rolelist.innerText = result.rolelist_roleID;
+
+					let rolelistid = result.rolelist_roleID;
+
+    userService.getRolelistName(rolelistid, (result) => {
+         this.refs.rolelist.innerText = result.name;
+      })
 
 					str = result.date_start;
           if (str) {
