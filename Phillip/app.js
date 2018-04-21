@@ -101,7 +101,7 @@ class LoginPage extends React.Component {
 						console.log("logget inn bruker - ID:" + result.userID);
 						this.userisloggedin = userService.browseruser()
 						userid = this.userisloggedin.userID;
-						history.push('/Navbar/');
+						history.push('/homepage');
 					}else {
 						console.log("mislykket innlogging");
 						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
@@ -441,7 +441,7 @@ class Profile extends React.Component{
 
 		this.userisloggedin = userService.browseruser();
 		userid = this.userisloggedin.userID;
-		let str; let string; let array;
+		let str; let string; let array; let stri;
 		userService.checkifPassive(userid, (result) => {
 			if (result != undefined) {
 
@@ -512,10 +512,17 @@ class Profile extends React.Component{
 
 				let eventTxt = document.createElement('P');
 
+				str = event.date_start;
+				if (str) {
+					string = str.toString();
+					array = string.split(" ");
+					str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+				}
+
 				eventTxt.innerText += '\n' +
 					'Lokasjon: ' + event.area + '\n' +
 					'Kontakttelefon: ' + event.contact_phone + '\n' +
-					'Startdato: ' + event.date_start;
+					'Startdato: ' + str;
 
 				divEvent.appendChild(eventTxt);
 
@@ -551,18 +558,17 @@ class Profile extends React.Component{
 
 					let eventTxt = document.createElement('P');
 
-					str = event.date_start;
-					if (str) {
-						string = str.toString();
+					stri = event.date_start;
+					if (stri) {
+						string = stri.toString();
 						array = string.split(" ");
-						str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
-						console.log(str)
+						stri = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
 					}
 
 					eventTxt.innerText += '\n' +
 						'Lokasjon: ' + event.area + '\n' +
 						'Kontakttelefon: ' + event.contact_phone + '\n' +
-						'Startdato: ' + str;
+						'Startdato: ' + stri;
 
 
 
@@ -589,6 +595,8 @@ class Profile extends React.Component{
 			if(r == true){
 				userService.deactivateUser(userid,(result) => {
 					console.log('Deaktivert bruker - ID:' + userid);
+					userService.emptystorage();
+					history.push('/loginPage/')
 					// history.push('/loginPage/');
 					// this.forceUpdate();
 				});
@@ -603,40 +611,117 @@ class EditOtherProfile extends React.Component{
 			this.userisloggedin
 		}
 		render(){
-			return(
-				<div>
-					<h1></h1>
-					brukerid: <span ref="medlemsnummer"></span><br/>
-					<span ref='userName'></span><br />
-					<span ref='userEmail'></span><br />
-					<span ref='userPoints'></span><br />
-					Kommende arrangementer:<br />
-					<span ref='upcomingEvents'></span>
-					<button ref='btnShowInfo'>Vis info</button>
-					<button onClick = {() => {
-						history.push('/editprofile/'),
-						redid = viewid;
-						this.forceUpdate()}}>Rediger</button>
-					<button ref='btnDeactivate'>Deaktiver</button>
-					<button onClick = {() => {
-						history.push('/competence/'),
-						redid = viewid;
-						this.forceUpdate()}}>Kompetanse</button>
-						<button ref="makeadmin">Gjør om til admin</button><br />
-						<span ref="utskrift"></span><br />
-						<span ref="passive"></span>
-					<div ref='showInfo'>
-						<span ref='userAddress'></span><br />
-						<span ref='userCity'></span><br />
-						<span ref='userZip'></span><br />
-						<span ref='userPhone'></span><br />
-						<span ref='userAge'></span><br />
+				return(
+						<div className="grid-container">
+						<div>
+
+		    <div className="profile-events">
+		      <div className="profile-events-grid">
+		    <div>
+		      <h3 className="medium-title">Kommende vakter</h3>
+		      <div className="profile-events-minor-grid">
+
+						<div ref='upcoming'></div>
+
+					</div>
+		    </div>
+		    <div>
+		      <h3 className="medium-title">Deltatte vakter</h3>
+		      <div className="profile-events-minor-grid">
+		        <div>
+
+						<div ref='earlierevents'></div>
+
+		        </div>
+		      </div>
+		    </div>
+		      </div>
+		    </div>
+
+
+					<div className="profile-course-registration">
+						<h2 className="medium-title">Registrere kurs?</h2>
+						<div>
+							<p>Hvilken kvalifisering gjelder det:</p>
+							<form ref='compForm'>
+								<select ref='compSelect'>
+								</select>
+							</form>
+							<button ref='btnAddComp'>Send inn</button>
+							<div ref='compOutput'></div>
+						</div>
 					</div>
 				</div>
-			);
-		}
+
+		  <div>
+		  <div>
+		    <div className="profile-bg">
+		      <h3 className="medium-title">Personalia</h3>
+		      <img className="profile-picture" src="profilepicture.jpg" alt="" />
+					<p className="profile-text" ref='medlemsnummer'>Brukerid:</p>
+		      <p className="profile-text" ref='userName'></p>
+		      <p className="profile-text" ref='userPoints'>Vaktpoeng:</p>
+		      <p className="profile-text" ref='userAge'>Alder:</p>
+		      <p className="profile-text" ref='userAddress'>Adresse:</p>
+		      <p className="profile-text" ref='userZip'>Postnr:</p>
+		      <p className="profile-text" ref='userPhone'>Telefon:</p>
+		      <p className="profile-text" ref='userEmail'>Epost:</p>
+					<p className="profile-text" ref='passive'></p>
+					<button onClick = {() => {
+						history.push('/editprofile/'),
+						this.forceUpdate()}}>Rediger</button>
+					<button ref="makeadmin">Gjør om til admin</button>
+					<p className="profile-text" ref="utskrift"></p>
+					<p className="profile-text" ref="passive"></p>
+				</div>
+		  </div>
+
+		    <div>
+		        <div className="profile-deactivate">
+		          <h3 className="medium-title">Deaktivere profil?</h3>
+		          <p>Deaktiver brukerens profil her:</p>
+		          <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere denne profilen</button>
+		        </div>
+		    </div>
+		  </div>
+					</div>
+				);
+			}
 
 		componentDidMount(){
+			this.userisloggedin = userService.browseruser();
+			userid = this.userisloggedin.userID;
+			let str; let string; let array; let stri;
+			let compid = 0;
+
+			userService.getCompetences((result) => {
+				for (let comp of result) {
+					let compSel = document.createElement('OPTION');
+					let compTitle = document.createTextNode(comp.title);
+
+					compSel.appendChild(compTitle);
+					this.refs.compSelect.appendChild(compSel);
+				}
+			})
+			this.refs.btnAddComp.onclick = () => {
+				let title = this.refs.compSelect.value;
+				let finished = '2018-01-01';
+
+	userService.getCompetence(title, (result) => {
+		compid = result.compID;
+		userService.regCompetence(viewid, compid, finished, (result) => {
+			console.log(compid);
+			this.forceUpdate();
+			})
+		})
+	// Skriv en tekst her om at det er sendt til godkjenning
+	}
+	userService.getUserComp(viewid, (result) => {
+		for (let usercomp of result) {
+			this.refs.compOutput.innerText += usercomp.title + '\n';
+		}
+	})
+
 					this.refs.makeadmin.onclick = () => {
 						this.refs.makeadmin.disabled = true;
 						this.refs.utskrift.innerText = 'Brukeren har nå admin egenskaper'
@@ -654,13 +739,6 @@ class EditOtherProfile extends React.Component{
 					userService.checkIfAdmin(admin, viewid, (result) => {
 					})
 				})
-			userService.getUpcomingEvents(viewid ? viewid : userid,(result) => {
-				for(let event of result){
-					this.refs.upcomingEvents.innerText += event.name + '\n';
-				}
-			})
-			this.userisloggedin = userService.browseruser();
-			userid = this.userisloggedin.userID;
 
 			userService.checkifPassive(viewid, (result) => {
 				let str; let string; let array;
@@ -677,33 +755,102 @@ class EditOtherProfile extends React.Component{
 				}
 			})
 
-	 		userService.getUser(viewid ? viewid : userid, (result) => {
-				let btnShowInfoPressed = false;
-				this.refs.medlemsnummer.innerText = result.userID;
-				this.refs.userName.innerText = result.firstname;
-				this.refs.userName.innerText += " " + result.lastname;
-				this.refs.userEmail.innerText = result.email;
-				this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
+			userService.getEarlierUserEvents(viewid, (result) => {
+      for (let event of result) {
+        let divEvent = document.createElement('DIV');
+        divEvent.className = 'aktueltarrangementer';
 
-				this.refs.btnShowInfo.onclick = () => {
-					if(btnShowInfoPressed == false){
-						this.refs.showInfo.innerText =
-						" Adresse: " + result.address + '\n' +
-						" By: " + result.city + '\n' +
-						" Postnummer: " + result.zip + '\n' +
-						" Tlf: " + result.phone + '\n' +
-						" Alder: " + result.age + '\n';
-						this.refs.btnShowInfo.innerText = "Skjul info";
-						btnShowInfoPressed = true;
-					}else{
-						this.refs.showInfo.innerText = "";
-						this.refs.btnShowInfo.innerText = "Vis info";
-						btnShowInfoPressed = false;
-					}
+        let btnEvent = document.createElement('BUTTON');
+        let btnEventTxt = document.createTextNode('Informasjon');
+        let clickedEvent = event.eventID;
+
+        btnEvent.appendChild(btnEventTxt);
+        btnEvent.setAttribute('id', event.eventID);
+
+        let titleEvent = document.createElement('span');
+        // titleEvent.setAttribute('href', '/#');
+        titleEvent.className = "blueTxt";
+        titleEvent.innerText = event.name;
+
+        btnEvent.onclick = () => {
+          sendToEvent(clickedEvent);
+        }
+
+        divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+        let eventTxt = document.createElement('P');
+
+				stri = event.date_start;
+				if (stri) {
+					string = stri.toString();
+					array = string.split(" ");
+					stri = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
 				}
-			});
+
+        eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + stri;
+
+        divEvent.appendChild(eventTxt);
+
+        // divEvent.appendChild(btnEvent);
+        this.refs.earlierevents.appendChild(divEvent);
+        // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
+      }
+    })
+
+    userService.getUpcomingEvents(viewid, (result) => {
+      for (let event of result) {
+        let divEvent = document.createElement('DIV');
+        divEvent.className = 'aktueltarrangementer';
+
+        let btnEvent = document.createElement('BUTTON');
+        let btnEventTxt = document.createTextNode('Informasjon');
+        let clickedEvent = event.eventID;
+
+        btnEvent.appendChild(btnEventTxt);
+        btnEvent.setAttribute('id', event.eventID);
+
+        let titleEvent = document.createElement('span');
+        // titleEvent.setAttribute('href', '/#');
+        titleEvent.className = "blueTxt";
+        titleEvent.innerText = event.name;
+
+        btnEvent.onclick = () => {
+          sendToEvent(clickedEvent);
+        }
+
+        divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+        let eventTxt = document.createElement('P');
+
+				str = event.date_start;
+				if (str) {
+					string = str.toString();
+					array = string.split(" ");
+					str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+				}
+        eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + str;
+
+        divEvent.appendChild(eventTxt);
+
+        // divEvent.appendChild(btnEvent);
+        this.refs.upcoming.appendChild(divEvent);
+        // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
+      }
+    })
+
+		userService.getUser(viewid, (result) => {
+			this.refs.medlemsnummer.innerText += result.userID;
+			this.refs.userName.innerText += result.firstname;
+			this.refs.userName.innerText += " " + result.lastname;
+			this.refs.userAge.innerText += " " + result.age;
+			this.refs.userPhone.innerText += " " + result.phone;
+			this.refs.userEmail.innerText += " " + result.email;
+			this.refs.userPoints.innerText += " " + result.points;
+			this.refs.userZip.innerText += " " + result.zip;
+			this.refs.userAddress.innerText += " " + result.address;
+		});
 			this.refs.btnDeactivate.onclick = () => {
-				let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
+				let r = confirm('Er du sikker på at du vil deaktivere denne brukeren?');
 				if(r == true){
 					userService.deactivateUser(viewid,(result) => {
 						console.log('Deaktivert bruker - ID:' + viewid);
@@ -874,89 +1021,125 @@ class Competence extends React.Component{
 }
 
 class Homepage extends React.Component {
-	render(){
-		return(
-			<div>
-				<div className="grid-container">
-					<div className="main-wrap">
-						<h1 className="title">Aktuelle saker</h1>
-						<div className="news-left-grid">
-						<div className="news-image-grid">
-							<div>
-								<img className="news-image" src="jemen.jpg" alt="" />
-							</div>
-							<div>
-								<img className="news-image" src="jemen.jpg" alt="" />
-							</div>
-							<div>
-								<img className="news-image" src="jemen.jpg" alt="" />
-							</div>
-							<div>
-								<img className="news-image" src="jemen.jpg" alt="" />
-							</div>
-							<div>
-								<img className="news-image" src="jemen.jpg" alt="" />
-							</div>
-						</div>
-						<div className="news-text-grid">
-						<div className="news-text">
-							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
-							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
-								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
-						</div>
-						<div className="news-text">
-							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
-							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
-								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
-						</div>
-						<div className="news-text">
-							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
-							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
-								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
-						</div>
-						<div className="news-text">
-							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
-							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
-								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
-						</div>
-						<div className="news-text">
-							<h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
-							<p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann
-								og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
-						</div>
-					</div>
-					</div>
-					</div>
-					<div>
-					<div className="news-right-top">
-							<img className="aktueltprofilbilde" src="profilepicture.jpg" alt="" />
-							<p className="aktueltprofiltekst">Per Ole Finsnes</p>
-							<p className="aktueltprofiltekst">Vaktpoeng: 14</p>
-						</div>
-						<div className="news-right-bottom">
-							<h3 className="mellomtittel">Kommende arrangementer</h3>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-							<div className="aktueltarrangementer">
-								<a href="#">Trønderfest</a>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
+	constructor() {
+		super();
+		this.userisloggedin;
 	}
+  render() {
+    return (<div>
+      <div className="grid-container">
+        <div className="main-wrap">
+          <h1 className="title">Aktuelle saker</h1>
+
+          <div className="news-left-grid">
+
+            <div className="news-image-grid">
+              <div>
+                <img className="news-image" src="jemen.jpg" alt=""/>
+              </div>
+              <div>
+                <img className="news-image" src="jemen.jpg" alt=""/>
+              </div>
+              <div>
+                <img className="news-image" src="jemen.jpg" alt=""/>
+              </div>
+              <div>
+                <img className="news-image" src="jemen.jpg" alt=""/>
+              </div>
+              <div>
+                <img className="news-image" src="jemen.jpg" alt=""/>
+              </div>
+            </div>
+
+            <div className="news-text-grid">
+              <div className="news-text">
+                <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+                <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+              </div>
+              <div className="news-text">
+                <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+                <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+              </div>
+              <div className="news-text">
+                <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+                <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+              </div>
+              <div className="news-text">
+                <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+                <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+              </div>
+              <div className="news-text">
+                <h5>Den humanitære katastrofen i Jemen løses ikke med nødhjelp</h5>
+                <p>- Situasjonen i Jemen i dag er dramatisk. Nesten 80 prosent av befolkningen trenger nødhjelp for å klare seg. For hver dag som går uten en løsning på konflikten blir situasjonen verre. Folk dør av sykdommer som kan forhindres, mangel på mat, vann og strøm. Sykdommer som kolera kan forebygges, men i Jemen har det vært over en million tilfeller, fordi krigen har ført til kollaps i helsetilbudet, sier generalsekretær i Røde Kors i Norge Bernt G. Apeland.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div>
+          <div className="news-right-top" ref='usrDiv'>
+            <img className="profile-picture" src="profilepicture.jpg" alt=""/>
+            <p className="profile-text" ref='usrName'>Per Ole Finsnes</p>
+            <p className="profile-text" ref='usrPoints'>Vaktpoeng: 14</p>
+          </div>
+          <div className="news-right-bottom">
+            <h3 className="medium-title">Kommende arrangementer</h3>
+            <div className="news-events" ref='upcoming'></div>
+
+          </div>
+        </div>
+      </div>
+    </div>);
+  }
+  componentDidMount() {
+    this.refs.usrDiv.onclick = () => {
+      history.push('/profile');
+      this.forceUpdate();
+    }
+		this.userisloggedin = userService.browseruser();
+		userid = this.userisloggedin.userID;
+    userService.getUser(userid, (result) => {
+      this.refs.usrName.innerText = result.firstname + ' ' + result.lastname;
+      this.refs.usrPoints.innerText = 'Vaktpoeng: ' + result.points;
+    })
+
+    userService.getUpcomingevents((result) => {
+      for (let event of result) {
+        let divEvent = document.createElement('DIV');
+        divEvent.className = 'aktueltarrangementer';
+
+        let btnEvent = document.createElement('BUTTON');
+        let btnEventTxt = document.createTextNode('Informasjon');
+        let clickedEvent = event.eventID;
+
+        btnEvent.appendChild(btnEventTxt);
+        btnEvent.setAttribute('id', event.eventID);
+
+        let titleEvent = document.createElement('span');
+        // titleEvent.setAttribute('href', '/#');
+        titleEvent.className = "blueTxt";
+        titleEvent.innerText = event.name;
+
+        btnEvent.onclick = () => {
+          sendToEvent(clickedEvent);
+        }
+
+        divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+        let eventTxt = document.createElement('P');
+
+        eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+
+        divEvent.appendChild(eventTxt);
+
+        // divEvent.appendChild(btnEvent);
+        this.refs.upcoming.appendChild(divEvent);
+        // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
+      }
+    })
+  }
 }
 
 class EarlierEvents extends React.Component {
