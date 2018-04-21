@@ -275,6 +275,14 @@ addPassive(userID, date_Start, date_End, callback) {
   })
 }
 
+getRolelistName(rolelistid, callback){
+connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (error,result) => {
+  if(error) throw error;
+
+  callback(result[0]);
+});
+}
+
   deleteInterested(eventID, userID, callback) {
     connection.query('DELETE FROM Interested WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
       if (error) throw error;

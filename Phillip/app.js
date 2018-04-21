@@ -1218,10 +1218,10 @@ class Events extends React.Component {
 
 			<div className="event-container">
 			<div className="event-center-content">
-      <h1 className="event-title">Kommende arrangementer</h1>
+      <h1 className="event-title">Arrangementer</h1>
 			<div>
-      <button ref='showPreEvents'>Tidligere</button>
-      <button ref='btnNewEvent'>Legg til arrangement</button>
+      <button className="btn btn-light event-button" ref='showPreEvents'>Se tidligere arrangement</button>
+      <button className="btn btn-light event-button" ref='btnNewEvent'>Legg til arrangement</button>
 			</div>
 			</div>
 
@@ -1232,6 +1232,7 @@ class Events extends React.Component {
 
   }
   componentDidMount() {
+		let str; let string; let array; let stri;
     let btnPressed = false;
     // let thisDate = new Date();
 
@@ -1249,8 +1250,9 @@ class Events extends React.Component {
             divEvent.className = 'event-bg';
 
             let btnEvent = document.createElement('BUTTON');
-            let btnEventTxt = document.createTextNode('Informasjon');
+            let btnEventTxt = document.createTextNode('Mer info');
             let clickedEvent = event.eventID;
+						btnEvent.className = "btn btn-outline-danger"
 
             btnEvent.appendChild(btnEventTxt);
             btnEvent.setAttribute('id', event.eventID);
@@ -1266,8 +1268,16 @@ class Events extends React.Component {
             divEvent.appendChild(titleEvent); //Fiks men lag en p for info
 
             let eventTxt = document.createElement('P');
+						eventTxt.className = "event-text";
 
-            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+						str = event.date_start;
+						if (str) {
+							string = str.toString();
+							array = string.split(" ");
+							str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+						}
+
+            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + str;
 
             divEvent.appendChild(eventTxt);
 
@@ -1276,7 +1286,7 @@ class Events extends React.Component {
             // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
           }
           btnPressed = true;
-          this.refs.showPreEvents.innerText = 'Tidligere';
+          this.refs.showPreEvents.innerText = 'Se tidligere arrangementer';
         })
       } else {
         this.refs.upcoming.innerText = '';
@@ -1286,8 +1296,9 @@ class Events extends React.Component {
             divEvent.className = 'event-bg';
 
             let btnEvent = document.createElement('BUTTON');
-            let btnEventTxt = document.createTextNode('Informasjon');
+            let btnEventTxt = document.createTextNode('Mer info');
             let clickedEvent = event.eventID;
+						btnEvent.className = "btn btn-outline-danger"
 
             btnEvent.appendChild(btnEventTxt);
             btnEvent.setAttribute('id', event.eventID);
@@ -1303,8 +1314,16 @@ class Events extends React.Component {
             }
 
             let eventTxt = document.createElement('P');
+						eventTxt.className = 'event-text'
 
-            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+						stri = event.date_start;
+						if (stri) {
+							string = stri.toString();
+							array = string.split(" ");
+							stri = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+						}
+
+            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + stri;
 
             divEvent.appendChild(eventTxt);
 
@@ -1313,7 +1332,7 @@ class Events extends React.Component {
             // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
           }
           btnPressed = false;
-          this.refs.showPreEvents.innerText = 'Kommende';
+          this.refs.showPreEvents.innerText = 'Se kommende arrangementer';
         })
       }
     }
@@ -1533,7 +1552,12 @@ class divEvent extends React.Component {
 					this.refs.eventinfo.innerText = result.description;
 					this.refs.eventmøtested.innerText = result.area;
 					this.refs.kontaktinfo.innerText = result.contact_phone;
-					this.refs.rolelist.innerText = result.rolelist_roleID;
+
+					let rolelistid = result.rolelist_roleID;
+
+    userService.getRolelistName(rolelistid, (result) => {
+         this.refs.rolelist.innerText = result.name;
+      })
 
 					str = result.date_start;
           if (str) {
@@ -1557,6 +1581,7 @@ class divEvent extends React.Component {
 			userService.checkifInterested(eventID, userid, (result) => {
 				if (result != undefined) {
 					this.refs.Interested.disabled = true;
+					this.refs.hasevent.innerText = 'Du er meldt interresert på arrangementet';
 					this.forceUpdate();
 				}
 			})
