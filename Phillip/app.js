@@ -115,11 +115,40 @@ class ForgotPassword extends React.Component{
 		render(){
 			return(
 				<div>
-					<h1>Glemt passord</h1>
-					<p>Venligst skriv inn din epostadresse, så vil vi sende deg en nytt passord</p>
-					<input type='text' ref='inpMail' />
-					<button ref='sendPass'>Send</button>
-					<button ref="back">Back</button>
+
+
+
+					<div className="login-body">
+
+      <div className="container">
+        <div className="login-wrap">
+
+        <div>
+          <div  className="login-logo">
+          <img className="login-logo-img" src="rodekors-01.png" alt="Logo" />
+          </div>
+          <p>Ved glemt passord sender du inn eposten din og du vil få tilsendt videre informasjon på mail.</p>
+        <form>
+          <div className="form-group">
+            <label htmlFor="usr">Epost:</label>
+            <input type="text" className="form-control" id="usr" ref='inpMail'/>
+          </div>
+        </form>
+        <div className="login-grid">
+          <div>
+            <NavLink exact to='loginPage'>Logg inn?</NavLink> <br />
+            <NavLink exact to="register">Registrer ny bruker?</NavLink>
+          </div>
+          <div>
+            <button id="login-button" type="button" className="btn btn-danger" ref='sendPass'>Send inn</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 				</div>
 			)
 		}
@@ -171,10 +200,6 @@ class ForgotPassword extends React.Component{
     			});
 				});
 			});
-		}
-		this.refs.back.onclick = () => {
-			history.push('/loginPage');
-			this.forceUpdate();
 		}
 	}
 }
@@ -1190,7 +1215,7 @@ class Events extends React.Component {
   render() {
 
     return (
-			
+
 			<div className="event-container">
 			<div className="event-center-content">
       <h1 className="event-title">Kommende arrangementer</h1>
