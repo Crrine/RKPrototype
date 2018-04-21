@@ -51,6 +51,14 @@ class UserService {
     })
   }
 
+  getPastEvents(callback) {
+  connection.query('SELECT * FROM event WHERE date_start <= CURDATE() ORDER BY date_end', (error, result) => {
+    if(error) throw error;
+
+    callback(result);
+  })
+}
+
   getDeniedUsers(inactive, callback) {
     connection.query('SELECT * FROM user WHERE inactive = 2', (error, result) => {
       if(error) throw error;
