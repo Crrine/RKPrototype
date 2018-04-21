@@ -140,7 +140,27 @@ class UserService {
       callback(result[0]);
     });
   }
+  getRole(roletitle, callback){
+    connection.query('SELECT * FROM role WHERE title=?', [roletitle], (error, result) => {
+      if(error) throw error;
 
+      callback(result[0]);
+    })
+  }
+  getRoles(callback){
+    connection.query('SELECT * FROM role', (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
+  getRolesFromList(rolelistID, callback){
+    connection.query('SELECT * FROM role_has_rolelist INNER JOIN role ON role.roleID = role_has_rolelist.roleID WHERE rolelistID =?', [rolelistID], (error, result) => {
+      if (error) throw error;
+
+      callback(result);
+    })
+  }
   addRole(name, description, callback) {
     connection.query('INSERT INTO rolelist (name, description) values (?, ?)', [name, description], (error, result) => {
       if (error) throw error;
@@ -148,7 +168,13 @@ class UserService {
       callback();
     })
   }
+  addRoleToList(roleID, rolelistID, callback){
+    connection.query('INSERT INTO role_has_rolelist (roleID, rolelistID) values (?, ?)', [roleID, rolelistID], (error, result)=> {
+      if (error) throw error;
 
+      callback();
+    })
+  }
   editRole(rolelistID, editname, editDescription, callback) {
     connection.query('UPDATE rolelist SET name=?, description=? WHERE rolelistID=?', [editname, editDescription, rolelistID], (error, result) => {
       if (error) throw error;

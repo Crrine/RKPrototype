@@ -1927,24 +1927,35 @@ class ChangeRole extends React.Component {
 	render() {
 		return(
 			<div>
-			<h1> hei </h1>
+			<h1>Rediger rolleliste</h1>
+			<h4 ref='roleName'></h4>
 			<label>
-				Navn på rollen:<br />
+				Navn på rollelisten:<br />
 				<input ref='editRoleName' type='text' /><br />
 			</label>
 			<label>
-				description:<br />
+				Beskrivelse:<br />
 				<input ref='editDescription' type='text' /><br />
 			</label>
-			<button ref="EditRole">Rediger</button>
-			<button ref="back">Gå tilbake</button>
+			<label>Legg til rolle:<br />
+					<select ref='roleSelect'></select>
+					<button ref='addRoleToList'>Legg til</button>
+			</label>
+			<div ref='savedRoles'>
+				Roller:
+			</div>
+			<div>
+				<button ref="EditRole">Lagre</button>
+				<button ref="back">Gå tilbake</button>
+			</div>
 			</div>
 		)
 	}
-	componentDidMount() {
+	update(){
 		userService.getThisRoleList(rolelistID, (result) => {
 			this.refs.editRoleName.value = result.name;
 			this.refs.editDescription.value = result.description;
+			this.refs.roleName.innerText = result.name;
 		})
 		this.refs.EditRole.onclick = () => {
 			var editname = this.refs.editRoleName.value;
@@ -1958,6 +1969,39 @@ class ChangeRole extends React.Component {
 		this.refs.back.onclick = () => {
 			history.push('/admin/')
 		}
+		userService.getRoles((result) => {
+			for(let role of result){
+				let roleSel = document.createElement('OPTION');
+				let roleTitle = document.createTextNode(role.title);
+
+				roleSel.appendChild(roleTitle);
+				this.refs.roleSelect.appendChild(roleSel);
+			}
+		})
+		userService.getRolesFromList(rolelistID, (result) => {
+			for(let listrole of result){
+				let roleitem = document.createElement('LI');
+				let roleitemTitle = document.createTextNode(listrole.title);
+
+				roleitem.appendChild(roleitemTitle);
+				this.refs.savedRoles.appendChild(roleitem);
+			}
+		})
+		this.refs.addRoleToList.onclick = () => {
+			let roletitle = this.refs.roleSelect.value;
+			userService.getRole(roletitle, (result) => {
+				let roleID = result.roleID;
+
+				userService.addRoleToList(roleID, rolelistID, (result) => {
+						this.refs.savedRoles.innerText = '';
+						this.update();
+
+				});
+			})
+		}
+	}
+	componentDidMount() {
+		this.update();
 	}
 }
 
