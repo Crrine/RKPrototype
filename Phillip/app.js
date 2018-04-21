@@ -1794,11 +1794,11 @@ class Administrator extends React.Component {
 		<ul>
 		{this.state.avslattebrukere ? this.state.avslattebrukere: 'Ingen brukere er avslått'}
 		</ul>
-		<h3> roller </h3>
+		<h3> Vaktmaler </h3>
 		<ul>
 		{this.state.mannskapsliste}
 		</ul>
-		<button ref="newrole">Lag ny rolle</button>
+		<button ref="newrole">Legg til vaktmal</button>
 		</div>
 		)
 	}
@@ -1910,14 +1910,14 @@ class NewRole extends React.Component {
 	render(){
 				return(
 					<div>
-						<h1>Ny Role</h1>
+						<h1>Ny vaktmal</h1>
 						<form>
 							<label>
-								Navn på rollen:<br />
+								Navn på vaktmalen:<br />
 								<input ref='NewRoleName' type='text' /><br />
 							</label>
 							<label>
-								Beskrivelse av rollen:<br />
+								Beskrivelse av vaktmalen:<br />
 								<input ref='NewRoleDesc' type='text' /><br />
 							</label>
 						</form>
@@ -1952,10 +1952,10 @@ class ChangeRole extends React.Component {
 	render() {
 		return(
 			<div>
-			<h1>Rediger rolleliste</h1>
-			<h4 ref='roleName'></h4>
+			<h1>Rediger vaktmal</h1>
+			<h3 ref='roleName'></h3>
 			<label>
-				Navn på rollelisten:<br />
+				Navn på vaktmalen:<br />
 				<input ref='editRoleName' type='text' /><br />
 			</label>
 			<label>
@@ -1967,7 +1967,7 @@ class ChangeRole extends React.Component {
 					<button ref='addRoleToList'>Legg til</button>
 			</label>
 			<div ref='savedRoles'>
-				Roller:
+				Rolleliste:
 			</div>
 			<div>
 				<button ref="EditRole">Lagre</button>
