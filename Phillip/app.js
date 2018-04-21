@@ -1232,6 +1232,7 @@ class Events extends React.Component {
 
   }
   componentDidMount() {
+		let str; let string; let array; let stri;
     let btnPressed = false;
     // let thisDate = new Date();
 
@@ -1267,7 +1268,14 @@ class Events extends React.Component {
 
             let eventTxt = document.createElement('P');
 
-            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+						str = event.date_start;
+						if (str) {
+							string = str.toString();
+							array = string.split(" ");
+							str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+						}
+
+            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + str;
 
             divEvent.appendChild(eventTxt);
 
@@ -1304,7 +1312,14 @@ class Events extends React.Component {
 
             let eventTxt = document.createElement('P');
 
-            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+						stri = event.date_start;
+						if (stri) {
+							string = stri.toString();
+							array = string.split(" ");
+							stri = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+						}
+
+            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + stri;
 
             divEvent.appendChild(eventTxt);
 
