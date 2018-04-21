@@ -217,8 +217,8 @@ class Register extends React.Component {
         </form>
         <div className="login-grid">
           <div>
-            <a href="index.html">Logg inn?</a> <br />
-            <a href="glemt.html">Glemt passord?</a>
+            <NavLink exact to='/loginPage'>Logg inn?</NavLink> <br />
+            <NavLink exact to='/forgotpassword'>Glemt passord?</NavLink>
           </div>
           <div>
 						<span ref="feilmelding"></span> <br />
