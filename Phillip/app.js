@@ -1207,8 +1207,7 @@ class Events extends React.Component {
 			</div>
 
 
-      <div className="event-container" ref='upcoming'>
-			</div>
+      <div className="event-container" ref='upcoming'></div>
 
     </div>);
 
