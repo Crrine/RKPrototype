@@ -1192,16 +1192,10 @@ class Events extends React.Component {
 
     return (
 			<div>
-
-			<h1>Arrangementer</h1>
-      <h4>Kommende arrangementer</h4>
-
-
 			<div className="event-container">
 			<div className="event-center-content">
       <h1 className="event-title">Kommende arrangementer</h1>
 			<div>
-
       <button ref='showPreEvents'>Tidligere</button>
       <button ref='btnNewEvent'>Legg til arrangement</button>
 			</div>
