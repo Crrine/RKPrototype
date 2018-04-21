@@ -1190,9 +1190,7 @@ class Events extends React.Component {
   render() {
 
     return (
-
-
-    return (<div>
+			<div>
 
 			<h1>Arrangementer</h1>
       <h4>Kommende arrangementer</h4>
