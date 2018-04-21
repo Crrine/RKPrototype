@@ -5,9 +5,7 @@ import { userService } from './services';
 import {createHashHistory} from 'history';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import globalize from 'globalize';
 import { NavLink } from 'react-router-dom';
-
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
@@ -86,6 +84,7 @@ class LoginPage extends React.Component {
 				let email = this.refs.inpUser.value;
 				userService.emptystorage();
 				userService.getThisUser(email, (result) => {
+					console.log(result)
 					let inactive = result.inactive;
 					userService.emptystorage();
 					userService.checkIfUserIsInactive(email, inactive, (result) => {
@@ -127,6 +126,47 @@ class ForgotPassword extends React.Component{
 		}
 		componentDidMount(){
 			this.refs.sendPass.onclick = () => {
+				'use strict';
+				const nodemailer = require('nodemailer');
+
+				// Generate test SMTP service account from ethereal.email
+				// Only needed if you don't have a real mail account for testing
+				nodemailer.createTestAccount((err, account) => {
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: 'rodekorstest123@gmail.com', // generated ethereal user
+            pass: 'rodekors11' // generated ethereal password
+        }
+    });
+		userService.getThisUser(email, (result) => {
+			console.log(result);
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"Rodekors" <rodekorstest123@gmail.com>', // sender address
+        to: 'phillipaur@gmail.com, phillipaur@gmail.com', // list of receivers
+        subject: 'Hello ✔', // Subject line
+        text: 'Hello world?', // plain text body
+        html: '<b>Hello world?</b>' // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+        // Preview only available when sending through an Ethereal account
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    	});
+		});
+	});
 		}
 		this.refs.back.onclick = () => {
 			history.push('/loginPage');
@@ -335,19 +375,18 @@ class Navbar extends React.Component {
 										<NavLink exact to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											Profil
 										</NavLink>
-										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-										<NavLink exact to='/loggut' onClick = {() => {
-											userService.emptystorage();
-										}}>
-											Logg ut
-										</NavLink>
-										</div>
-									</li>
+										</li>
 									<li className="nav-item">
 										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
 									</li>
-									<div ref="adminside">
-									</div>
+									<li>
+									<NavLink exact to='/loggut' className="nav-link" onClick = {() => {
+										userService.emptystorage();
+										history.push('/loginPage/')
+									}}>
+										Logg ut
+									</NavLink>
+									</li>
 								</ul>
 							</div>
 					</nav>
@@ -535,7 +574,7 @@ class Profile extends React.Component{
 		}
 		})
 
-		userService.getUpcomingevents((result) => {
+		userService.getUpcomingEvents(userid, (result) => {
 				for(let event of result){
 					let divEvent = document.createElement('DIV');
 						divEvent.className = 'aktueltarrangementer';
@@ -800,7 +839,7 @@ class EditOtherProfile extends React.Component{
       }
     })
 
-    userService.getUpcomingevents((result) => {
+    userService.getUpcomingEvents(viewid, (result) => {
       for (let event of result) {
         let divEvent = document.createElement('DIV');
         divEvent.className = 'aktueltarrangementer';
@@ -893,7 +932,7 @@ class EditProfile extends React.Component{
             <label className="login-text">Etternavn:</label>
             <input type="text" className="form-control" ref='editLastName' />
             <label className="login-text">Telefon:</label>
-            <input type="text" className="form-control" ref='editPhone' />
+            <input type="number" className="form-control" ref='editPhone' />
             <label className="login-text">Postnr:</label>
             <input type="number" className="form-control" ref='editZip' />
             <label className="login-text">Alder:</label>
@@ -1924,45 +1963,47 @@ class Passiv extends React.Component {
 class NewEvent extends React.Component {
 		render(){
 					return(
-						<div>
-							<h1>Nytt Arrangement</h1>
+						<div className="big-container">
+						<div className="new-event-bg">
+							<h1 className="eventmediumtitle">Legg til arrangement</h1>
 							<form>
-								<label>
-									Navn på arrangementet:<br />
-									<input ref='regArrName' type='text' /><br />
-								</label>
-								<label>
-									Startdato:<br />
-									<input ref='regStartDato' type='datetime-local' /><br />
-								</label>
-								<label>
-									sluttdato:<br />
-									<input ref='regSluttDato' type='datetime-local' /><br />
-								</label>
-								<label>
-									kontakttelefon:<br />
-									<input ref='regTlf' type='text' /><br />
-								</label>
-								<label>
-									Vaktlag:<br />
-										<select ref='rolelistSelect'>
-										</select><br />
-								</label>
-								<label>
-									description:<br />
-									<input ref='regDescript' type='text' /><br />
-								</label>
-								<label>
-									Møtested:<br />
-									<input ref='regMeet' type='text' /><br />
-								</label>
-								<label>
-									Vaktpoeng:<br />
-									<input ref='regPoints' type='number' /><br />
-								</label>
-							</form>
-							<button ref='btnSendArr'>Registrer</button>
-							<button ref='btnBackArr'>Tilbake</button>
+			          <div className="login-grid">
+			          <div className="form-group">
+			            <label className="login-text">Tittel:</label>
+			            <input type="text" className="form-control" ref='regArrName' />
+			            <label className="login-text">Startdato:</label>
+			            <input type="datetime-local" className="form-control" ref='regStartDato' />
+			            <label className="login-text">Vaktansvarlig:</label>
+			            <input type="text" className="form-control" />
+			            <label className="login-text">Vaktlag:</label>
+									<select class="form-control" id="exampleFormControlSelect1" ref='rolelistSelect'>
+							    </select>
+			          </div>
+			          <div className="form-group">
+			            <label className="login-text">Vaktpoeng:</label>
+			            <input type="number" className="form-control" ref='regPoints' />
+			            <label className="login-text">Sluttdato:</label>
+			            <input type="datetime-local" className="form-control" ref='regSluttDato' />
+			            <label className="login-text">Kontakttelefon:</label>
+			            <input type="number" className="form-control" ref='regTlf' />
+			            <label className="login-text">Møtested:</label>
+			            <input type="text" className="form-control" ref='regMeet' />
+			          </div>
+			          </div>
+								<div class="form-group">
+  								<label>Beskrivelse:</label>
+  								<textarea class="form-control" rows="5" ref='regDescript'></textarea>
+								</div>
+			        </form>
+							<div className="login-grid">
+							<div>
+							<button ref='btnSendArr' className="btn btn-outline-danger">Legg til</button>
+							</div>
+							<div className="edit-profile-btn-right">
+							<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
+							</div>
+							</div>
+							</div>
 						</div>
 					)
 				}
