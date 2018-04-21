@@ -121,11 +121,16 @@ class ForgotPassword extends React.Component{
 					<p>Venligst skriv inn din epostadresse, så vil vi sende deg en nytt passord</p>
 					<input type='text' ref='inpMail' />
 					<button ref='sendPass'>Send</button>
+					<button ref="back">Back</button>
 				</div>
 			)
 		}
 		componentDidMount(){
 			this.refs.sendPass.onclick = () => {
+		}
+		this.refs.back.onclick = () => {
+			history.push('/loginPage');
+			this.forceUpdate();
 		}
 	}
 }
@@ -346,11 +351,7 @@ class Navbar extends React.Component {
 				</div>
 			)
 		} else {
-			history.push('/loginPage')
-			return(
-				<div>
-				</div>
-			)
+			return null;
 		}
 	}
 	componentDidMount() {
@@ -550,18 +551,20 @@ class Profile extends React.Component{
 
 					let eventTxt = document.createElement('P');
 
+					str = event.date_start;
+					if (str) {
+						string = str.toString();
+						array = string.split(" ");
+						str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+						console.log(str)
+					}
+
 					eventTxt.innerText += '\n' +
 						'Lokasjon: ' + event.area + '\n' +
 						'Kontakttelefon: ' + event.contact_phone + '\n' +
-						'Startdato: ' + event.date_start;
+						'Startdato: ' + str;
 
-						str = event.date_start;
-						if (str) {
-							string = str.toString();
-							array = string.split(" ");
-							str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
-							console.log(str)
-						}
+
 
 					divEvent.appendChild(eventTxt);
 
@@ -1851,6 +1854,7 @@ ReactDOM.render((
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
 				<Route excat path='/competence' component={Competence}/>
+				<Redirect from="/" to="/loginPage" />
       </Switch>
     </div>
   </HashRouter>
