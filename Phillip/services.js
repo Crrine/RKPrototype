@@ -250,7 +250,7 @@ addPassive(userID, date_Start, date_End, callback) {
     });
   }
   addUser(firstname, lastname, address, email, password, city, zip, phone, age, callback) {
-    connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
+    connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age, inactive) values (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
       if (error) throw error;
 
       callback();

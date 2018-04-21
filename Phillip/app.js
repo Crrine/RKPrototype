@@ -5,9 +5,7 @@ import { userService } from './services';
 import {createHashHistory} from 'history';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import globalize from 'globalize';
 import { NavLink } from 'react-router-dom';
-
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
@@ -127,6 +125,47 @@ class ForgotPassword extends React.Component{
 		}
 		componentDidMount(){
 			this.refs.sendPass.onclick = () => {
+				'use strict';
+				const nodemailer = require('nodemailer');
+
+				// Generate test SMTP service account from ethereal.email
+				// Only needed if you don't have a real mail account for testing
+				nodemailer.createTestAccount((err, account) => {
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: 'rodekorstest123@gmail.com', // generated ethereal user
+            pass: 'rodekors11' // generated ethereal password
+        }
+    });
+		userService.getThisUser(email, (result) => {
+			console.log(result)
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"Rodekors" <rodekorstest123@gmail.com>', // sender address
+        to: 'phillipaur@gmail.com, phillipaur@gmail.com', // list of receivers
+        subject: 'Hello ✔', // Subject line
+        text: 'Hello world?', // plain text body
+        html: '<b>Hello world?</b>' // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+        // Preview only available when sending through an Ethereal account
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    	});
+		});
+	});
 		}
 		this.refs.back.onclick = () => {
 			history.push('/loginPage');
@@ -332,19 +371,18 @@ class Navbar extends React.Component {
 										<NavLink exact to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											Profil
 										</NavLink>
-										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-										<NavLink exact to='/loggut' onClick = {() => {
-											userService.emptystorage();
-										}}>
-											Logg ut
-										</NavLink>
-										</div>
-									</li>
+										</li>
 									<li className="nav-item">
 										<NavLink exact to='/search' className="nav-link" href="#">Brukersøk</NavLink>
 									</li>
-									<div ref="adminside">
-									</div>
+									<li>
+									<NavLink exact to='/loggut' className="nav-link" onClick = {() => {
+										userService.emptystorage();
+										history.push('/loginPage/')
+									}}>
+										Logg ut
+									</NavLink>
+									</li>
 								</ul>
 							</div>
 					</nav>
@@ -532,7 +570,7 @@ class Profile extends React.Component{
 		}
 		})
 
-		userService.getUpcomingevents((result) => {
+		userService.getUpcomingEvents(userid, (result) => {
 				for(let event of result){
 					let divEvent = document.createElement('DIV');
 						divEvent.className = 'aktueltarrangementer';
@@ -797,7 +835,7 @@ class EditOtherProfile extends React.Component{
       }
     })
 
-    userService.getUpcomingevents((result) => {
+    userService.getUpcomingEvents(viewid, (result) => {
       for (let event of result) {
         let divEvent = document.createElement('DIV');
         divEvent.className = 'aktueltarrangementer';
