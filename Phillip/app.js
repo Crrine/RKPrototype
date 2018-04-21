@@ -1184,15 +1184,18 @@ class Homepage extends React.Component {
 
 class Events extends React.Component {
   render() {
-    return (<div>
-      <h1>Arrangementer</h1>
-      <h4>Kommende arrangementer</h4>
+    return (
+			<div className="event-container">
+			<div className="event-center-content">
+      <h1 className="event-title">Kommende arrangementer</h1>
+			<div>
       <button ref='showPreEvents'>Tidligere</button>
       <button ref='btnNewEvent'>Legg til arrangement</button>
-      <br/><br/>
+			</div>
+			</div>
 
-      <div className="event-container" ref='upcoming'></div>
-    </div>);
+      <div className="event-flex" ref='upcoming'></div>
+			</div>);
   }
   componentDidMount() {
     let btnPressed = false;
