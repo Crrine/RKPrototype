@@ -1185,13 +1185,15 @@ class Homepage extends React.Component {
 class Events extends React.Component {
   render() {
     return (<div>
-      <h1>Arrangementer</h1>
+
+			<h1>Arrangementer</h1>
       <h4>Kommende arrangementer</h4>
       <button ref='showPreEvents'>Tidligere</button>
       <button ref='btnNewEvent'>Legg til arrangement</button>
       <br/><br/>
 
-      <div className="event-container" ref='upcoming'></div>
+      <div className="event-container" ref='upcoming'>
+			</div>
     </div>);
   }
   componentDidMount() {
@@ -1976,7 +1978,7 @@ class NewEvent extends React.Component {
 			            <label className="login-text">Vaktansvarlig:</label>
 			            <input type="text" className="form-control" ref='regshiftManager'/>
 			            <label className="login-text">Vaktlag:</label>
-									<select class="form-control" id="exampleFormControlSelect1" ref='rolelistSelect'>
+									<select className="form-control" id="exampleFormControlSelect1" ref='rolelistSelect'>
 							    </select>
 			          </div>
 			          <div className="form-group">
@@ -1990,9 +1992,9 @@ class NewEvent extends React.Component {
 			            <input type="text" className="form-control" ref='regMeet' />
 			          </div>
 			          </div>
-								<div class="form-group">
+								<div className="form-group">
   								<label>Beskrivelse:</label>
-  								<textarea class="form-control" rows="5" ref='regDescript'></textarea>
+  								<textarea className="form-control" rows="5" ref='regDescript'></textarea>
 								</div>
 			        </form>
 							<div className="login-grid">
