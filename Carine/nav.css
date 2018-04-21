@@ -2,6 +2,7 @@ body {
   margin: 0;
   width: 100vw;
   height: 100vh;
+  background-color: #f7eed7 !important;
 }
 
 .login-body {
@@ -51,6 +52,7 @@ body {
   grid-template-columns: 50% 50%;
   display: grid;
   grid-gap: 20px;
+  padding-right: 20px;
 }
 
 #login-button {
@@ -302,7 +304,6 @@ iframe {
   text-align: left;
   color: #ad0513;
   font-family: 'Abril Fatface', cursive;
-  margin-bottom:0px;
 }
 
 .event-container {
@@ -455,4 +456,19 @@ iframe {
 .blueTxt {
   color:blue;
   margin-bottom: 0;
+}
+
+.edit-profile-bg {
+  width: 80%;
+  border-radius: 15px;
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  height: 500px;
+  overflow-y: scroll;
+  margin: 0 auto;
+}
+
+.edit-profile-btn-right {
+  text-align: right;
 }

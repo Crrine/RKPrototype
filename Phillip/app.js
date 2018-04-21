@@ -722,50 +722,48 @@ class EditProfile extends React.Component{
 	}
 	render(){
 		return(
-			<div>
-				<h1>Rediger profil</h1>
+			<div className="big-container">
+			<div className="edit-profile-bg">
+				<h1 className="eventmediumtitle">Rediger profil</h1>
 				<form>
-					<label>
-						Fornavn:<br />
-						<input ref='editFirstName' type='text' /><br />
-					</label>
-					<label>
-						Etternavn:<br />
-						<input ref='editLastName' type='text' /><br />
-					</label>
-					<label>
-						Adresse:<br />
-						<input ref='editAddress' type='text' /><br />
-					</label>
-					<label>
-						Epost:<br />
-						<input ref='editEmail' type='text' /><br />
-					</label>
-					<label>
-						By:<br />
-						<input ref='editCity' type='text' /><br />
-					</label>
-					<label>
-						Postnummer:<br />
-						<input ref='editZip' type='number' /><br />
-					</label>
-					<label>
-						Tlf:<br />
-						<input ref='editPhone' type='number' /><br />
-					</label>
-					<label>
-						Alder:<br />
-						<input ref='editAge' type='number' /><br />
-					</label>
-					<label>
-						Passord:<br />
-						<input ref='editPassword' type='password' /><br />
-					</label>
-				</form>
-				<button ref='btnSendEdit'>Lagre</button>
-				<button onClick = {() => {
+          <div className="login-grid">
+          <div className="form-group">
+            <label className="login-text">Fornavn:</label>
+            <input type="text" ref='editFirstName' className="form-control" />
+            <label className="login-text">Adresse:</label>
+            <input type="text" className="form-control" ref='editAddress' />
+            <label className="login-text">By:</label>
+            <input type="text" className="form-control" ref='editCity' />
+            <label className="login-text">Epost:</label>
+            <input type="email" className="form-control"  ref='editEmail' />
+            <label className="login-text">Passord:</label>
+            <input type="password" className="form-control" />
+          </div>
+          <div className="form-group">
+            <label className="login-text">Etternavn:</label>
+            <input type="text" className="form-control" ref='editLastName' />
+            <label className="login-text">Telefon:</label>
+            <input type="text" className="form-control" ref='editPhone' />
+            <label className="login-text">Postnr:</label>
+            <input type="number" className="form-control" ref='editZip' />
+            <label className="login-text">Alder:</label>
+            <input type="number" className="form-control" ref='editAge' />
+            <label className="login-text">Bekreft passord:</label>
+            <input type="password" className="form-control" ref='editPassword' />
+          </div>
+          </div>
+        </form>
+				<div className="login-grid">
+				<div>
+				<button type="button" className="btn btn-outline-danger" ref='btnSendEdit'>Lagre</button>
+				</div>
+				<div className="edit-profile-btn-right">
+				<button type="button" className="btn btn-outline-danger" onClick = {() => {
 					history.push('/profile/'),
 					this.forceUpdate()}}>Tilbake</button>
+					</div>
+					</div>
+					</div>
 			</div>
 		)
 	}
