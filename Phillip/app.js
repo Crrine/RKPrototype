@@ -1189,7 +1189,6 @@ class Homepage extends React.Component {
 class Events extends React.Component {
   render() {
 
-
     return (
 			<div>
 			<div className="event-container">
@@ -1206,7 +1205,6 @@ class Events extends React.Component {
 			</div>
 
     </div>);
-
 
       <div className="event-flex" ref='upcoming'></div>
 			</div>);
