@@ -84,7 +84,6 @@ class LoginPage extends React.Component {
 				let email = this.refs.inpUser.value;
 				userService.emptystorage();
 				userService.getThisUser(email, (result) => {
-					console.log(result)
 					let inactive = result.inactive;
 					userService.emptystorage();
 					userService.checkIfUserIsInactive(email, inactive, (result) => {
@@ -125,6 +124,7 @@ class ForgotPassword extends React.Component{
 			)
 		}
 		componentDidMount(){
+
 			this.refs.sendPass.onclick = () => {
 				'use strict';
 				const nodemailer = require('nodemailer');
@@ -142,15 +142,19 @@ class ForgotPassword extends React.Component{
             pass: 'rodekors11' // generated ethereal password
         }
     });
-		userService.getThisUser(email, (result) => {
-			console.log(result);
+					let email = this.refs.inpMail.value;
+					let password = Math.random().toString(36).slice(-8);
+					console.log(password)
+					userService.getThisUser(email, (result) => {
+						userService.updateUserPassword(password, email, (result) => {
+						})
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"Rodekors" <rodekorstest123@gmail.com>', // sender address
-        to: 'phillipaur@gmail.com, phillipaur@gmail.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
+        to: result.email, // list of receivers
+        subject: 'Glemt passord - rodekors', // Subject line
+        text: 'Nytt password', // plain text body
+        html: '<b>Du har bedt om nytt passord til brukeren </b>' + result.firstname + "<br>" + "Ditt nye passord er " + password, // html body
     };
 
     // send mail with defined transport object
@@ -164,9 +168,9 @@ class ForgotPassword extends React.Component{
 
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-    	});
-		});
-	});
+    			});
+				});
+			});
 		}
 		this.refs.back.onclick = () => {
 			history.push('/loginPage');
@@ -1184,17 +1188,31 @@ class Homepage extends React.Component {
 
 class Events extends React.Component {
   render() {
+<<<<<<< HEAD
     return (<div>
 
 			<h1>Arrangementer</h1>
       <h4>Kommende arrangementer</h4>
+=======
+    return (
+			<div className="event-container">
+			<div className="event-center-content">
+      <h1 className="event-title">Kommende arrangementer</h1>
+			<div>
+>>>>>>> 76419eecccd9568fdc1d054cfa8cbea6d25615f8
       <button ref='showPreEvents'>Tidligere</button>
       <button ref='btnNewEvent'>Legg til arrangement</button>
-      <br/><br/>
+			</div>
+			</div>
 
+<<<<<<< HEAD
       <div className="event-container" ref='upcoming'>
 			</div>
     </div>);
+=======
+      <div className="event-flex" ref='upcoming'></div>
+			</div>);
+>>>>>>> 76419eecccd9568fdc1d054cfa8cbea6d25615f8
   }
   componentDidMount() {
     let btnPressed = false;

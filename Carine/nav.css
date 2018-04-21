@@ -311,17 +311,34 @@ iframe {
     margin: 0 auto;
     padding-top: 30px;
     padding-bottom: 10px;
-    flex-wrap: wrap;
-    display: flex;
-    justify-content: center;
     overflow-y: scroll;
     height: 640px;
+}
+
+.event-center-content {
+  position: relative;
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.event-title {
+  color: #ad0513;
+  font-family: 'Abril Fatface';
+}
+
+.event-flex {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
 }
 
 .event-bg {
   background-color: white;
   padding: 20px;
-  overflow: auto;
+  overflow: hidden;
   border-radius: 15px;
   height: 200px;
   width: 450px;
