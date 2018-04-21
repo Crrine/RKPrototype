@@ -1539,6 +1539,7 @@ class divEvent extends React.Component {
 
 	componentDidMount() {
 		this.userisloggedin = userService.browseruser();
+		userid = this.userisloggedin.userID;
 		if (this.userisloggedin.admin !== 1) {
 			this.refs.checkinterested.hidden = true;
 			this.refs.editArr.hidden = true;
@@ -1638,7 +1639,12 @@ class Vaktliste extends React.Component {
 		}
 
 		deletefromvakt(userid) {
-
+			userService.deleteFromArr(eventID, userid, (result) => {
+				userService.getUserHasEvent(userid, eventID, (result) => {
+					this.hasevent = result;
+					this.hentbrukere();
+				})
+			})
 		}
 
 		addUser(userid) {
@@ -1663,7 +1669,9 @@ class Vaktliste extends React.Component {
 					user.firstname + " " + user.lastname
 				}
 				</Link>
-
+				<button onClick = {() => {
+					this.deletefromvakt(user.userID)
+				}}>Meld av</button>
 				</li>
 			)
 		}

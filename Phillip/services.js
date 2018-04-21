@@ -290,6 +290,14 @@ connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (err
       callback();
     });
   }
+
+  deleteFromArr(eventID, userID, callback) {
+    connection.query('DELETE FROM user_has_event WHERE eventID = ? AND userID = ?', [eventID, userID], (error, result) => {
+      if (error) throw error;
+
+      callback();
+    })
+  }
   addUser(firstname, lastname, address, email, password, city, zip, phone, age, callback) {
     connection.query('INSERT INTO user (firstname, lastname, address, email, password, city, zip, phone, age, inactive) values (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)', [firstname, lastname, address, email, password, city, zip, phone, age], (error, result) => {
       if (error) throw error;
