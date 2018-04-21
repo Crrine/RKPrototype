@@ -1198,8 +1198,15 @@ class Homepage extends React.Component {
         divEvent.appendChild(titleEvent); //Fiks men lag en p for info
 
         let eventTxt = document.createElement('P');
+				let str; let string; let array;
+				str = event.date_start;
+				if (str) {
+					string = str.toString();
+					array = string.split(" ");
+					str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+				}
 
-        eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+        eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + str;
 
         divEvent.appendChild(eventTxt);
 
@@ -1212,6 +1219,10 @@ class Homepage extends React.Component {
 }
 
 class Events extends React.Component {
+	constructor() {
+		super();
+		this.userisloggedin;
+	}
   render() {
 
     return (
@@ -1232,6 +1243,14 @@ class Events extends React.Component {
 
   }
   componentDidMount() {
+
+		this.userisloggedin = userService.browseruser();
+		userid = this.userisloggedin.userID;
+
+		if(this.userisloggedin.admin != 1) {
+			this.refs.btnNewEvent.hidden = true;
+		}
+
 		let str; let string; let array; let stri;
     let btnPressed = false;
     // let thisDate = new Date();
