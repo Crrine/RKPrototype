@@ -1220,8 +1220,8 @@ class Events extends React.Component {
 			<div className="event-center-content">
       <h1 className="event-title">Arrangementer</h1>
 			<div>
-      <button class="btn btn-light event-button" ref='showPreEvents'>Se tidligere arrangement</button>
-      <button class="btn btn-light event-button" ref='btnNewEvent'>Legg til arrangement</button>
+      <button className="btn btn-light event-button" ref='showPreEvents'>Se tidligere arrangement</button>
+      <button className="btn btn-light event-button" ref='btnNewEvent'>Legg til arrangement</button>
 			</div>
 			</div>
 
@@ -1267,6 +1267,7 @@ class Events extends React.Component {
             divEvent.appendChild(titleEvent); //Fiks men lag en p for info
 
             let eventTxt = document.createElement('P');
+						eventTxt.className = "event-text";
 
 						str = event.date_start;
 						if (str) {
@@ -1328,7 +1329,7 @@ class Events extends React.Component {
             // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
           }
           btnPressed = false;
-          this.refs.showPreEvents.innerText = 'Kommende';
+          this.refs.showPreEvents.innerText = 'Se kommende arrangementer';
         })
       }
     }
