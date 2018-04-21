@@ -1577,6 +1577,7 @@ class divEvent extends React.Component {
 			userService.checkifInterested(eventID, userid, (result) => {
 				if (result != undefined) {
 					this.refs.Interested.disabled = true;
+					this.refs.hasevent.innerText = 'Du er meldt interresert på arrangementet';
 					this.forceUpdate();
 				}
 			})
