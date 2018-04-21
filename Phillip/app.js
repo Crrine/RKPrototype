@@ -275,14 +275,42 @@ class Register extends React.Component {
 			let phone = this.refs.regPhone.value;
 			let age = this.refs.regAge.value;
 
-			if (this.refs.repeatregPassword.value == this.refs.regPassword.value) {
+				if (!firstname || !lastname || !address || !phone || !city || !zip || !email || !age || !password) {
+					this.refs.feilmelding.innerText = 'Du må fylle ut skjemaet';
+				}
+				else if (!firstname) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn et brukernavn';
+			}
+				else if (!lastname) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn et etternavn';
+			}
+				else if (!address) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn en adresse';
+			}
+				else if (!phone) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn et telefonnummer';
+			}
+				else if (!city) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn en by';
+			}
+				else if (!zip) {
+					this.refs.feilmelding.innerText = 'Du må skrive et gyldig postnr';
+			}
+				else if (!email) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn en email adresse';
+			}
+				else if (!age) {
+					this.refs.feilmelding.innerText = 'Du må skrive inn din alder';
+			}
+				else if (this.refs.repeatregPassword.value == this.refs.regPassword.value) {
+					this.refs.feilmelding.innerText = 'Passordene er ikke like';
+			}
+				else {
 			userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
 				alert('Brukeren er opprettet');
 				history.push('/loginPage/');
 				this.forceUpdate(); //Ikke bruke forceUpdate
 			})
-		} else {
-			this.refs.feilmelding.innerText = 'Passordene er ikke like';
 		}
 			// alert('Informasjonen er ugyldig'); lag noen if-error-sak
 		}
