@@ -29,17 +29,54 @@ class LoginPage extends React.Component {
 	}
 	render(){
 		return (
-			<div className="yolo">
-				<h1>Innlogging</h1>
-				<input type='text' ref='inpUser' placeholder='epost' />
-				<input type='password' ref='inpPassword' placeholder='passord' /><span />
-				<button ref='btnLogin'>Logg inn</button>
-				<button ref='btnReg'>Ny bruker</button><br /><br />
-				<div ref='loginOutput'></div>
-				<button ref='btnForgotPassword' hidden onClick = {() => {
-					history.push('/forgotPassword/'),
-					this.forceUpdate()}}>glemt passord</button>
+			<div>
+
+			<link rel="stylesheet" type="text/css" href="nav.css" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet" />
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet" />
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossOrigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossOrigin="anonymous"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossOrigin="anonymous"></script>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous" />
+			<meta charSet="utf-8" />
+			<title>Røde Kors Sanitetsvakt</title>
+
+			<div className="login-body">
+			<div className="container">
+	<div className="login-wrap">
+	<div>
+		<div  className="login-logo">
+		<img className="login-logo-img" src="rodekors-01.png" alt="Logo" />
+		</div>
+	<form>
+		<div className="form-group">
+			<label className="login-text">Epost:</label>
+			<input type="text" className="form-control" id="usr" ref='inpUser' />
+		</div>
+		<div className="form-group">
+			<label className="login-text">Passord:</label>
+			<input type="password" className="form-control" id="pwd" ref='inpPassword' />
+		</div>
+	</form>
+	<div className="login-grid">
+		<div>
+			<NavLink exact to='/forgotPassword' className="nav-link">Glemt passord?</NavLink> <br />
+			<NavLink exact to='/register' className="nav-link">
+				Registrere ny bruker?
+			</NavLink>
+		</div>
+		<div>
+			<button id="login-button" type="button" className="btn btn-danger" ref='btnLogin'>Logg inn</button>
+		</div>
+		<div ref='loginOutput'></div>
 			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+	</div>
+
 		);
 	}
 	componentDidMount(){
@@ -47,20 +84,19 @@ class LoginPage extends React.Component {
 				let inpUser = this.refs.inpUser.value;
 				let inpPassword = this.refs.inpPassword.value;
 				let email = this.refs.inpUser.value;
-
+				userService.emptystorage();
 				userService.getThisUser(email, (result) => {
 					let inactive = result.inactive;
+					userService.emptystorage();
 					userService.checkIfUserIsInactive(email, inactive, (result) => {
 						if (inactive == 1) {
 							this.refs.loginOutput.innerText = 'Brukeren er ikke aktivert, kontakt administator';
-							this.refs.btnForgotPassword.hidden = true;
 							userid = null;
 							userService.emptystorage();
 						}
 					})
 				})
 					userService.loginUser(inpUser, inpPassword, (result) => {
-
 					if(result != undefined){
 						console.log("logget inn bruker - ID:" + result.userID);
 						this.userisloggedin = userService.browseruser()
@@ -69,15 +105,10 @@ class LoginPage extends React.Component {
 					}else {
 						console.log("mislykket innlogging");
 						this.refs.loginOutput.innerText = 'feil brukernavn/passord';
-						this.refs.btnForgotPassword.hidden = false;
-
 						userService.emptystorage();
+						this.forceUpdate();
 					}
 	})
-			}
-			this.refs.btnReg.onclick = () => {
-				regPress = true;
-				history.push('/register/');
 			}
 		}
 	}
@@ -101,7 +132,6 @@ class ForgotPassword extends React.Component{
 
 class Register extends React.Component {
 	render(){
-		if(regPress){
 			return(
 				<div>
 					<h1>Registrering</h1>
@@ -152,7 +182,6 @@ class Register extends React.Component {
 					<button ref='backtologin'>Back</button>
 				</div>
 			)
-		}
 	}	//bør man heller ha en form-action og knappen inne i formen?
 	componentDidMount(){
 		this.refs.backtologin.onclick = () => {
@@ -234,12 +263,6 @@ class Navbar extends React.Component {
 											Profil
 										</NavLink>
 										<div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-										<NavLink exact to='/loggut' onClick = {() => {
-											userService.emptystorage();
-											history.push('/loginPage/')
-										}}>
-											Logg ut
-										</NavLink>
 										</div>
 									</li>
 									<li className="nav-item">
@@ -247,6 +270,14 @@ class Navbar extends React.Component {
 									</li>
 									<li>
 									<NavLink exact to='/admin' className="nav-link" href="#">Admin</NavLink>
+									</li>
+									<li>
+									<NavLink exact to='/loggut' className="nav-link" onClick = {() => {
+										userService.emptystorage();
+										history.push('/loginPage/')
+									}}>
+										Logg ut
+									</NavLink>
 									</li>
 								</ul>
 							</div>
@@ -315,11 +346,9 @@ class Navbar extends React.Component {
 				</div>
 			)
 		} else {
+			history.push('/loginPage')
 			return(
-				// history.push('/loginPage/');
-				// this.forceUpdate();
 				<div>
-					<Link to='/loginPage'>Logg inn</Link>
 				</div>
 			)
 		}
@@ -336,59 +365,83 @@ class Profile extends React.Component{
 	}
 	render(){
 		return(
-			<div>
-				<h1></h1>
-				<span ref='userName'></span><br />
-				<span ref='userEmail'></span><br />
-				<span ref='userPoints'></span><br />
-				Kommende arrangementer:<br />
-				<span ref='upcomingEvents'></span>
-				tidligere deltatt arangementer:<br />
-				<span ref="earlierevents"></span>
-				<span ref="usercompetence"></span>
-				<button ref='btnShowInfo'>Vis info</button>
-				<button onClick = {() => {
-					history.push('/editprofile/'),
-					redid = viewid;
-					this.forceUpdate()}}>Rediger</button><br />
-					<span ref="passive"></span>
-				<div ref='showInfo'>
-					<span ref='userAddress'></span><br />
-					<span ref='userCity'></span><br />
-					<span ref='userZip'></span><br />
-					<span ref='userPhone'></span><br />
-					<span ref='userAge'></span><br />
+				<div className="grid-container">
+				<div>
+
+    <div className="profile-events">
+      <div className="profile-events-grid">
+    <div>
+      <h3 className="medium-title">Kommende vakter</h3>
+      <div className="profile-events-minor-grid">
+
+				<div ref='upcoming'></div>
+
+			</div>
+    </div>
+    <div>
+      <h3 className="medium-title">Deltatte vakter</h3>
+      <div className="profile-events-minor-grid">
+        <div>
+
+				<div ref='earlierevents'></div>
+
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+
+			<div className="profile-course-registration">
+				<h2 className="medium-title">Registrere kurs?</h2>
+				<div>
+					<p>Hvilken kvalifisering gjelder det:</p>
+					<form ref='compForm'>
+						<select ref='compSelect'>
+						</select>
+					</form>
+					<button ref='btnAddComp'>Send inn</button>
+					<div ref='compOutput'></div>
 				</div>
+			</div>
+		</div>
+
+  <div>
+  <div>
+    <div className="profile-bg">
+      <h3 className="medium-title">Personalia</h3>
+      <img className="profile-picture" src="profilepicture.jpg" alt="" />
+      <p className="profile-text" ref='userName'></p>
+      <p className="profile-text" ref='userPoints'>Vaktpoeng:</p>
+      <p className="profile-text" ref='userAge'>Alder:</p>
+      <p className="profile-text" ref='userAddress'>Adresse:</p>
+      <p className="profile-text" ref='userZip'>Postnr:</p>
+      <p className="profile-text" ref='userPhone'>Telefon:</p>
+      <p className="profile-text" ref='userEmail'>Epost:</p>
+			<p className="profile-text" ref='passive'></p>
+			<button onClick = {() => {
+				history.push('/editprofile/'),
+				this.forceUpdate()}}>Rediger</button>
+		</div>
+  </div>
+
+    <div>
+        <div className="profile-deactivate">
+          <h3 className="medium-title">Deaktivere profil?</h3>
+          <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under, Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
+          <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere min profil</button>
+        </div>
+    </div>
+  </div>
 			</div>
 		);
 	}
-
-	componentWillUnmount() {
-		viewid = 0;
-	}
-
 	componentDidMount(){
 
-		userService.userHasCompetence(userid, (result) => {
-			console.log(result)
-		})
-
-		userService.getEarlierUserEvents(userid, (result) => {
-			for (let event of result) {
-				this.refs.earlierevents.innerText += event.name + '\n';
-			}
-		})
-
-		userService.getUpcomingEvents(userid,(result) => {
-			for(let event of result){
-				this.refs.upcomingEvents.innerText += event.name + '\n';
-			}
-		})
 		this.userisloggedin = userService.browseruser();
 		userid = this.userisloggedin.userID;
-
+		let str; let string; let array;
 		userService.checkifPassive(userid, (result) => {
-			let str; let string; let array;
 			if (result != undefined) {
 
 				this.refs.passive.innerText = result.date_End;
@@ -402,32 +455,144 @@ class Profile extends React.Component{
 			}
 		})
 
- 		userService.getUser(userid, (result) => {
-			let btnShowInfoPressed = false;
-			this.refs.userName.innerText = result.firstname;
-			this.refs.userName.innerText += " " + result.lastname;
-			this.refs.userEmail.innerText = result.email;
-			this.refs.userPoints.innerText = "Vaktpoeng: " + result.points;
+		let compid = 0;
 
-			this.refs.btnShowInfo.onclick = () => {
-				if(btnShowInfoPressed == false){
-					this.refs.showInfo.innerText =
-					" Adresse: " + result.address + '\n' +
-					" By: " + result.city + '\n' +
-					" Postnummer: " + result.zip + '\n' +
-					" Tlf: " + result.phone + '\n' +
-					" Alder: " + result.age + '\n';
-					this.refs.btnShowInfo.innerText = "Skjul info";
-					btnShowInfoPressed = true;
-				}else{
-					this.refs.showInfo.innerText = "";
-					this.refs.btnShowInfo.innerText = "Vis info";
-					btnShowInfoPressed = false;
-				}
+		userService.getCompetences((result) => {
+			for(let comp of result){
+				let compSel = document.createElement('OPTION');
+				let compTitle = document.createTextNode(comp.title);
+
+				compSel.appendChild(compTitle);
+				this.refs.compSelect.appendChild(compSel);
 			}
+		})
+		this.refs.btnAddComp.onclick = () => {
+			let title = this.refs.compSelect.value;
+			let finished = '2018-01-01';
+
+			userService.getCompetence(title,(result) => {
+				compid = result.compID;
+				userService.regCompetence(userid, compid, finished, (result) => {
+					console.log(compid);
+					this.forceUpdate();
+				})
+			})
+			 // Skriv en tekst her om at det er sendt til godkjenning
+		}
+		userService.getUserComp(userid, (result) => {
+			for (let usercomp of result){
+				this.refs.compOutput.innerText += usercomp.title + '\n';
+			}
+		})
+
+		userService.getEarlierUserEvents(userid, (result) => {
+			for (let event of result){
+				let divEvent = document.createElement('DIV');
+					divEvent.className = 'aktueltarrangementer';
+
+				let btnEvent = document.createElement('BUTTON');
+				let btnEventTxt = document.createTextNode('Informasjon');
+				let clickedEvent = event.eventID;
+
+				btnEvent.appendChild(btnEventTxt);
+				btnEvent.setAttribute('id', event.eventID);
+
+				let titleEvent = document.createElement('span');
+				// titleEvent.setAttribute('href', '/#');
+				titleEvent.className = "blueTxt";
+				titleEvent.innerText = event.name;
+
+
+				btnEvent.onclick = () => {
+					sendToEvent(clickedEvent);
+				}
+
+				divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+				let eventTxt = document.createElement('P');
+
+				eventTxt.innerText += '\n' +
+					'Lokasjon: ' + event.area + '\n' +
+					'Kontakttelefon: ' + event.contact_phone + '\n' +
+					'Startdato: ' + event.date_start;
+
+				divEvent.appendChild(eventTxt);
+
+				// divEvent.appendChild(btnEvent);
+				this.refs.earlierevents.appendChild(divEvent);
+				// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+		}
+		})
+
+		userService.getUpcomingevents((result) => {
+				for(let event of result){
+					let divEvent = document.createElement('DIV');
+						divEvent.className = 'aktueltarrangementer';
+
+					let btnEvent = document.createElement('BUTTON');
+					let btnEventTxt = document.createTextNode('Informasjon');
+					let clickedEvent = event.eventID;
+
+					btnEvent.appendChild(btnEventTxt);
+					btnEvent.setAttribute('id', event.eventID);
+
+					let titleEvent = document.createElement('span');
+					// titleEvent.setAttribute('href', '/#');
+					titleEvent.className = "blueTxt";
+					titleEvent.innerText = event.name;
+
+
+					btnEvent.onclick = () => {
+						sendToEvent(clickedEvent);
+					}
+
+					divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+					let eventTxt = document.createElement('P');
+
+					eventTxt.innerText += '\n' +
+						'Lokasjon: ' + event.area + '\n' +
+						'Kontakttelefon: ' + event.contact_phone + '\n' +
+						'Startdato: ' + event.date_start;
+
+						str = event.date_start;
+						if (str) {
+							string = str.toString();
+							array = string.split(" ");
+							str = array[2]+" "+array[1]+" "+array[3]+" "+array[4];
+							console.log(str)
+						}
+
+					divEvent.appendChild(eventTxt);
+
+					// divEvent.appendChild(btnEvent);
+					this.refs.upcoming.appendChild(divEvent);
+					// divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
+			}
+		})
+
+ 		userService.getUser(userid,(result) => {
+			this.refs.userName.innerText += result.firstname;
+			this.refs.userName.innerText += " " + result.lastname;
+			this.refs.userAge.innerText += " " + result.age;
+			this.refs.userPhone.innerText += " " + result.phone;
+			this.refs.userEmail.innerText += " " + result.email;
+			this.refs.userPoints.innerText += " " + result.points;
+			this.refs.userZip.innerText += " " + result.zip;
+			this.refs.userAddress.innerText += " " + result.address;
 		});
+		this.refs.btnDeactivate.onclick = () => {
+			let r = confirm('Er du sikker på at du vil deaktivere brukeren din?');
+			if(r == true){
+				userService.deactivateUser(userid,(result) => {
+					console.log('Deaktivert bruker - ID:' + userid);
+					// history.push('/loginPage/');
+					// this.forceUpdate();
+				});
+			}
 		}
 	}
+}
 
 class EditOtherProfile extends React.Component{
 		constructor() {
