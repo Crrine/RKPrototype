@@ -234,7 +234,7 @@ class Register extends React.Component {
 			)
 	}	//bør man heller ha en form-action og knappen inne i formen?
 	componentDidMount(){
-		
+
 		this.refs.btnSendReg.onclick = () => {
 		 	let firstname = this.refs.regFirstName.value;
 			let lastname = this.refs.regLastName.value;
@@ -1974,7 +1974,7 @@ class NewEvent extends React.Component {
 			            <label className="login-text">Startdato:</label>
 			            <input type="datetime-local" className="form-control" ref='regStartDato' />
 			            <label className="login-text">Vaktansvarlig:</label>
-			            <input type="text" className="form-control" />
+			            <input type="text" className="form-control" ref='regshiftManager'/>
 			            <label className="login-text">Vaktlag:</label>
 									<select class="form-control" id="exampleFormControlSelect1" ref='rolelistSelect'>
 							    </select>
@@ -2032,13 +2032,14 @@ class NewEvent extends React.Component {
 						let description = this.refs.regDescript.value;
 						let area = this.refs.regMeet.value;
 						let point_award = this.refs.regPoints.value;
+						let shiftManager = this.refs.regshiftManager.value;
 
 						let rolelistName = this.refs.rolelistSelect.value;
 
 						userService.getRolelist(rolelistName,(result) => {
 							rolelistid = result.rolelistID;
 
-							userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, (result) => {
+							userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
 								alert('Arrangementet er opprettet');
 								history.push('/events/');
 								this.forceUpdate();

@@ -286,8 +286,8 @@ addPassive(userID, date_Start, date_End, callback) {
       callback(result[0]);
     });
   }
-  addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, callback) {
-    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award) values (?, ?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelistid, description, area, point_award], (error, resutlt) => {
+  addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, callback) {
+    connection.query('INSERT INTO event (name, date_start, date_end, contact_phone, rolelist_roleID, description, area, point_award, shiftManager) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager], (error, resutlt) => {
       if (error) throw error;
 
       callback();
