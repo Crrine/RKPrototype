@@ -1190,7 +1190,7 @@ class Events extends React.Component {
   render() {
 
     return (
-			<div>
+			
 			<div className="event-container">
 			<div className="event-center-content">
       <h1 className="event-title">Kommende arrangementer</h1>
@@ -1201,12 +1201,9 @@ class Events extends React.Component {
 			</div>
 
 
-      <div className="event-container" ref='upcoming'></div>
-
-    </div>);
-
       <div className="event-flex" ref='upcoming'></div>
-			</div>);
+			</div>
+		);
 
   }
   componentDidMount() {
