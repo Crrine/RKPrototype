@@ -1971,9 +1971,10 @@ class NewEvent extends React.Component {
 			            <label className="login-text">Startdato:</label>
 			            <input type="datetime-local" className="form-control" ref='regStartDato' />
 			            <label className="login-text">Vaktansvarlig:</label>
-			            <input type="text" className="form-control" ref='editCity' />
+			            <input type="text" className="form-control" />
 			            <label className="login-text">Vaktlag:</label>
-			            <input type="email" className="form-control"  ref='editEmail' />
+									<select class="form-control" id="exampleFormControlSelect1" ref='rolelistSelect'>
+							    </select>
 			          </div>
 			          <div className="form-group">
 			            <label className="login-text">Vaktpoeng:</label>
@@ -1993,7 +1994,7 @@ class NewEvent extends React.Component {
 			        </form>
 							<div className="login-grid">
 							<div>
-							<button ref='btnSendArr' className="btn btn-outline-danger">Registrer</button>
+							<button ref='btnSendArr' className="btn btn-outline-danger">Legg til</button>
 							</div>
 							<div className="edit-profile-btn-right">
 							<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
