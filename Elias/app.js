@@ -445,6 +445,7 @@ class Profile extends React.Component {
 class EditProfile extends React.Component {
   render() {
     return (<div className="event-container">
+      <div>
       <h1>Rediger profil</h1>
       <form>
         <label>
@@ -489,6 +490,7 @@ class EditProfile extends React.Component {
           history.push('/profile/'),
           this.forceUpdate()
         }}>Tilbake</button>
+        </div>
     </div>)
   }
   componentDidMount() {
