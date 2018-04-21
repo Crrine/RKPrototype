@@ -464,11 +464,22 @@ iframe {
   background-color: white;
   padding: 20px;
   overflow: auto;
-  height: 500px;
+  height: 550px;
   overflow-y: scroll;
   margin: 0 auto;
 }
 
 .edit-profile-btn-right {
   text-align: right;
+}
+
+.new-event-bg {
+  width: 80%;
+  border-radius: 15px;
+  background-color: white;
+  padding: 20px;
+  overflow: auto;
+  height: 620px;
+  overflow-y: scroll;
+  margin: 0 auto;
 }

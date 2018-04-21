@@ -928,7 +928,7 @@ class EditProfile extends React.Component{
             <label className="login-text">Etternavn:</label>
             <input type="text" className="form-control" ref='editLastName' />
             <label className="login-text">Telefon:</label>
-            <input type="text" className="form-control" ref='editPhone' />
+            <input type="number" className="form-control" ref='editPhone' />
             <label className="login-text">Postnr:</label>
             <input type="number" className="form-control" ref='editZip' />
             <label className="login-text">Alder:</label>
@@ -1959,45 +1959,46 @@ class Passiv extends React.Component {
 class NewEvent extends React.Component {
 		render(){
 					return(
-						<div>
-							<h1>Nytt Arrangement</h1>
+						<div className="big-container">
+						<div className="new-event-bg">
+							<h1 className="eventmediumtitle">Legg til arrangement</h1>
 							<form>
-								<label>
-									Navn på arrangementet:<br />
-									<input ref='regArrName' type='text' /><br />
-								</label>
-								<label>
-									Startdato:<br />
-									<input ref='regStartDato' type='datetime-local' /><br />
-								</label>
-								<label>
-									sluttdato:<br />
-									<input ref='regSluttDato' type='datetime-local' /><br />
-								</label>
-								<label>
-									kontakttelefon:<br />
-									<input ref='regTlf' type='text' /><br />
-								</label>
-								<label>
-									Vaktlag:<br />
-										<select ref='rolelistSelect'>
-										</select><br />
-								</label>
-								<label>
-									description:<br />
-									<input ref='regDescript' type='text' /><br />
-								</label>
-								<label>
-									Møtested:<br />
-									<input ref='regMeet' type='text' /><br />
-								</label>
-								<label>
-									Vaktpoeng:<br />
-									<input ref='regPoints' type='number' /><br />
-								</label>
-							</form>
-							<button ref='btnSendArr'>Registrer</button>
-							<button ref='btnBackArr'>Tilbake</button>
+			          <div className="login-grid">
+			          <div className="form-group">
+			            <label className="login-text">Tittel:</label>
+			            <input type="text" className="form-control" ref='regArrName' />
+			            <label className="login-text">Startdato:</label>
+			            <input type="datetime-local" className="form-control" ref='regStartDato' />
+			            <label className="login-text">Vaktansvarlig:</label>
+			            <input type="text" className="form-control" ref='editCity' />
+			            <label className="login-text">Vaktlag:</label>
+			            <input type="email" className="form-control"  ref='editEmail' />
+			          </div>
+			          <div className="form-group">
+			            <label className="login-text">Vaktpoeng:</label>
+			            <input type="number" className="form-control" ref='regPoints' />
+			            <label className="login-text">Sluttdato:</label>
+			            <input type="datetime-local" className="form-control" ref='regSluttDato' />
+			            <label className="login-text">Kontakttelefon:</label>
+			            <input type="number" className="form-control" ref='regTlf' />
+			            <label className="login-text">Møtested:</label>
+			            <input type="text" className="form-control" ref='regMeet' />
+			          </div>
+			          </div>
+								<div class="form-group">
+  								<label>Beskrivelse:</label>
+  								<textarea class="form-control" rows="5" ref='regDescript'></textarea>
+								</div>
+			        </form>
+							<div className="login-grid">
+							<div>
+							<button ref='btnSendArr' className="btn btn-outline-danger">Registrer</button>
+							</div>
+							<div className="edit-profile-btn-right">
+							<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
+							</div>
+							</div>
+							</div>
 						</div>
 					)
 				}
