@@ -242,7 +242,7 @@ class Navbar extends React.Component {
 							<div className="collapse navbar-collapse" id="navbarSupportedContent">
 								<ul className="navbar-nav mr-auto">
 									<li className="nav-item">
-										<NavLink exact to='/homepage' className="nav-link">Aktuelt <span className="sr-only">(current)</span></NavLink>
+										<NavLink exact to='/homepage' className="nav-link">Aktuelt<span className="sr-only">(current)</span></NavLink>
 									</li>
 									<li className="nav-item">
 										<NavLink exact to='/calendar' className="nav-link" href="#">Kalender</NavLink>
@@ -1565,8 +1565,8 @@ class Calendar extends React.Component {
 	}
 	render() {
 		return (
-			<div>
-			<BigCalendar
+									<div>
+									<BigCalendar
 											messages={{next:"Neste",previous:"Tilbake",today:"I dag",month:"Måned",week:"Uke",work_week:"Jobbuke",day:"Dag",agenda:"Agenda", date:"Dato", time:"Tid", event:"Arrangement"}}
 											events={this.state.events}
 											step={60}
