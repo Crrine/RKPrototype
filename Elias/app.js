@@ -20,7 +20,7 @@ let eventID = 0;
 
 class LoginPage extends React.Component {
   render() {
-    return (<div>
+    return (<div className="login-body">
       <link rel="stylesheet" type="text/css" href="nav.css"/>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet"/>
@@ -32,7 +32,7 @@ class LoginPage extends React.Component {
       <meta charSet="utf-8"/>
       <title>Røde Kors Sanitetsvakt</title>
 
-      <div className="login-body">
+      <div>
         <div className="container">
           <div className="login-wrap">
             <div>
@@ -444,7 +444,7 @@ class Profile extends React.Component {
 
 class EditProfile extends React.Component {
   render() {
-    return (<div>
+    return (<div className="event-container">
       <h1>Rediger profil</h1>
       <form>
         <label>
