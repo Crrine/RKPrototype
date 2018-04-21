@@ -797,7 +797,7 @@ class EditOtherProfile extends React.Component{
       }
     })
 
-    userService.getUpcomingEvents(viewid, (result) => {
+    userService.getUpcomingevents((result) => {
       for (let event of result) {
         let divEvent = document.createElement('DIV');
         divEvent.className = 'aktueltarrangementer';
@@ -1140,56 +1140,113 @@ class Homepage extends React.Component {
   }
 }
 
-class EarlierEvents extends React.Component {
-		render(){
-			return(
-				<div>
-					<h1>Arrangementer</h1>
-					<h4>Tidligere arrangementer</h4>
-					<div ref='earlier'></div>
-				</div>
-			);
-		}
-		componentDidMount(){
-			userService.getEarlierEvents((result) => {
-				for(let event of result){
-					let divEvent = document.createElement('DIV');
-
-					divEvent.innerText = event.name + '\n' +
-						'Lokasjon: ' + event.area + '\n' +
-						'Kontakttelefon: ' + event.contact_phone + '\n';
-
-					this.refs.earlier.appendChild(divEvent);
-					divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-				}
-			})
-		}
-}
-
 class Events extends React.Component {
-	render(){
-		return(
-			<div>
-				<h1>Arrangementer</h1>
-				<h4>Kommende arrangementer</h4>
-				<div ref='upcoming'></div>
-			</div>
-		);
-	}
-	componentDidMount(){
-		userService.getUpcomingevents((result) => {
-			for(let event of result){
-				let divEvent = document.createElement('DIV');
+  render() {
+    return (<div>
+      <h1>Arrangementer</h1>
+      <h4>Kommende arrangementer</h4>
+      <button ref='showPreEvents'>Tidligere</button>
+      <button ref='btnNewEvent'>Legg til arrangement</button>
+      <br/><br/>
 
-				divEvent.innerText = event.name + '\n' +
-					'Lokasjon: ' + event.area + '\n' +
-					'Kontakttelefon: ' + event.contact_phone + '\n';
+      <div className="event-container" ref='upcoming'></div>
+    </div>);
+  }
+  componentDidMount() {
+    let btnPressed = false;
+    // let thisDate = new Date();
 
-				this.refs.upcoming.appendChild(divEvent);
-				divEvent.innerText += '\n'; //Fjern dette når du legger til if-en
-			}
-		})
-	}
+    this.refs.btnNewEvent.onclick = () => {
+      history.push('/newEvent/');
+      this.forceUpdate();
+    }
+
+    this.refs.showPreEvents.onclick = () => {
+      if (btnPressed == false) {
+        this.refs.upcoming.innerText = '';
+        userService.getUpcomingevents((result) => {
+          for (let event of result) {
+            let divEvent = document.createElement('DIV');
+            divEvent.className = 'event-bg';
+
+            let btnEvent = document.createElement('BUTTON');
+            let btnEventTxt = document.createTextNode('Informasjon');
+            let clickedEvent = event.eventID;
+
+            btnEvent.appendChild(btnEventTxt);
+            btnEvent.setAttribute('id', event.eventID);
+
+            let titleEvent = document.createElement('H4');
+            titleEvent.className = "eventmediumtitle";
+            titleEvent.innerText = event.name;
+
+            btnEvent.onclick = () => {
+              sendToEvent(clickedEvent);
+            }
+
+            divEvent.appendChild(titleEvent); //Fiks men lag en p for info
+
+            let eventTxt = document.createElement('P');
+
+            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+
+            divEvent.appendChild(eventTxt);
+
+            divEvent.appendChild(btnEvent);
+            this.refs.upcoming.appendChild(divEvent);
+            // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
+          }
+          btnPressed = true;
+          this.refs.showPreEvents.innerText = 'Tidligere';
+        })
+      } else {
+        this.refs.upcoming.innerText = '';
+        userService.getPastEvents((result) => {
+          for (let event of result) {
+            let divEvent = document.createElement('DIV');
+            divEvent.className = 'event-bg';
+
+            let btnEvent = document.createElement('BUTTON');
+            let btnEventTxt = document.createTextNode('Informasjon');
+            let clickedEvent = event.eventID;
+
+            btnEvent.appendChild(btnEventTxt);
+            btnEvent.setAttribute('id', event.eventID);
+
+            let titleEvent = document.createElement('h4');
+            titleEvent.className = 'eventmediumtitle';
+            titleEvent.innerText = event.name;
+
+            divEvent.appendChild(titleEvent);
+
+            btnEvent.onclick = () => {
+              sendToEvent(clickedEvent);
+            }
+
+            let eventTxt = document.createElement('P');
+
+            eventTxt.innerText += '\n' + 'Lokasjon: ' + event.area + '\n' + 'Kontakttelefon: ' + event.contact_phone + '\n' + 'Startdato: ' + event.date_start;
+
+            divEvent.appendChild(eventTxt);
+
+            divEvent.appendChild(btnEvent);
+            this.refs.upcoming.appendChild(divEvent);
+            // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
+          }
+          btnPressed = false;
+          this.refs.showPreEvents.innerText = 'Kommende';
+        })
+      }
+    }
+
+    this.refs.showPreEvents.click();
+
+    function sendToEvent(id) {
+      eventID = id;
+      history.push('/divEvent/');
+
+    }
+  }
 }
 
 class Contact extends React.Component {
@@ -1590,7 +1647,7 @@ class Calendar extends React.Component {
 			this.refs.CreateEvent.hidden = true;
 		}
 		this.refs.CreateEvent.onclick = () => {
-			history.push('/nyttEvent/');
+			history.push('/newEvent/');
 			this.forceUpdate();
 		}
 		this.refs.Passiv.onclick = () => {
@@ -2023,14 +2080,13 @@ ReactDOM.render((
 				<Route exact path='/vaktliste' component={Vaktliste}/>
 				<Route exact path='/editevent' component={EditEvent}/>
 				<Route exact path='/divevent' component={divEvent}/>
-				<Route exact path='/nyttEvent' component={NewEvent}/>
+				<Route exact path='/newEvent' component={NewEvent}/>
 				<Route exact path='/homepage' component={Homepage}/>
 				<Route excat path='/loginPage' component={LoginPage}/>
 				<Route excat path='/register' component={Register}/>
 				<Route excat path='/calendar' component={Calendar}/>
 				<Route exact path='/profile' component={Profile}/>
 				<Route excat path='/editprofile' component={EditProfile}/>
-				<Route exact path='/earlierevents' component={EarlierEvents}/>
 				<Route excat path='/events' component={Events}/>
 				<Route excat path='/contact' component={Contact}/>
 				<Route excat path='/search' component={Search}/>
