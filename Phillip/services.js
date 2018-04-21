@@ -34,6 +34,13 @@ class UserService {
       callback(result);
     });
   }
+  updateUserPassword(password, email, callback) {
+    connection.query('UPDATE user SET password = ? WHERE email = ?', [password, email], (error, result) => {
+      if(error) throw error;
+
+      callback(result);
+    })
+  }
 
   userHasCompetence(userID, callback) {
     connection.query('SELECT * FROM user_has_competence INNER JOIN competence ON (user_has_competence.competence_compID = competence.compID) WHERE userID = ?', [userID], (error, result) => {
