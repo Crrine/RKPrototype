@@ -84,6 +84,7 @@ class LoginPage extends React.Component {
 				let email = this.refs.inpUser.value;
 				userService.emptystorage();
 				userService.getThisUser(email, (result) => {
+					console.log(result)
 					let inactive = result.inactive;
 					userService.emptystorage();
 					userService.checkIfUserIsInactive(email, inactive, (result) => {
@@ -142,7 +143,7 @@ class ForgotPassword extends React.Component{
         }
     });
 		userService.getThisUser(email, (result) => {
-			console.log(result)
+			console.log(result);
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"Rodekors" <rodekorstest123@gmail.com>', // sender address
