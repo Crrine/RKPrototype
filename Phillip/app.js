@@ -1188,7 +1188,16 @@ class Homepage extends React.Component {
 
 class Events extends React.Component {
   render() {
+<<<<<<< HEAD
     return (
+=======
+
+    return (<div>
+
+			<h1>Arrangementer</h1>
+      <h4>Kommende arrangementer</h4>
+
+>>>>>>> 5b9f4b0b247eee98d36ae157b4813dca97ad9e61
 			<div className="event-container">
 			<div className="event-center-content">
       <h1 className="event-title">Kommende arrangementer</h1>
@@ -1202,6 +1211,10 @@ class Events extends React.Component {
 
       <div className="event-container" ref='upcoming'>
 			</div>
+<<<<<<< HEAD
+=======
+    </div>);
+>>>>>>> 5b9f4b0b247eee98d36ae157b4813dca97ad9e61
 
       <div className="event-flex" ref='upcoming'></div>
 			</div>);
