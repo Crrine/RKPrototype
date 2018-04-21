@@ -1250,8 +1250,9 @@ class Events extends React.Component {
             divEvent.className = 'event-bg';
 
             let btnEvent = document.createElement('BUTTON');
-            let btnEventTxt = document.createTextNode('Informasjon');
+            let btnEventTxt = document.createTextNode('Mer info');
             let clickedEvent = event.eventID;
+						btnEvent.className = "btn btn-outline-danger"
 
             btnEvent.appendChild(btnEventTxt);
             btnEvent.setAttribute('id', event.eventID);
@@ -1295,8 +1296,9 @@ class Events extends React.Component {
             divEvent.className = 'event-bg';
 
             let btnEvent = document.createElement('BUTTON');
-            let btnEventTxt = document.createTextNode('Informasjon');
+            let btnEventTxt = document.createTextNode('Mer info');
             let clickedEvent = event.eventID;
+						btnEvent.className = "btn btn-outline-danger"
 
             btnEvent.appendChild(btnEventTxt);
             btnEvent.setAttribute('id', event.eventID);
@@ -1312,6 +1314,7 @@ class Events extends React.Component {
             }
 
             let eventTxt = document.createElement('P');
+						eventTxt.className = 'event-text'
 
 						stri = event.date_start;
 						if (stri) {
