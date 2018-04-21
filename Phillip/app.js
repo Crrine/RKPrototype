@@ -1190,13 +1190,13 @@ class Events extends React.Component {
   render() {
 
     return (
-			
+
 			<div className="event-container">
 			<div className="event-center-content">
-      <h1 className="event-title">Kommende arrangementer</h1>
+      <h1 className="event-title">Arrangementer</h1>
 			<div>
-      <button ref='showPreEvents'>Tidligere</button>
-      <button ref='btnNewEvent'>Legg til arrangement</button>
+      <button class="btn btn-light event-button" ref='showPreEvents'>Se tidligere arrangement</button>
+      <button class="btn btn-light event-button" ref='btnNewEvent'>Legg til arrangement</button>
 			</div>
 			</div>
 
@@ -1251,7 +1251,7 @@ class Events extends React.Component {
             // divEvent.innerText += '\n'; Fjern dette når du legger til if-en
           }
           btnPressed = true;
-          this.refs.showPreEvents.innerText = 'Tidligere';
+          this.refs.showPreEvents.innerText = 'Se tidligere arrangementer';
         })
       } else {
         this.refs.upcoming.innerText = '';

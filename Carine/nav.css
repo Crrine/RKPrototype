@@ -300,6 +300,10 @@ iframe {
   padding: 10px;
 }
 
+.event-button {
+  margin: 3px 10px;
+}
+
 .eventmediumtitle {
   text-align: left;
   color: #ad0513;
@@ -327,7 +331,7 @@ iframe {
 .event-title {
   color: #ad0513;
   font-family: 'Abril Fatface';
-  font-size: 1em;
+  font-size: 3em;
 }
 
 .event-flex {
