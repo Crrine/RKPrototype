@@ -67,7 +67,7 @@ body {
   font-size: 0.9em;
 }
 
-p, button {
+p, button, label {
   font-family: 'Roboto Condensed', sans-serif;
 }
 
@@ -521,8 +521,19 @@ iframe {
   grid-template-columns: 50% 50%;
   width: 80%;
   margin: 0 auto;
+  margin-top: 30px;
 }
 
 .admin-btn-right {
   text-align: right;
+  margin-top: 30px;
+}
+
+.admin-btn-left {
+  margin-top: 30px;
+}
+
+.admin-role-form {
+  line-height: 1.2;
+  margin-right: 30px;
 }
