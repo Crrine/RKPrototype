@@ -1672,42 +1672,85 @@ class divEvent extends React.Component {
 
 class EditEvent extends React.Component {
   render() {
-    return (<div>
-      <form>
-        <h1>Rediger arrangement
-        </h1>
-        <label>
-          Navn på arrangementet:<br/>
-          <input ref='editArrName' type='text'/><br/>
-        </label>
-        <label>
-          Startdato:<br/>
-          <input ref='editStartDato' type='datetime-local'/><br/>
-        </label>
-        <label>
-          sluttdato:<br/>
-          <input ref='editSluttDato' type='datetime-local'/><br/>
-        </label>
-        <label>
-          kontakttelefon:<br/>
-          <input ref='editTlf' type='text'/><br/>
-        </label>
-        <label>
-          rolelist:<br/>
-          <input ref='editRoles' type='text'/><br/>
-        </label>
-        <label>
-          Møtested:<br/>
-          <input ref='editMeet' type='text'/><br/>
-        </label>
-        <label>
-          description:<br/>
-          <input ref='editDescript' type='text'/><br/>
-        </label>
-      </form>
-      <button ref='btneditArr'>Rediger Arrangement</button>
-    </div>)
-  }
+    return (
+			<div className="big-container">
+	      <div className="new-event-bg">
+	        <h1 className="eventmediumtitle">Redigere arrangement</h1>
+	        <form>
+	          <div className="login-grid">
+	            <div className="form-group">
+	              <label className="login-text">Tittel:</label>
+	              <input type="text" className="form-control" ref='editArrName'/>
+	              <label className="login-text">Startdato:</label>
+	              <input type="datetime-local" className="form-control" ref='editStartDato'/>
+	              <label className="login-text">Vaktansvarlig:</label>
+	              <input type="text" className="form-control" />
+	              <label className="login-text">Vaktlag:</label>
+	              <select className="form-control" id="exampleFormControlSelect1" ref='editRoles'></select>
+	            </div>
+	            <div className="form-group">
+	              <label className="login-text">Vaktpoeng:</label>
+	              <input type="number" className="form-control" ref='regPoints'/>
+	              <label className="login-text">Sluttdato:</label>
+	              <input type="datetime-local" className="form-control" ref='editSluttDato'/>
+	              <label className="login-text">Kontakttelefon:</label>
+	              <input type="number" className="form-control" ref='editTlf'/>
+	              <label className="login-text">Møtested:</label>
+	              <input type="text" className="form-control" ref='editMeet'/>
+	            </div>
+	          </div>
+	          <div className="form-group">
+	            <label>Beskrivelse:</label>
+	            <textarea className="form-control" rows="5" ref='editDescript'></textarea>
+	          </div>
+	        </form>
+	        <div className="login-grid">
+	          <div>
+							<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
+	          </div>
+	          <div className="edit-profile-btn-right">
+							<button ref='btneditArr' className="btn btn-success">Lagre</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+
+		// 	<div>
+    //   <form>
+    //     <h1>Rediger arrangement
+    //     </h1>
+    //     <label>
+    //       Navn på arrangementet:<br/>
+    //       <input ref='editArrName' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       Startdato:<br/>
+    //       <input ref='editStartDato' type='datetime-local'/><br/>
+    //     </label>
+    //     <label>
+    //       sluttdato:<br/>
+    //       <input ref='editSluttDato' type='datetime-local'/><br/>
+    //     </label>
+    //     <label>
+    //       kontakttelefon:<br/>
+    //       <input ref='editTlf' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       rolelist:<br/>
+    //       <input ref='editRoles' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       Møtested:<br/>
+    //       <input ref='editMeet' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       description:<br/>
+    //       <input ref='editDescript' type='text'/><br/>
+    //     </label>
+    //   </form>
+    //   <button ref='btneditArr'>Rediger Arrangement</button>
+    // </div>)
+  )}
 
   componentDidMount() {
     userService.getDivEvent(eventID, (result) => {
@@ -2171,10 +2214,10 @@ class NewEvent extends React.Component {
         </form>
         <div className="login-grid">
           <div>
-            <button ref='btnSendArr' className="btn btn-outline-danger">Legg til</button>
+						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
           </div>
           <div className="edit-profile-btn-right">
-            <button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
+						<button ref='btnSendArr' className="btn btn-success">Legg til</button>
           </div>
         </div>
       </div>
