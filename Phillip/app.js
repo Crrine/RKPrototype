@@ -2065,10 +2065,18 @@ class ChangeRole extends React.Component {
       <div>
         <button ref="EditRole">Lagre</button>
         <button ref="back">Gå tilbake</button>
+				<button ref='deleteRoleList'>Slett vaktmal</button>
       </div>
     </div>)
   }
   update() {
+		this.refs.deleteRoleList.onclick = () => {
+			userService.deleteRoleList(rolelistID, (result) => {
+				console.log('Slettet vaktmal, ID - ' + rolelistID);
+				history.push('/admin');
+			})
+		}
+
     userService.getThisRoleList(rolelistID, (result) => {
       this.refs.editRoleName.value = result.name;
       this.refs.editDescription.value = result.description;
@@ -2080,7 +2088,7 @@ class ChangeRole extends React.Component {
 
       userService.editRole(rolelistID, editname, editDescription, (result) => {})
       console.log('Vaktmal ble oppdatert, ID: ' + rolelistID);
-      history.push('/admin/')
+      history.push('/admin/');
     }
     this.refs.back.onclick = () => {
       history.push('/admin/')
@@ -2112,7 +2120,7 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.savedRoles.innerText = '';
+						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
@@ -2126,7 +2134,7 @@ class ChangeRole extends React.Component {
 
         userService.addRoleToList(roleID, rolelistID, (result) => {
 					console.log('La til rolle ID - ' + roleID);
-					this.refs.savedRoles.innerText = '';
+					this.refs.savedRoles.innerText = 'Rolleliste:';
 					this.refs.roleSelect.innerText = '';
           this.update();
 
