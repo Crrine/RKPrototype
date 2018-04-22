@@ -1776,10 +1776,6 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-<<<<<<< HEAD
-
-=======
->>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
@@ -1987,7 +1983,7 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
-  updatecomplist(compuserID) {
+  updatecomplist(competence_compID) {
     let active = 0
     userService.acceptCompetence(active, userid, compuserID, (result) => {
       userService.getDivUserComp((result) => {
@@ -2001,10 +1997,10 @@ class Administrator extends React.Component {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.compuserID}>
+      usercomp.push(<li key={user_has_competence.competence_compID}>
         {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
-          this.updatecomplist(user_has_competence.compuserID);
+          this.updatecomplist(user_has_competence.competence_compID);
         }}>Aksepter</button>
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
 
@@ -2089,13 +2085,18 @@ class NewRole extends React.Component {
       <button ref='regRole'>Registrer rolle</button><br/>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
-<<<<<<< HEAD
       <br/>
       <b>Kompetanse som kreves:</b>
       <div ref='showComps'></div>
+    </div>
     </div>)
   }
-  update(){
+
+  componentDidMount() {
+    this.update();
+  }
+
+   update() {
     this.refs.regRole.onclick = () => {
       let newroletitle = this.refs.addRole.value;
       let newcomptitle = this.refs.compRequired.value;
@@ -2109,19 +2110,7 @@ class NewRole extends React.Component {
             this.update();
           });
         })
-=======
-			</div>
-    </div>)
-  }
-  componentDidMount() {
-    userService.getRoles((result) => {
-      userService.getCompetences((result) => {
-        for(let compname of result){
-          // JOBBER HER
-        }
->>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
-      });
-    }
+  })
 
     userService.getRoles((result) => {
       for(let rolename of result){
@@ -2158,10 +2147,7 @@ class NewRole extends React.Component {
       })
     }
   }
-
-  componentDidMount() {
-    this.update();
-  }
+}
 }
 
 class ChangeRole extends React.Component {
