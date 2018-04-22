@@ -510,9 +510,19 @@ iframe {
   margin-top: 20px;
 }
 
-
 .search-form {
   margin-bottom: 100px;
   margin: 0 auto;
   text-align: center;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.admin-btn-right {
+  text-align: right;
 }

@@ -459,7 +459,11 @@ connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (err
   }
 
 getUserComp(userid, callback){
+<<<<<<< HEAD
   connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON competence.compID = user_has_competence.competence_compID WHERE roleID =?', [userid], (error, result) => {
+=======
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON (competence.compID = user_has_competence.competence_compID) WHERE userID =? AND active = 0', [userid], (error, result) => {
+>>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
     if(error) throw error;
 
     callback(result);
