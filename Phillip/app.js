@@ -59,7 +59,6 @@ class LoginPage extends React.Component {
               <div className="login-grid">
                 <div>
                   <NavLink  to='/forgotPassword' className="nav-link">Glemt passord?</NavLink>
-                  <br/>
                   <NavLink  to='/register' className="nav-link">
                     Registrere ny bruker?
                   </NavLink>
@@ -310,126 +309,76 @@ class Navbar extends React.Component {
     if (this.userisloggedin && this.userisloggedin.admin == 1) {
       if (this.userisloggedin.admin == 1) {
         return (<div>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-          <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet"/>
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous"/>
-          <meta charSet="utf-8"/>
-          <title>Røde Kors Sanitetsvakt</title>
-
-          <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <NavLink  to='/homepage' className="nav-link">Aktuelt<span className="sr-only">(current)</span>
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink  to='/calendar' className="nav-link" href="#">Kalender</NavLink>
-                </li>
-                <li className="nav-item dropdown">
-                  <NavLink  to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Arrangementer
-                  </NavLink>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <NavLink  to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Kommende
-                    </NavLink>
-                    <NavLink  to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Tidligere
-                    </NavLink>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <NavLink  to='/contact' className="nav-link" href="#">Om oss</NavLink>
-                </li>
-                <li className="nav-item dropdown">
-                  <NavLink  to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Profil
-                  </NavLink>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"></div>
-                </li>
-                <li className="nav-item">
-                  <NavLink  to='/search' className="nav-link" href="#">Brukersøk</NavLink>
-                </li>
-                <li>
-                  <NavLink  to='/admin' className="nav-link" href="#">Admin</NavLink>
-                </li>
-                <li>
-                  <NavLink  to='/loggut' className="nav-link" onClick={() => {
+					<nav className="navbar navbar-expand-lg navbar-dark bg-dark nav-left">
+					  <div className="container-fluid">
+					    <div className="navbar-header">
+					      <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
+					    </div>
+					    <ul className="nav navbar-nav navbar-left">
+					      <li>
+									<NavLink  to='/homepage' className="nav-item nav-link" >Aktuelt
+								</NavLink></li>
+							<li><NavLink  to='/calendar' className="nav-item nav-link">Kalender</NavLink></li>
+					      <li><NavLink  to='/events'  className="nav-item nav-link">
+									Arrangementer
+								</NavLink></li>
+								<li><NavLink  to='/contact' className="nav-item nav-link">Om oss</NavLink></li>
+							<li><NavLink  to='/profile'  className="nav-item nav-link">
+								Profil
+							</NavLink></li>
+							<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
+							<li><NavLink  to='/admin' className="nav-item nav-link">Admin</NavLink></li>
+					    </ul>
+					    <ul className="nav navbar-nav navbar-right">
+								<li>
+                  <NavLink to='/loggut' className="nav-item nav-link" onClick={() => {
                       userService.emptystorage();
                       history.push('/loginPage/')
                     }}>
-                    Logg ut
+                    &#10006; Logg ut
                   </NavLink>
                 </li>
-              </ul>
-            </div>
-          </nav>
+					    </ul>
+					  </div>
+					</nav>
         </div>);
       }
     } else if (this.userisloggedin) {
       return (<div>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous"/>
-        <meta charSet="utf-8"/>
-        <title>Røde Kors Sanitetsvakt</title>
-
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <NavLink  to='/homepage' className="nav-link">Aktuelt
-                  <span className="sr-only">(current)</span>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink  to='/calendar' className="nav-link" href="#">Kalender</NavLink>
-              </li>
-              <li className="nav-item dropdown">
-                <NavLink  to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Arrangementer
-                </NavLink>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <NavLink  to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Kommende
-                  </NavLink>
-                  <NavLink  to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tidligere
-                  </NavLink>
-                </div>
-              </li>
-              <li className="nav-item">
-                <NavLink  to='/contact' className="nav-link" href="#">Om oss</NavLink>
-              </li>
-              <li className="nav-item dropdown">
-                <NavLink  to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Profil
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink  to='/search' className="nav-link" href="#">Brukersøk</NavLink>
-              </li>
-              <li>
-                <NavLink  to='/loggut' className="nav-link" onClick ={() => {
+				<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+					<div className="container-fluid">
+						<div className="navbar-header">
+							<img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
+						</div>
+						<ul className="nav navbar-nav">
+							<li>
+								<NavLink  to='/homepage' className="nav-item nav-link" >Aktuelt
+							</NavLink></li>
+						<li><NavLink  to='/calendar' className="nav-item nav-link">Kalender</NavLink></li>
+							<li><NavLink  to='/events'  className="nav-item nav-link">
+								Arrangementer
+							</NavLink></li>
+							<li><NavLink  to='/contact' className="nav-item nav-link">Om oss</NavLink></li>
+						<li><NavLink  to='/profile'  className="nav-item nav-link">
+							Profil
+						</NavLink></li>
+						<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
+						</ul>
+						<ul className="nav navbar-nav navbar-right">
+							<li>
+								<NavLink to='/loggut' className="nav-item nav-link" onClick={() => {
 										userService.emptystorage();
 										history.push('/loginPage/')
 									}}>
-                  Logg ut
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>)
+									&#10006; Logg ut
+								</NavLink>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+
+			)
     } else {
       return null;
     }
@@ -1629,7 +1578,7 @@ class divEvent extends React.Component {
 						<button className="btn btn-success" ref='Interested'>Meld interesse</button>
 						<button className="btn btn-danger" ref='notInterested'>Avmeld interesse</button>
 						<button className="btn btn-outline-danger" ref='checkinterested'>Se interesserte</button><br />
-						<p ref="hasevent"></p>
+						<p className="event-div-grid-btn-left" ref="hasevent"></p>
 					</div>
 				</div>
 
@@ -1724,42 +1673,85 @@ class divEvent extends React.Component {
 
 class EditEvent extends React.Component {
   render() {
-    return (<div>
-      <form>
-        <h1>Rediger arrangement
-        </h1>
-        <label>
-          Navn på arrangementet:<br/>
-          <input ref='editArrName' type='text'/><br/>
-        </label>
-        <label>
-          Startdato:<br/>
-          <input ref='editStartDato' type='datetime-local'/><br/>
-        </label>
-        <label>
-          sluttdato:<br/>
-          <input ref='editSluttDato' type='datetime-local'/><br/>
-        </label>
-        <label>
-          kontakttelefon:<br/>
-          <input ref='editTlf' type='text'/><br/>
-        </label>
-        <label>
-          rolelist:<br/>
-          <input ref='editRoles' type='text'/><br/>
-        </label>
-        <label>
-          Møtested:<br/>
-          <input ref='editMeet' type='text'/><br/>
-        </label>
-        <label>
-          description:<br/>
-          <input ref='editDescript' type='text'/><br/>
-        </label>
-      </form>
-      <button ref='btneditArr'>Rediger Arrangement</button>
-    </div>)
-  }
+    return (
+			<div className="big-container">
+	      <div className="new-event-bg">
+	        <h1 className="eventmediumtitle">Redigere arrangement</h1>
+	        <form>
+	          <div className="login-grid">
+	            <div className="form-group">
+	              <label className="login-text">Tittel:</label>
+	              <input type="text" className="form-control" ref='editArrName'/>
+	              <label className="login-text">Startdato:</label>
+	              <input type="datetime-local" className="form-control" ref='editStartDato'/>
+	              <label className="login-text">Vaktansvarlig:</label>
+	              <input type="text" className="form-control" />
+	              <label className="login-text">Vaktlag:</label>
+	              <select className="form-control" id="exampleFormControlSelect1" ref='editRoles'></select>
+	            </div>
+	            <div className="form-group">
+	              <label className="login-text">Vaktpoeng:</label>
+	              <input type="number" className="form-control" ref='regPoints'/>
+	              <label className="login-text">Sluttdato:</label>
+	              <input type="datetime-local" className="form-control" ref='editSluttDato'/>
+	              <label className="login-text">Kontakttelefon:</label>
+	              <input type="number" className="form-control" ref='editTlf'/>
+	              <label className="login-text">Møtested:</label>
+	              <input type="text" className="form-control" ref='editMeet'/>
+	            </div>
+	          </div>
+	          <div className="form-group">
+	            <label>Beskrivelse:</label>
+	            <textarea className="form-control" rows="5" ref='editDescript'></textarea>
+	          </div>
+	        </form>
+	        <div className="login-grid">
+	          <div>
+							<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
+	          </div>
+	          <div className="edit-profile-btn-right">
+							<button ref='btneditArr' className="btn btn-success">Lagre</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+
+		// 	<div>
+    //   <form>
+    //     <h1>Rediger arrangement
+    //     </h1>
+    //     <label>
+    //       Navn på arrangementet:<br/>
+    //       <input ref='editArrName' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       Startdato:<br/>
+    //       <input ref='editStartDato' type='datetime-local'/><br/>
+    //     </label>
+    //     <label>
+    //       sluttdato:<br/>
+    //       <input ref='editSluttDato' type='datetime-local'/><br/>
+    //     </label>
+    //     <label>
+    //       kontakttelefon:<br/>
+    //       <input ref='editTlf' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       rolelist:<br/>
+    //       <input ref='editRoles' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       Møtested:<br/>
+    //       <input ref='editMeet' type='text'/><br/>
+    //     </label>
+    //     <label>
+    //       description:<br/>
+    //       <input ref='editDescript' type='text'/><br/>
+    //     </label>
+    //   </form>
+    //   <button ref='btneditArr'>Rediger Arrangement</button>
+    // </div>)
+  )}
 
   componentDidMount() {
     userService.getDivEvent(eventID, (result) => {
@@ -2247,10 +2239,10 @@ class NewEvent extends React.Component {
         </form>
         <div className="login-grid">
           <div>
-            <button ref='btnSendArr' className="btn btn-outline-danger">Legg til</button>
+						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
           </div>
           <div className="edit-profile-btn-right">
-            <button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
+						<button ref='btnSendArr' className="btn btn-success">Legg til</button>
           </div>
         </div>
       </div>
