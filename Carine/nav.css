@@ -496,6 +496,7 @@ iframe {
 }
 
 .event-div-descrip {
+  padding-top: 40px;
   width: 70%;
   Margin: 0 auto;
 }
@@ -508,6 +509,10 @@ iframe {
 .event-div-grid-btn-right {
   padding-top: 20px;
   text-align: right;
+}
+
+.event-div-grid-btn-left {
+  padding-top: 20px;
 }
 
 .big-calender {
