@@ -309,12 +309,12 @@ class Navbar extends React.Component {
     if (this.userisloggedin && this.userisloggedin.admin == 1) {
       if (this.userisloggedin.admin == 1) {
         return (<div>
-					<nav className="navbar navbar-expand-lg navbar-dark bg-dark nav-left">
+					<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 					  <div className="container-fluid">
 					    <div className="navbar-header">
 					      <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
 					    </div>
-					    <ul className="nav navbar-nav navbar-left">
+					    <ul className="nav navbar-nav">
 					      <li>
 									<NavLink  to='/homepage' className="nav-item nav-link" >Aktuelt
 								</NavLink></li>
@@ -1433,31 +1433,44 @@ class Vaktliste extends React.Component {
     this.hasevent = "";
   }
   render() {
-    return (<div>
-      <h1>
-        tittel til Arrangementet
+    return (<div className="big-container">
+		<div className="main-wrap">
+
+      <h1 className="title">
+        Tittel til Arrangementet
       </h1>
-      <h1>
-        Påmeldte medlemmer
-      </h1>
-      <ul>
-        {
-          this.state.userhasevent
-            ? this.state.userhasevent
-            : 'Ingen påmeldte'
-        }
-      </ul>
-      <h1>
-        Interreserte medlemmer
-      </h1>
-      <ul>
-        {
-          this.state.users
-            ? this.state.users
-            : 'Ingen Interreserte'
-        }
-      </ul>
-      <button ref="backButton">Tilbake</button>
+			<div className="int-grid">
+
+				<div>
+	      <h3 className="medium-title">
+	        Påmeldte medlemmer
+	      </h3>
+	      <ul>
+	        {
+	          this.state.userhasevent
+	            ? this.state.userhasevent
+	            : 'Ingen påmeldte'
+	        }
+	      </ul>
+				</div>
+
+				<div>
+	      <h3 className="medium-title">
+	        Interesserte medlemmer
+	      </h3>
+	      <ul>
+	        {
+	          this.state.users
+	            ? this.state.users
+	            : 'Ingen interesserte'
+	        }
+	      </ul>
+				</div>
+			</div>
+			<div className="int-btn">
+				<button className="btn btn-outline-danger" ref="backButton">Tilbake</button>
+			</div>
+			</div>
     </div>)
   }
 
@@ -1497,9 +1510,9 @@ class Vaktliste extends React.Component {
         <Link onClick={() => {
             viewid = user.userID;
           }} to={'/editotherprofile/'}>
-          {user.firstname + " " + user.lastname}
+          {user.firstname + " " + user.lastname + " "}
         </Link>
-        <button onClick={() => {
+        <button className="btn btn-outline-danger" onClick={() => {
             this.deletefromvakt(user.userID)
           }}>Meld av</button>
       </li>)
@@ -1513,14 +1526,14 @@ class Vaktliste extends React.Component {
 
     for (let user of this.update) {
       int.push(<li key={user.userID}>
-        {user.firstname}
-        <button onClick={() => {
+        {user.firstname + ", " + user.points + " vaktpoeng. "}
+        <button className="btn btn-outline-success" onClick={() => {
             this.addUser(user.userID)
             this.deleteuser(user.userID)
-          }}>aksepter</button>
-        <button onClick= {() => {
+          }}>Aksepter</button>
+				<button className="btn btn-outline-danger" onClick= {() => {
 				this.deleteuser(user.userID)
-					}}>deny</button>
+			}}>Avslå</button>
       </li>)
     }
     this.setState({users: int})
