@@ -310,11 +310,6 @@ class Navbar extends React.Component {
     if (this.userisloggedin && this.userisloggedin.admin == 1) {
       if (this.userisloggedin.admin == 1) {
         return (<div>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-          <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet"/>
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous"/>
-          <meta charSet="utf-8"/>
-          <title>Røde Kors Sanitetsvakt</title>
 
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
@@ -1628,7 +1623,7 @@ class divEvent extends React.Component {
 						<button className="btn btn-success" ref='Interested'>Meld interesse</button>
 						<button className="btn btn-danger" ref='notInterested'>Avmeld interesse</button>
 						<button className="btn btn-outline-danger" ref='checkinterested'>Se interesserte</button><br />
-						<p ref="hasevent"></p>
+						<p className="event-div-grid-btn-left" ref="hasevent"></p>
 					</div>
 				</div>
 
