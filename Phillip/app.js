@@ -2320,11 +2320,16 @@ class Search extends React.Component {
     this.userisloggedin
   }
   render() {
-    return (<div>
-      <h1>Brukersøk</h1>
-      <input ref='searchField' type="text" placeholder="navn, epost, tlf"/>
-      <button ref='btnSearch'>Søk</button>
+    return (<div className="big-container">
+		<div className="main-wrap">
+      <h1 className="title">Brukersøk</h1>
+			<div className="form-inline">
+				<input className="form-control col-4" ref='searchField' type="text" placeholder="Du kan søke på fornavn og etternavn" />
+      	<button className="btn btn-outline-danger" ref='btnSearch'>Søk</button>
+			</div>
+
       <div ref='output'></div>
+		</div>
     </div>);
     //Sørg for at når man går ut av profilen, endres userid tilbake til admin
   }
@@ -2348,6 +2353,7 @@ class Search extends React.Component {
           let btnUserTxt = document.createTextNode('rediger');
           btnUser.appendChild(btnUserTxt);
           btnUser.setAttribute('id', user.userID);
+					btnUser.className = "btn btn-outline-danger"
 
           btnUser.onclick = () => {
             sendToUser(clickedUser);
