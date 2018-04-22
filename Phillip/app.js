@@ -2274,22 +2274,35 @@ class ChangeRole extends React.Component {
 
 class Passiv extends React.Component {
   render() {
-    return (<div>
-      <h1>
-        Velg passiv dato
-      </h1>
+    return (<div className="big-container">
+    <div className="main-wrap">
+      <h1 className="title">Velg dato</h1>
+
+    <div className="passive-wrap">
       <form>
         <label>
-          Startdato:<br/>
-          <input ref='passivdato' type='date'/><br/>
-        </label>
-        <label>
-          sluttdato:<br/>
-          <input ref='passivenddato' type='date'/><br/>
+          <p>Startdato:</p>
+        <input className="form-control" ref='passivdato' type='date'/><br/>
         </label>
       </form>
-      <button ref="passivbutton">
-        vær kjempe passiv</button>
+      <form>
+        <div className="passive-align">
+        <label>
+          <p className="passive-enddate">Sluttdato:</p>
+          <input className="form-control" ref='passivenddato' type='date'/><br/>
+        </label>
+      </div>
+      </form>
+      <div>
+        <button className="btn btn-outline-danger" ref="passivbutton">
+          Tilbake</button>
+      </div>
+      <div className="passive-btn">
+        <button className="btn btn-danger" ref="passivbutton">
+          Meld passiv</button>
+      </div>
+    </div>
+    </div>
     </div>);
   }
   componentDidMount() {

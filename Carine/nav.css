@@ -537,3 +537,24 @@ iframe {
   line-height: 1.2;
   margin-right: 30px;
 }
+
+.passive-wrap {
+  width: 50%;
+  margin: 0 auto;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  line-height: 1.2;
+}
+
+.passive-align {
+  text-align: right;
+}
+
+.passive-btn {
+  text-align: right;
+}
+
+.passive-enddate {
+  margin-right: 120px;
+}
