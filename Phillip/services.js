@@ -140,6 +140,13 @@ class UserService {
       callback(result[0]);
     });
   }
+  getRoleListByID(rolelistid, callback){
+    connection.query('SELECT name FROM rolelist WHERE rolelistID=?', [rolelistid], (error,result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    });
+  }
   getRole(roletitle, callback){
     connection.query('SELECT * FROM role WHERE title=?', [roletitle], (error, result) => {
       if(error) throw error;
@@ -339,8 +346,8 @@ connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (err
       callback();
     });
   }
-  editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, callback) {
-    connection.query('UPDATE event SET name=?, date_start=?, date_end=?, contact_phone=?, rolelist_roleID=?, area=?, description=? WHERE eventID=?', [newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, eventID], (error, result) => {
+  editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, newPoints, callback) {
+    connection.query('UPDATE event SET name=?, date_start=?, date_end=?, contact_phone=?, rolelist_roleID=?, area=?, description=?, point_award=? WHERE eventID=?', [newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, newPoints, eventID], (error, result) => {
       if (error) throw error;
 
       callback();
@@ -481,6 +488,7 @@ getCompetence(title, callback){
     callback(result[0]);
   });
 }
+
 regCompetence(userid, compid, fileUpload, finished, active, callback){
   connection.query('INSERT into user_has_competence (userID, competence_compID, fileUpload, finished, active) values (?,?,?,?,?)', [userid, compid, fileUpload, finished, active], (error, result) => {
     if(error) throw error;
