@@ -1435,6 +1435,9 @@ class Vaktliste extends React.Component {
   render() {
     return (<div>
       <h1>
+        tittel til Arrangementet
+      </h1>
+      <h1>
         Påmeldte medlemmer
       </h1>
       <ul>
