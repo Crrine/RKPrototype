@@ -1763,8 +1763,11 @@ class EditEvent extends React.Component {
   componentDidMount() {
     userService.getDivEvent(eventID, (result) => {
       this.refs.editArrName.value = result.name;
-      this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
-      this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
+      let start = new Date(result.date_start);
+      let end = new Date(result.date_end);
+      // 7.200.000 er for å legge til 2 timer ettersom -local er 2 timer bak.
+      this.refs.editStartDato.valueAsNumber = start.setTime(start.getTime() + 7200000);
+      this.refs.editSluttDato.valueAsNumber = end.setTime(end.getTime() + 7200000);
       this.refs.editTlf.value = result.contact_phone;
       this.refs.editRoles.value = result.rolelist_roleID;
       this.refs.editMeet.value = result.area;
