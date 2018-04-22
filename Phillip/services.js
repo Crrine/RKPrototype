@@ -182,7 +182,13 @@ class UserService {
       callback();
     });
   }
+  deleteRoleFromList(rolelistID, roleID, callback){
+    connection.query('DELETE  FROM role_has_rolelist WHERE rolelistID=? AND roleID=? LIMIT 1', [rolelistID, roleID], (error, result) => {
+      if(error) throw error;
 
+      callback();
+    })
+  }
   getThisRoleList(rolelistID, callback) {
     connection.query('SELECT * FROM rolelist WHERE rolelistID = ?', [rolelistID], (error, result) => {
       if(error) throw error;
