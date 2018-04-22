@@ -2326,14 +2326,22 @@ class NewEvent extends React.Component {
         rolelistid = result.rolelistID;
         if (!name) {
           this.refs.feilmelding.innerText = "Du må skrive inn et brukernavn";
-        } else if (date_start != new Date()) {
+        } else if (!point_award) {
+          this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
+        } else if (date_start == "") {
+          console.log(date_start)
           this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
-        } else if (date_end != new Date()) {
+        } else if (date_end == "") {
           this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
+        } else if (!shiftManager) {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Vaktansvarlig";
         } else if (!contact_phone) {
           this.refs.feilmelding.innerText = "Du må skrive inn et tlf nummer";
+        } else if (!area) {
+          this.refs.feilmelding.innerText = "Du må skrive inn et møtested";
+        } else if (!description) {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Beskrivelse";
         } else {
-
         userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
             this.refs.feilmelding.innerText = "Du må fylle ut skjemaet riktig";
           alert('Arrangementet er opprettet');
