@@ -1571,7 +1571,7 @@ class Vaktliste extends React.Component {
   }
 }
 
-class divEvent extends React.Component {
+class DivEvent extends React.Component {
 	constructor() {
 		super();
 		this.userisloggedin;
@@ -1775,8 +1775,6 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-
-
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
       alert('Arrangemenetet ble oppdatert');
@@ -1972,12 +1970,28 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
+  updatecomplist(competence_compID) {
+    let active = 0
+    userService.acceptCompetence(active, userid, compuserID, (result) => {
+      userService.getDivUserComp((result) => {
+      this.active = result;
+      this.userCompList();
+    })
+  })
+ }
+
   userCompList()  {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.compuserID}>
-        {reader.readAsText(new Blob([user_has_competence.fileUpload], {type: "text/xml"}))}
+      usercomp.push(<li key={user_has_competence.competence_compID}>
+        {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
+        <button className="btn btn-outline-success btn-sm" onClick = {() => {
+          this.updatecomplist(user_has_competence.competence_compID);
+        }}>Aksepter</button>
+        <button className="btn btn-outline-danger btn-sm" onClick = {() => {
+
+				}}>Avslå</button>
       </li>)
     }
     this.setState({kompetanseliste: usercomp})
@@ -2059,9 +2073,15 @@ class NewRole extends React.Component {
       <br/>
       <b>Kompetanse som kreves:</b>
       <div ref='showComps'></div>
+    </div>
     </div>)
   }
-  update(){
+
+  componentDidMount() {
+    this.update();
+  }
+
+   update() {
     this.refs.regRole.onclick = () => {
       let newroletitle = this.refs.addRole.value;
       let newcomptitle = this.refs.compRequired.value;
@@ -2075,8 +2095,8 @@ class NewRole extends React.Component {
             this.update();
           });
         })
-      });
-    }
+  })
+  }
 
     userService.getRoles((result) => {
       for(let rolename of result){
@@ -2113,10 +2133,7 @@ class NewRole extends React.Component {
       })
     }
   }
-
-  componentDidMount() {
-    this.update();
-  }
+}
 }
 
 class ChangeRole extends React.Component {
@@ -2432,7 +2449,7 @@ ReactDOM.render((<HashRouter>
       <Route exact="exact" path='/forgotPassword' component={ForgotPassword}/>
       <Route exact="exact" path='/vaktliste' component={Vaktliste}/>
       <Route exact="exact" path='/editevent' component={EditEvent}/>
-      <Route exact="exact" path='/divevent' component={divEvent}/>
+      <Route exact="exact" path='/divevent' component={DivEvent}/>
       <Route exact="exact" path='/newEvent' component={NewEvent}/>
       <Route exact="exact" path='/homepage' component={Homepage}/>
       <Route exact="exact" path='/loginPage' component={LoginPage}/>
