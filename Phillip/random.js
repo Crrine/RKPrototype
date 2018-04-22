@@ -1776,10 +1776,6 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-<<<<<<< HEAD
-
-=======
->>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
