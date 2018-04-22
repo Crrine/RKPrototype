@@ -431,6 +431,7 @@ class Profile extends React.Component {
             <input type='file' ref='sendInFile'/>
             <br/>
             <button ref='btnAddComp'>Send inn</button>
+            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
         </div>
@@ -503,7 +504,7 @@ class Profile extends React.Component {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
 			let fileUpload = this.refs.sendInFile.value;
-
+      this.refs.message.innerText = "Kurset er sendt inn for godkjenning";
       userService.getCompetence(title, (result) => {
         compid = result.compID;
         userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
