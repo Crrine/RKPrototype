@@ -2094,10 +2094,24 @@ class ChangeRole extends React.Component {
         let roleitem = document.createElement('LI');
         let roleitemTitle = document.createTextNode(listrole.title);
 
-				let btnDeleteRole = document.c
+				let btnDeleteRole = document.createElement('BUTTON');
+				let btnDeleteRoleTxt = document.createTextNode('fjern');
+				btnDeleteRole.appendChild(btnDeleteRoleTxt);
+				btnDeleteRole.setAttribute('id',listrole.roleID);
 
         roleitem.appendChild(roleitemTitle);
+				roleitem.appendChild(btnDeleteRole);
         this.refs.savedRoles.appendChild(roleitem);
+				let roleID = btnDeleteRole.id;
+
+				btnDeleteRole.onclick = () => {
+					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
+						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
+						this.refs.savedRoles.innerText = '';
+						this.refs.roleSelect.innerText = '';
+						this.update();
+					});
+				}
       }
     })
     this.refs.addRoleToList.onclick = () => {
@@ -2106,7 +2120,9 @@ class ChangeRole extends React.Component {
         let roleID = result.roleID;
 
         userService.addRoleToList(roleID, rolelistID, (result) => {
-          this.refs.savedRoles.innerText = '';
+					console.log('La til rolle ID - ' + roleID);
+					this.refs.savedRoles.innerText = '';
+					this.refs.roleSelect.innerText = '';
           this.update();
 
         });
