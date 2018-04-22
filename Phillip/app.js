@@ -59,7 +59,6 @@ class LoginPage extends React.Component {
               <div className="login-grid">
                 <div>
                   <NavLink  to='/forgotPassword' className="nav-link">Glemt passord?</NavLink>
-                  <br/>
                   <NavLink  to='/register' className="nav-link">
                     Registrere ny bruker?
                   </NavLink>
@@ -310,121 +309,76 @@ class Navbar extends React.Component {
     if (this.userisloggedin && this.userisloggedin.admin == 1) {
       if (this.userisloggedin.admin == 1) {
         return (<div>
-
-          <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <NavLink  to='/homepage' className="nav-link">Aktuelt<span className="sr-only">(current)</span>
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink  to='/calendar' className="nav-link" href="#">Kalender</NavLink>
-                </li>
-                <li className="nav-item dropdown">
-                  <NavLink  to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Arrangementer
-                  </NavLink>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <NavLink  to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Kommende
-                    </NavLink>
-                    <NavLink  to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Tidligere
-                    </NavLink>
-                  </div>
-                </li>
-                <li className="nav-item">
-                  <NavLink  to='/contact' className="nav-link" href="#">Om oss</NavLink>
-                </li>
-                <li className="nav-item dropdown">
-                  <NavLink  to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Profil
-                  </NavLink>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"></div>
-                </li>
-                <li className="nav-item">
-                  <NavLink  to='/search' className="nav-link" href="#">Brukersøk</NavLink>
-                </li>
-                <li>
-                  <NavLink  to='/admin' className="nav-link" href="#">Admin</NavLink>
-                </li>
-                <li>
-                  <NavLink  to='/loggut' className="nav-link" onClick={() => {
+					<nav className="navbar navbar-expand-lg navbar-dark bg-dark nav-left">
+					  <div className="container-fluid">
+					    <div className="navbar-header">
+					      <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
+					    </div>
+					    <ul className="nav navbar-nav navbar-left">
+					      <li>
+									<NavLink  to='/homepage' className="nav-item nav-link" >Aktuelt
+								</NavLink></li>
+							<li><NavLink  to='/calendar' className="nav-item nav-link">Kalender</NavLink></li>
+					      <li><NavLink  to='/events'  className="nav-item nav-link">
+									Arrangementer
+								</NavLink></li>
+								<li><NavLink  to='/contact' className="nav-item nav-link">Om oss</NavLink></li>
+							<li><NavLink  to='/profile'  className="nav-item nav-link">
+								Profil
+							</NavLink></li>
+							<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
+							<li><NavLink  to='/admin' className="nav-item nav-link">Admin</NavLink></li>
+					    </ul>
+					    <ul className="nav navbar-nav navbar-right">
+								<li>
+                  <NavLink to='/loggut' className="nav-item nav-link" onClick={() => {
                       userService.emptystorage();
                       history.push('/loginPage/')
                     }}>
-                    Logg ut
+                    &#10006; Logg ut
                   </NavLink>
                 </li>
-              </ul>
-            </div>
-          </nav>
+					    </ul>
+					  </div>
+					</nav>
         </div>);
       }
     } else if (this.userisloggedin) {
       return (<div>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous"/>
-        <meta charSet="utf-8"/>
-        <title>Røde Kors Sanitetsvakt</title>
-
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <NavLink  to='/homepage' className="nav-link">Aktuelt
-                  <span className="sr-only">(current)</span>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink  to='/calendar' className="nav-link" href="#">Kalender</NavLink>
-              </li>
-              <li className="nav-item dropdown">
-                <NavLink  to='/events' className="nav-link dropdown-toggle" href="arrangementer.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Arrangementer
-                </NavLink>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <NavLink  to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Kommende
-                  </NavLink>
-                  <NavLink  to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tidligere
-                  </NavLink>
-                </div>
-              </li>
-              <li className="nav-item">
-                <NavLink  to='/contact' className="nav-link" href="#">Om oss</NavLink>
-              </li>
-              <li className="nav-item dropdown">
-                <NavLink  to='/profile' className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Profil
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink  to='/search' className="nav-link" href="#">Brukersøk</NavLink>
-              </li>
-              <li>
-                <NavLink  to='/loggut' className="nav-link" onClick ={() => {
+				<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+					<div className="container-fluid">
+						<div className="navbar-header">
+							<img className="logo" src="rodekorsw-01.png" alt="Røde Kors Sanitetsvakt"/>
+						</div>
+						<ul className="nav navbar-nav">
+							<li>
+								<NavLink  to='/homepage' className="nav-item nav-link" >Aktuelt
+							</NavLink></li>
+						<li><NavLink  to='/calendar' className="nav-item nav-link">Kalender</NavLink></li>
+							<li><NavLink  to='/events'  className="nav-item nav-link">
+								Arrangementer
+							</NavLink></li>
+							<li><NavLink  to='/contact' className="nav-item nav-link">Om oss</NavLink></li>
+						<li><NavLink  to='/profile'  className="nav-item nav-link">
+							Profil
+						</NavLink></li>
+						<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
+						</ul>
+						<ul className="nav navbar-nav navbar-right">
+							<li>
+								<NavLink to='/loggut' className="nav-item nav-link" onClick={() => {
 										userService.emptystorage();
 										history.push('/loginPage/')
 									}}>
-                  Logg ut
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>)
+									&#10006; Logg ut
+								</NavLink>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+
+			)
     } else {
       return null;
     }
