@@ -1915,7 +1915,7 @@ class Administrator extends React.Component {
       <ul>
         {this.state.mannskapsliste}
       </ul>
-      <button ref="newrole">Legg til vaktmal</button>
+      <button ref="newrole">Legg til vaktmaler og roller</button>
       <h3>
         ikke godkjente kompetanser
       </h3>
@@ -2042,6 +2042,7 @@ class NewRole extends React.Component {
   render() {
     return (<div>
       <h1>Ny vaktmal</h1>
+      <b>Du kan legge til roller i vaktmalen etter at den har blitt opprettet, velg 'rediger' i adminsiden</b>
       <form>
         <label>
           Navn på vaktmalen:<br/>
@@ -2050,6 +2051,13 @@ class NewRole extends React.Component {
         <label>
           Beskrivelse av vaktmalen:<br/>
           <input ref='NewRoleDesc' type='text'/><br/>
+        </label>
+      </form>
+      <form>
+        <h4>Legg til nye roller i databasen</h4>
+        <label>
+          Rollenavn:<br/>
+          <input ref='addRole' />
         </label>
       </form>
       <button ref='btnSendRole'>Registrer</button>
@@ -2065,7 +2073,7 @@ class NewRole extends React.Component {
       let name = this.refs.NewRoleName.value;
       let description = this.refs.NewRoleDesc.value;
 
-      userService.addRole(name, description, (result) => {
+      userService.addRoleList(name, description, (result) => {
         console.log('Arrangementet er opprettet');
         history.push('/admin/');
         this.forceUpdate();

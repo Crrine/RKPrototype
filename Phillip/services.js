@@ -161,7 +161,7 @@ class UserService {
       callback(result);
     })
   }
-  addRole(name, description, callback) {
+  addRoleList(name, description, callback) {
     connection.query('INSERT INTO rolelist (name, description) values (?, ?)', [name, description], (error, result) => {
       if (error) throw error;
 
