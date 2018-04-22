@@ -468,7 +468,16 @@ iframe {
 }
 
 .event-div-grid {
+  padding-top: 50px;
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 35% 65%;
   width: 80%;
+  margin: 0 auto;
+}
+
+.event-div-p {
+  width: 40%;
+  margin: 0 auto;
+  font-weight: 600;
+  font-size: 1.1em;
 }

@@ -1574,7 +1574,7 @@ class divEvent extends React.Component {
 			<div className="about-bg">
 			<h1 className="title" ref='eventName'></h1>
 			<div className="event-div-grid">
-				<div>
+				<div className="event-div-p">
 					<p>Startdato:</p>
 					<p>Sluttdato:</p>
 					<p>Møtested:</p>
