@@ -1351,7 +1351,7 @@ class Contact extends React.Component {
           <h2 className="title">Lokalforeninger i Trondheimsområdet</h2>
 
           <div className="about-container">
-            <div>
+            <div className="about-maps">
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.8060229100615!2d10.414399016240537!3d63.410782283268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d31c71f115b5d%3A0x5273344a7d7ea94a!2sTrondheim+R%C3%B8de+Kors!5e0!3m2!1sno!2sno!4v1523533302113" width="500" height="300" frameBorder="0" style={{
                   border: 0
                 }} allowFullScreen="allowFullScreen"></iframe>
@@ -1392,7 +1392,7 @@ class Contact extends React.Component {
               </div>
             </div>
 
-            <div>
+            <div className="about-maps">
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.4153630771596!2d10.774810216042496!3d63.41705568381125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x466d3c5135aa3aef%3A0xf02afa00572e3186!2sHesttr%C3%B8a+1%2C+7550+Hommelvik!5e0!3m2!1sno!2sno!4v1523533990024" width="500" height="300" frameBorder="0" style={{
                   border: 0
                 }} allowFullScreen="allowFullScreen"></iframe>
