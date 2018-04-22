@@ -1775,7 +1775,6 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-      
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
@@ -2062,7 +2061,7 @@ class NewRole extends React.Component {
     userService.getRoles((result) => {
       userService.getCompetences((result) => {
         for(let compname of result){
-          // JOBBER HER  
+          // JOBBER HER
         }
       });
 
@@ -2276,6 +2275,7 @@ class NewEvent extends React.Component {
           <div>
 						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
           </div>
+          <span ref="feilmelding"></span>
           <div className="edit-profile-btn-right">
 						<button ref='btnSendArr' className="btn btn-success">Legg til</button>
           </div>
@@ -2309,18 +2309,28 @@ class NewEvent extends React.Component {
       let area = this.refs.regMeet.value;
       let point_award = this.refs.regPoints.value;
       let shiftManager = this.refs.regshiftManager.value;
-
       let rolelistName = this.refs.rolelistSelect.value;
 
       userService.getRolelist(rolelistName, (result) => {
         rolelistid = result.rolelistID;
+        if (!name) {
+          this.refs.feilmelding.innerText = "Du må skrive inn et brukernavn";
+        } else if (date_start != new Date()) {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
+        } else if (date_end != new Date()) {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
+        } else if (!contact_phone) {
+          this.refs.feilmelding.innerText = "Du må skrive inn et tlf nummer";
+        } else {
 
         userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
+            this.refs.feilmelding.innerText = "Du må fylle ut skjemaet riktig";
           alert('Arrangementet er opprettet');
           history.push('/events/');
           this.forceUpdate();
         })
-      })
+      }
+    })
     }
   }
 }
