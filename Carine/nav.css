@@ -496,5 +496,15 @@ iframe {
 }
 
 .event-div-descrip {
-  width:
+  width: 70%;
+  Margin: 0 auto;
+}
+
+.event-div-grid-btn {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.event-div-grid-btn-right {
+  text-align: right;
 }
