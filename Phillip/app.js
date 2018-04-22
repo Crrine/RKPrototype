@@ -2074,6 +2074,12 @@ class NewRole extends React.Component {
   }
   componentDidMount() {
     userService.getRoles((result) => {
+      userService.getCompetences((result) => {
+        for(let compname of result){
+          // JOBBER HER  
+        }
+      });
+
       for(let rolename of result){
 
         let roleLi = document.createElement('LI');
