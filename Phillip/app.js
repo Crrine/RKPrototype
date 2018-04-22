@@ -431,7 +431,6 @@ class Profile extends React.Component {
             <input type='file' ref='sendInFile'/>
             <br/>
             <button ref='btnAddComp'>Send inn</button>
-            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
         </div>
@@ -504,7 +503,7 @@ class Profile extends React.Component {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
 			let fileUpload = this.refs.sendInFile.value;
-      this.refs.message.innerText = "Kurset er sendt inn for godkjenning";
+
       userService.getCompetence(title, (result) => {
         compid = result.compID;
         userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
@@ -1572,7 +1571,7 @@ class Vaktliste extends React.Component {
   }
 }
 
-class divEvent extends React.Component {
+class DivEvent extends React.Component {
 	constructor() {
 		super();
 		this.userisloggedin;
@@ -1776,7 +1775,6 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
       alert('Arrangemenetet ble oppdatert');
@@ -1983,12 +1981,28 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
+  updatecomplist(compuserID) {
+    let active = 0
+    userService.acceptCompetence(active, userid, compuserID, (result) => {
+      userService.getDivUserComp((result) => {
+      this.active = result;
+      this.userCompList();
+    })
+  })
+ }
+
   userCompList()  {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
       usercomp.push(<li key={user_has_competence.compuserID}>
-        {reader.readAsText(new Blob([user_has_competence.fileUpload], {type: "text/xml"}))}
+        {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
+        <button className="btn btn-outline-success btn-sm" onClick = {() => {
+          this.updatecomplist(user_has_competence.compuserID);
+        }}>Aksepter</button>
+        <button className="btn btn-outline-danger btn-sm" onClick = {() => {
+
+				}}>Avslå</button>
       </li>)
     }
     this.setState({kompetanseliste: usercomp})
@@ -2037,9 +2051,7 @@ class Administrator extends React.Component {
 
 class NewRole extends React.Component {
   render() {
-    return (<div className="big-container">
-			<div className="main-wrap">
-
+    return (<div>
       <h4>Opprett vaktmal</h4>
       <b>Du kan legge til roller i vaktmalen etter at den har blitt opprettet, velg 'rediger' i adminsiden</b>
       <form>
@@ -2069,24 +2081,50 @@ class NewRole extends React.Component {
       <button ref='regRole'>Registrer rolle</button><br/>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
-			</div>
+      <br/>
+      <b>Kompetanse som kreves:</b>
+      <div ref='showComps'></div>
     </div>)
   }
-  componentDidMount() {
-    userService.getRoles((result) => {
-      userService.getCompetences((result) => {
-        for(let compname of result){
-          // JOBBER HER
-        }
-      });
 
+  componentDidMount() {
+    this.update();
+  }
+
+   update() {
+    this.refs.regRole.onclick = () => {
+      let newroletitle = this.refs.addRole.value;
+      let newcomptitle = this.refs.compRequired.value;
+      let newcompid = 22;
+      userService.addCompetence(newcomptitle, (result) => {
+        userService.getComp(newcomptitle, (result) => {
+          let newcompid = result[0].compID;
+          userService.addRole(newcompid, newroletitle, (result) => {
+            this.refs.showRoles.innerText = '';
+            this.refs.showComps.innerText = '';
+            this.update();
+          });
+        })
+  })
+  }
+
+    userService.getRoles((result) => {
       for(let rolename of result){
 
+        let thisRoleID = rolename.roleID;
         let roleLi = document.createElement('LI');
         let roleLiTxt = document.createTextNode(rolename.title);
 
         roleLi.appendChild(roleLiTxt);
         this.refs.showRoles.appendChild(roleLi);
+
+        userService.getCompID(thisRoleID, (result) => {
+          let compLi = document.createElement('LI');
+          let compLiTxt = document.createTextNode(result.title);
+
+          compLi.appendChild(compLiTxt);
+          this.refs.showComps.appendChild(compLi);
+        })
       }
     });
 
@@ -2113,40 +2151,29 @@ class ChangeRole extends React.Component {
   }
 
   render() {
-    return (<div className="big-container">
-			<div className="main-wrap">
-      <h1 className="title">Rediger vaktmal</h1>
-				<div className="admin-grid">
-					<div>
-			      <h3 className="medium-title" ref='roleName'></h3>
-			      <label>
-			        Navn på vaktmalen:<br/>
-			        <input ref='editRoleName' type='text'/><br/>
-			      </label>
-			      <label>
-			        Beskrivelse:<br/>
-			        <input ref='editDescription' type='text'/><br/>
-			      </label>
-			      <label>Legg til rolle:<br/>
-			        <select ref='roleSelect'></select>
-			        <button ref='addRoleToList'>Legg til</button>
-			      </label>
-					</div>
-
-					<div>
-						<h3 className="medium-title">Rolleliste:</h3>
-			      <div ref='savedRoles'>
-			      </div>
-					</div>
-					<div>
-						<button className="btn btn-outline-danger" ref="back">Tilbake</button>
-					</div>
-					<div className="admin-btn-right">
-						<button className="btn btn-success" ref="EditRole">Lagre</button>
-						<button className="btn btn-danger" ref='deleteRoleList'>Slett vaktmal</button>
-					</div>
-				</div>
-		</div>
+    return (<div>
+      <h1>Rediger vaktmal</h1>
+      <h3 ref='roleName'></h3>
+      <label>
+        Navn på vaktmalen:<br/>
+        <input ref='editRoleName' type='text'/><br/>
+      </label>
+      <label>
+        Beskrivelse:<br/>
+        <input ref='editDescription' type='text'/><br/>
+      </label>
+      <label>Legg til rolle:<br/>
+        <select ref='roleSelect'></select>
+        <button ref='addRoleToList'>Legg til</button>
+      </label>
+      <div ref='savedRoles'>
+        Rolleliste:
+      </div>
+      <div>
+        <button ref="EditRole">Lagre</button>
+        <button ref="back">Gå tilbake</button>
+				<button ref='deleteRoleList'>Slett vaktmal</button>
+      </div>
     </div>)
   }
   update() {
@@ -2188,10 +2215,9 @@ class ChangeRole extends React.Component {
         let roleitemTitle = document.createTextNode(listrole.title);
 
 				let btnDeleteRole = document.createElement('BUTTON');
-				let btnDeleteRoleTxt = document.createTextNode('Slett');
+				let btnDeleteRoleTxt = document.createTextNode('fjern');
 				btnDeleteRole.appendChild(btnDeleteRoleTxt);
 				btnDeleteRole.setAttribute('id',listrole.roleID);
-				btnDeleteRole.className = "btn btn-outline-danger btn-sm"
 
         roleitem.appendChild(roleitemTitle);
 				roleitem.appendChild(btnDeleteRole);
@@ -2201,6 +2227,7 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
+						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
@@ -2297,7 +2324,6 @@ class NewEvent extends React.Component {
             <textarea className="form-control" rows="5" ref='regDescript'></textarea>
           </div>
         </form>
-        <p className="event-div-descrip" ref="feilmelding"></p>
         <div className="login-grid">
           <div>
 						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
@@ -2335,36 +2361,18 @@ class NewEvent extends React.Component {
       let area = this.refs.regMeet.value;
       let point_award = this.refs.regPoints.value;
       let shiftManager = this.refs.regshiftManager.value;
+
       let rolelistName = this.refs.rolelistSelect.value;
 
       userService.getRolelist(rolelistName, (result) => {
         rolelistid = result.rolelistID;
-        if (!name) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et brukernavn";
-        } else if (!point_award) {
-          this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
-        } else if (date_start == "") {
-          console.log(date_start)
-          this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
-        } else if (date_end == "") {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
-        } else if (!shiftManager) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Vaktansvarlig";
-        } else if (!contact_phone) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et tlf nummer";
-        } else if (!area) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et møtested";
-        } else if (!description) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Beskrivelse";
-        } else {
+
         userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
-            this.refs.feilmelding.innerText = "Du må fylle ut skjemaet riktig";
           alert('Arrangementet er opprettet');
           history.push('/events/');
           this.forceUpdate();
         })
-      }
-    })
+      })
     }
   }
 }
@@ -2450,7 +2458,7 @@ ReactDOM.render((<HashRouter>
       <Route exact="exact" path='/forgotPassword' component={ForgotPassword}/>
       <Route exact="exact" path='/vaktliste' component={Vaktliste}/>
       <Route exact="exact" path='/editevent' component={EditEvent}/>
-      <Route exact="exact" path='/divevent' component={divEvent}/>
+      <Route exact="exact" path='/divevent' component={DivEvent}/>
       <Route exact="exact" path='/newEvent' component={NewEvent}/>
       <Route exact="exact" path='/homepage' component={Homepage}/>
       <Route exact="exact" path='/loginPage' component={LoginPage}/>

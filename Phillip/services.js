@@ -161,6 +161,20 @@ class UserService {
       callback(result);
     })
   }
+  addRole(newcompid, newroletitle, callback){
+    connection.query('INSERT INTO role (compID, title) values (?, ?)', [newcompid, newroletitle], (error, result) => {
+      if(error) throw error;
+
+      callback();
+    });
+  }
+  addCompetence(newcomptitle, callback){
+    connection.query('INSERT INTO competence (title) values (?)', [newcomptitle], (error, result) => {
+      if(error) throw error;
+
+      callback();
+    });
+  }
   addRoleList(name, description, callback) {
     connection.query('INSERT INTO rolelist (name, description) values (?, ?)', [name, description], (error, result) => {
       if (error) throw error;
@@ -430,6 +444,19 @@ connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (err
     callback(result);
   });
 }
+  getComp(newcomptitle, callback){
+    connection.query('SELECT * FROM competence WHERE title =?', [newcomptitle], (error, result) => {
+
+      callback(result);
+    })
+  }
+  getCompID(thisRoleID, callback){
+    connection.query('SELECT competence.title FROM competence INNER JOIN role ON role.compID = competence.compID WHERE role.roleID =?', [thisRoleID], (error, result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    })
+  }
 
 getUserComp(userid, callback){
   connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON (competence.compID = user_has_competence.competence_compID) WHERE userID =? AND active = 0', [userid], (error, result) => {
@@ -440,7 +467,7 @@ getUserComp(userid, callback){
 }
 
 getDivUserComp(callback){
-  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON( competence.compID = user_has_competence.competence_compID) WHERE user_has_competence.active = 1', (error, result) => {
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON( competence.compID = user_has_competence.competence_compID) INNER JOIN user ON (user_has_competence.userID = user.userID) WHERE user_has_competence.active = 1', (error, result) => {
     if(error) throw error;
 
     callback(result);
@@ -456,6 +483,13 @@ getCompetence(title, callback){
 }
 regCompetence(userid, compid, fileUpload, finished, active, callback){
   connection.query('INSERT into user_has_competence (userID, competence_compID, fileUpload, finished, active) values (?,?,?,?,?)', [userid, compid, fileUpload, finished, active], (error, result) => {
+    if(error) throw error;
+
+    callback();
+  })
+}
+acceptCompetence(active, userid, compuserID, callback){
+  connection.query('UPDATE user_has_competence SET active = ? WHERE userID = ? AND compuserID = ?', [active, userid, compuserID], (error, result) => {
     if(error) throw error;
 
     callback();
