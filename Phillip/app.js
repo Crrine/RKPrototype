@@ -1775,7 +1775,7 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-      
+
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
@@ -2056,23 +2056,45 @@ class NewRole extends React.Component {
       <button ref='regRole'>Registrer rolle</button><br/>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
+      <br/>
+      <b>Kompetanse som kreves:</b>
+      <div ref='showComps'></div>
     </div>)
   }
-  componentDidMount() {
-    userService.getRoles((result) => {
-      userService.getCompetences((result) => {
-        for(let compname of result){
-          // JOBBER HER  
-        }
+  update(){
+    this.refs.regRole.onclick = () => {
+      let newroletitle = this.refs.addRole.value;
+      let newcomptitle = this.refs.compRequired.value;
+      let newcompid = 22;
+      userService.addCompetence(newcomptitle, (result) => {
+        userService.getComp(newcomptitle, (result) => {
+          let newcompid = result[0].compID;
+          userService.addRole(newcompid, newroletitle, (result) => {
+            this.refs.showRoles.innerText = '';
+            this.refs.showComps.innerText = '';
+            this.update();
+          });
+        })
       });
+    }
 
+    userService.getRoles((result) => {
       for(let rolename of result){
 
+        let thisRoleID = rolename.roleID;
         let roleLi = document.createElement('LI');
         let roleLiTxt = document.createTextNode(rolename.title);
 
         roleLi.appendChild(roleLiTxt);
         this.refs.showRoles.appendChild(roleLi);
+
+        userService.getCompID(thisRoleID, (result) => {
+          let compLi = document.createElement('LI');
+          let compLiTxt = document.createTextNode(result.title);
+
+          compLi.appendChild(compLiTxt);
+          this.refs.showComps.appendChild(compLi);
+        })
       }
     });
 
@@ -2090,6 +2112,10 @@ class NewRole extends React.Component {
         this.forceUpdate();
       })
     }
+  }
+
+  componentDidMount() {
+    this.update();
   }
 }
 
