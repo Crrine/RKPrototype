@@ -89,14 +89,6 @@ li {
   margin-top: -1px;
 }
 
-/* .dropdown-menu li:hover .sub-menu {
-  visibility: visible;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
-} */
-
 .nav-tabs .dropdown-menu,
 .nav-pills .dropdown-menu,
 .navbar .dropdown-menu {
@@ -121,11 +113,6 @@ li {
   top: 11px;
   left: -6px;
 }
-
-/* #sok {
-  margin-top: 12px;
-  text-align: left;
-} */
 
 .logo {
   width: 130px;
@@ -375,7 +362,19 @@ iframe {
   font-family: 'Abril Fatface', cursive;
 }
 
-::-webkit-scrollbar {display:none;}
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(99,0,0,0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(99,0,0,0.3);
+}
 
 .profile-events {
   border-radius: 15px;
@@ -466,4 +465,10 @@ iframe {
   height: 620px;
   overflow-y: scroll;
   margin: 0 auto;
+}
+
+.event-div-grid {
+  display: grid;
+  grid-template-columns: auto;
+  width: 80%;
 }

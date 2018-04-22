@@ -1570,20 +1570,36 @@ class divEvent extends React.Component {
 	}
 	render() {
 		return(
-			<div>
-			<h1>Valgt arrangement: </h1> <br />
-			arrangementets navn: <span ref='eventName'></span><br />
-			Startdato: <span ref='eventstartdate'></span><br />
-			Sluttdato: <span ref='eventsluttdate'></span><br />
-			Møtested: <span ref='eventmøtested'></span><br />
-			Kontaktinfo: <span ref='kontaktinfo'></span><br />
-			rolleliste: <span ref='rolelist'></span><br />
+			<div className="big-container">
+			<div className="about-bg">
+			<h1 className="title" ref='eventName'></h1>
+			<div className="event-div-grid">
+				<div>
+					<p>Startdato:</p>
+					<p>Sluttdato:</p>
+					<p>Møtested:</p>
+					<p>Vaktansvarlig:</p>
+					<p>Kontaktinfo:</p>
+					<p>Rolleliste:</p>
+				</div>
+				<div>
+					<p ref='eventstartdate'></p>
+					<p ref='eventsluttdate'></p>
+					<p ref='eventmøtested'></p>
+					<p ref='regshiftManager'></p>
+					<p ref='kontaktinfo'></p>
+					<p ref='rolelist'></p>
+				</div>
+			</div>
+			</div>
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
+		<button>Tilbake</button>
 			<button ref='editArr'>Rediger</button>
 			<button ref='Interested'>Meld interesse</button>
 			<button ref='notInterested'>Avmeld interesse</button>
 			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button><br />
 			<span ref="hasevent"></span>
+			</div>
 			</div>
 		)
 	}
