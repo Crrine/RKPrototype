@@ -115,3 +115,119 @@ class divEvent extends React.Component {
     }
   }
 }
+
+class Vaktliste extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      users: '',
+      userhasevent: ''
+    }
+    this.update = "";
+    this.hasevent = "";
+  }
+  render() {
+    return (<div>
+      <h1>
+        Påmeldte medlemmer
+      </h1>
+      <ul>
+        {
+          this.state.userhasevent
+            ? this.state.userhasevent
+            : 'Ingen påmeldte'
+        }
+      </ul>
+      <h1>
+        Interreserte medlemmer
+      </h1>
+      <ul>
+        {
+          this.state.users
+            ? this.state.users
+            : 'Ingen Interreserte'
+        }
+      </ul>
+      <button ref="backButton">Tilbake</button>
+    </div>)
+  }
+
+  deleteuser(userid) {
+    userService.deleteInterested(eventID, userid, (result) => {
+      userService.getInterested(eventID, userid, (result) => {
+        this.update = result;
+        this.jodajoda();
+
+      })
+    })
+  }
+
+  deletefromvakt(userid) {
+    userService.deleteFromArr(eventID, userid, (result) => {
+      userService.getUserHasEvent(userid, eventID, (result) => {
+        this.hasevent = result;
+        this.hentbrukere();
+      })
+    })
+  }
+
+  addUser(userid) {
+    userService.addUserHasEvent(userid, eventID, (result) => {
+      userService.getUserHasEvent(userid, eventID, (result) => {
+        this.hasevent = result;
+        this.hentbrukere();
+      })
+    })
+  }
+
+  hentbrukere() {
+    var pameldte = [];
+
+    for (let user of this.hasevent) {
+      pameldte.push(<li key={user.userID}>
+        <Link onClick={() => {
+            viewid = user.userID;
+          }} to={'/editotherprofile/'}>
+          {user.firstname + " " + user.lastname}
+        </Link>
+        <button onClick={() => {
+            this.deletefromvakt(user.userID)
+          }}>Meld av</button>
+      </li>)
+    }
+
+    this.setState({userhasevent: pameldte})
+  }
+
+  jodajoda() {
+    var int = [];
+
+    for (let user of this.update) {
+      int.push(<li key={user.userID}>
+        {user.firstname}
+        <button onClick={() => {
+            this.addUser(user.userID)
+            this.deleteuser(user.userID)
+          }}>aksepter</button>
+        <button onClick= {() => {
+				this.deleteuser(user.userID)
+					}}>deny</button>
+      </li>)
+    }
+    this.setState({users: int})
+  }
+
+  componentDidMount() {
+    userService.getInterested(eventID, userid, (result) => {
+      this.update = result;
+      this.jodajoda();
+    })
+    userService.getUserHasEvent(userid, eventID, (result) => {
+      this.hasevent = result;
+      this.hentbrukere();
+    })
+    this.refs.backButton.onclick = () => {
+      history.push('/divEvent');
+    }
+  }
+}
