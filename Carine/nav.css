@@ -506,5 +506,10 @@ iframe {
 }
 
 .event-div-grid-btn-right {
+  padding-top: 20px;
   text-align: right;
+}
+
+.big-calender {
+  font-family: 'Roboto Condensed', sans-serif;
 }
