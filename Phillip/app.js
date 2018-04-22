@@ -549,6 +549,7 @@ class Profile extends React.Component {
         this.refs.compSelect.appendChild(compSel);
       }
     })
+    const active = 1;
     this.refs.btnAddComp.onclick = () => {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
@@ -556,7 +557,7 @@ class Profile extends React.Component {
 
       userService.getCompetence(title, (result) => {
         compid = result.compID;
-        userService.regCompetence(userid, compid, fileUpload, finished, (result) => {
+        userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
           console.log(compid);
           this.forceUpdate();
         })
@@ -1868,11 +1869,13 @@ class Administrator extends React.Component {
     this.state = {
       brukergodkjenning: '',
       mannskapsliste: '',
-      avslattebrukere: ''
+      avslattebrukere: '',
+      kompetanseliste: ''
     }
     this.brukere = '';
     this.liste = '';
     this.avslatt = '';
+    this.active = '';
   }
 
   render() {
@@ -1905,6 +1908,12 @@ class Administrator extends React.Component {
         {this.state.mannskapsliste}
       </ul>
       <button ref="newrole">Legg til vaktmal</button>
+      <h3>
+        ikke godkjente kompetanser
+      </h3>
+      <ul>
+        {this.state.kompetanseliste}
+      </ul>
     </div>)
   }
 
@@ -1957,7 +1966,7 @@ class Administrator extends React.Component {
   }
 
   skrivutavslatt() {
-    let utskriftavslatt = []
+    let utskriftavslatt = [];
     for (let user of this.avslatt) {
       utskriftavslatt.push(<li key={user.userID}>
         {user.firstname + " " + user.lastname}
@@ -1969,8 +1978,19 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
+  userCompList()  {
+    let usercomp = [];
+    for (let user_has_competence of this.active) {
+      const reader = new FileReader();
+      usercomp.push(<li key={user_has_competence.compuserID}>
+        {reader.readAsText(new Blob([user_has_competence.fileUpload], {type: "text/xml"}))}
+      </li>)
+    }
+    this.setState({kompetanseliste: usercomp})
+  }
+
   skrivutinfo() {
-    let utskrift = []
+    let utskrift = [];
     for (let user of this.brukere) {
       utskrift.push(<li key={user.userID}>
         {user.firstname + " " + user.lastname}
@@ -2001,6 +2021,11 @@ class Administrator extends React.Component {
     userService.getDeniedUsers(userid, (result) => {
       this.avslatt = result;
       this.skrivutavslatt();
+    })
+    userService.getDivUserComp((result) => {
+      this.active = result;
+      console.log(this.active)
+      this.userCompList();
     })
   }
 }

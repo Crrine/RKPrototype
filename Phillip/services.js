@@ -439,6 +439,14 @@ getUserComp(userid, callback){
   })
 }
 
+getDivUserComp(callback){
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON( competence.compID = user_has_competence.competence_compID) WHERE user_has_competence.active = 1', (error, result) => {
+    if(error) throw error;
+
+    callback(result);
+  })
+}
+
 getCompetence(title, callback){
   connection.query('SELECT * FROM competence WHERE title=?', [title], (error,result) => {
     if(error) throw error;
@@ -446,8 +454,8 @@ getCompetence(title, callback){
     callback(result[0]);
   });
 }
-regCompetence(userid, compid, fileUpload, finished, callback){
-  connection.query('INSERT into user_has_competence (userID, competence_compID, fileUpload, finished) values (?,?,?,?)', [userid, compid, fileUpload, finished], (error, result) => {
+regCompetence(userid, compid, fileUpload, finished, active, callback){
+  connection.query('INSERT into user_has_competence (userID, competence_compID, fileUpload, finished, active) values (?,?,?,?,?)', [userid, compid, fileUpload, finished, active], (error, result) => {
     if(error) throw error;
 
     callback();
