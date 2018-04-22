@@ -1712,8 +1712,11 @@ class EditEvent extends React.Component {
   componentDidMount() {
     userService.getDivEvent(eventID, (result) => {
       this.refs.editArrName.value = result.name;
-      this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
-      this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
+      let start = new Date(result.date_start);
+      let end = new Date(result.date_end);
+      // 7.200.000 er for å legge til 2 timer ettersom -local er 2 timer bak.
+      this.refs.editStartDato.valueAsNumber = start.setTime(start.getTime() + 7200000);
+      this.refs.editSluttDato.valueAsNumber = end.setTime(end.getTime() + 7200000);
       this.refs.editTlf.value = result.contact_phone;
       this.refs.editRoles.value = result.rolelist_roleID;
       this.refs.editMeet.value = result.area;
@@ -2014,10 +2017,18 @@ class ChangeRole extends React.Component {
       <div>
         <button ref="EditRole">Lagre</button>
         <button ref="back">Gå tilbake</button>
+				<button ref='deleteRoleList'>Slett vaktmal</button>
       </div>
     </div>)
   }
   update() {
+		this.refs.deleteRoleList.onclick = () => {
+			userService.deleteRoleList(rolelistID, (result) => {
+				console.log('Slettet vaktmal, ID - ' + rolelistID);
+				history.push('/admin');
+			})
+		}
+
     userService.getThisRoleList(rolelistID, (result) => {
       this.refs.editRoleName.value = result.name;
       this.refs.editDescription.value = result.description;
@@ -2029,7 +2040,7 @@ class ChangeRole extends React.Component {
 
       userService.editRole(rolelistID, editname, editDescription, (result) => {})
       console.log('Vaktmal ble oppdatert, ID: ' + rolelistID);
-      history.push('/admin/')
+      history.push('/admin/');
     }
     this.refs.back.onclick = () => {
       history.push('/admin/')
@@ -2061,7 +2072,7 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.savedRoles.innerText = '';
+						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
@@ -2075,7 +2086,7 @@ class ChangeRole extends React.Component {
 
         userService.addRoleToList(roleID, rolelistID, (result) => {
 					console.log('La til rolle ID - ' + roleID);
-					this.refs.savedRoles.innerText = '';
+					this.refs.savedRoles.innerText = 'Rolleliste:';
 					this.refs.roleSelect.innerText = '';
           this.update();
 
