@@ -1722,13 +1722,13 @@ class EditEvent extends React.Component {
 	              <label className="login-text">Startdato:</label>
 	              <input type="datetime-local" className="form-control" ref='editStartDato'/>
 	              <label className="login-text">Vaktansvarlig:</label>
-	              <input type="text" className="form-control" />
+	              <input type="text" className="form-control" ref='editShitManager'/>
 	              <label className="login-text">Vaktlag:</label>
 	              <select className="form-control" id="exampleFormControlSelect1" ref='editRoles'></select>
 	            </div>
 	            <div className="form-group">
 	              <label className="login-text">Vaktpoeng:</label>
-	              <input type="number" className="form-control" ref='regPoints'/>
+	              <input type="number" className="form-control" ref='editPoints'/>
 	              <label className="login-text">Sluttdato:</label>
 	              <input type="datetime-local" className="form-control" ref='editSluttDato'/>
 	              <label className="login-text">Kontakttelefon:</label>
@@ -1755,32 +1755,62 @@ class EditEvent extends React.Component {
   )}
 
   componentDidMount() {
-    userService.getDivEvent(eventID, (result) => {
-      this.refs.editArrName.value = result.name;
-      let start = new Date(result.date_start);
-      let end = new Date(result.date_end);
-      // 7.200.000 er for å legge til 2 timer ettersom -local er 2 timer bak.
-      this.refs.editStartDato.valueAsNumber = start.setTime(start.getTime() + 7200000);
-      this.refs.editSluttDato.valueAsNumber = end.setTime(end.getTime() + 7200000);
-      this.refs.editTlf.value = result.contact_phone;
-      this.refs.editRoles.value = result.rolelist_roleID;
-      this.refs.editMeet.value = result.area;
-      this.refs.editDescript.value = result.description;
+    userService.getRolelists((result) => {
+      for (let rolelist of result) {
+        let rolelistSel = document.createElement('OPTION');
+        let rolelistName = document.createTextNode(rolelist.name);
+
+        rolelistSel.appendChild(rolelistName);
+        this.refs.editRoles.appendChild(rolelistSel);
+      }
     })
-    this.refs.btneditArr.onclick = () => {
-      var newName = this.refs.editArrName.value;
-      var newStartDato = this.refs.editStartDato.value;
-      var newEndDato = this.refs.editSluttDato.value;
-      var newTlf = this.refs.editTlf.value;
-      var newrolelist = this.refs.editRoles.value;
-      var newMeet = this.refs.editMeet.value;
-      var newDesc = this.refs.editDescript.value;
-      userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
-      console.log('Oppdatert Arrangement:');
-      alert('Arrangemenetet ble oppdatert');
-      history.push('/divevent/');
-      this.forceUpdate();
-    }
+    let rolelistname = '';
+    userService.getDivEvent(eventID, (result) => {
+
+      let rolelistid = result.rolelist_roleID;
+      userService.getRoleListByID(rolelistid, (resultrole) => {
+        rolelistname = resultrole.name;
+
+        this.refs.editArrName.value = result.name;
+        let start = new Date(result.date_start);
+        let end = new Date(result.date_end);
+        // 7.200.000 er for å legge til 2 timer ettersom -local er 2 timer bak.
+        this.refs.editStartDato.valueAsNumber = start.setTime(start.getTime() + 7200000);
+        this.refs.editSluttDato.valueAsNumber = end.setTime(end.getTime() + 7200000);
+        this.refs.editTlf.value = result.contact_phone;
+        this.refs.editRoles.value = rolelistname;
+        this.refs.editMeet.value = result.area;
+        this.refs.editDescript.value = result.description;
+        this.refs.editPoints.value = result.point_award;
+        this.refs.editShitManager.value = result.shiftManager;
+
+
+        this.refs.btneditArr.onclick = () => {
+          let newrolelistname = this.refs.editRoles.value;
+          userService.getRolelist(newrolelistname, (resultnewrole) => {
+            let newroleID = resultnewrole.rolelistID;
+
+
+            var newName = this.refs.editArrName.value;
+            var newStartDato = this.refs.editStartDato.value;
+            var newEndDato = this.refs.editSluttDato.value;
+            var newTlf = this.refs.editTlf.value;
+            var newrolelist = newroleID;
+            var newMeet = this.refs.editMeet.value;
+            var newDesc = this.refs.editDescript.value;
+            userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
+            console.log(newroleID);
+            console.log('Oppdatert Arrangement:');
+            alert('Arrangemenetet ble oppdatert');
+            history.push('/divevent/');
+            this.forceUpdate();
+
+          })
+
+        }
+      })
+
+    })
   }
 
 }
