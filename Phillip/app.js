@@ -1617,16 +1617,22 @@ class divEvent extends React.Component {
 				</div>
 			</div>
 			<div className="event-div-descrip">
-				<p className="event-div-descrip-p">Beskrivelse:</p> <br />
-			</div>
+				<p className="event-div-descrip-p">Beskrivelse:</p>
+				<p ref='eventinfo'></p>
+				<div className="event-div-grid-btn">
+					<div className="event-div-grid-btn-left">
+						<button className="btn btn-outline-danger">Tilbake</button>
+						<button className="btn btn-outline-danger" ref='editArr'>Rediger</button>
+					</div>
+					<div className="event-div-grid-btn-right">
+						<button className="btn btn-success" ref='Interested'>Meld interesse</button>
+						<button className="btn btn-danger" ref='notInterested'>Avmeld interesse</button>
+						<button className="btn btn-outline-danger" ref='checkinterested'>Se interesserte</button><br />
+						<p ref="hasevent"></p>
+					</div>
+				</div>
 
-			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
-		<button>Tilbake</button>
-			<button ref='editArr'>Rediger</button>
-			<button ref='Interested'>Meld interesse</button>
-			<button ref='notInterested'>Avmeld interesse</button>
-			<button ref='checkinterested'>Se interesserte</button><br />
-			<span ref="hasevent"></span>
+			</div>
 			</div>
 			</div>
 		)
