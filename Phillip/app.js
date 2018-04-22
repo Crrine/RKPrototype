@@ -2118,7 +2118,7 @@ class ChangeRole extends React.Component {
       <h1 className="title">Rediger vaktmal</h1>
 				<div className="admin-grid">
 					<div>
-			      <h3 ref='roleName'></h3>
+			      <h3 className="medium-title" ref='roleName'></h3>
 			      <label>
 			        Navn på vaktmalen:<br/>
 			        <input ref='editRoleName' type='text'/><br/>
@@ -2134,8 +2134,8 @@ class ChangeRole extends React.Component {
 					</div>
 
 					<div>
+						<h3 className="medium-title">Rolleliste:</h3>
 			      <div ref='savedRoles'>
-			        Rolleliste:
 			      </div>
 					</div>
 					<div>
@@ -2188,9 +2188,10 @@ class ChangeRole extends React.Component {
         let roleitemTitle = document.createTextNode(listrole.title);
 
 				let btnDeleteRole = document.createElement('BUTTON');
-				let btnDeleteRoleTxt = document.createTextNode('fjern');
+				let btnDeleteRoleTxt = document.createTextNode('Slett');
 				btnDeleteRole.appendChild(btnDeleteRoleTxt);
 				btnDeleteRole.setAttribute('id',listrole.roleID);
+				btnDeleteRole.className = "btn btn-outline-danger btn-sm"
 
         roleitem.appendChild(roleitemTitle);
 				roleitem.appendChild(btnDeleteRole);
@@ -2200,7 +2201,6 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
