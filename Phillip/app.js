@@ -431,7 +431,6 @@ class Profile extends React.Component {
             <input type='file' ref='sendInFile'/>
             <br/>
             <button ref='btnAddComp'>Send inn</button>
-            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
         </div>
@@ -504,7 +503,7 @@ class Profile extends React.Component {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
 			let fileUpload = this.refs.sendInFile.value;
-      this.refs.message.innerText = "Kurset er sendt inn for godkjenning";
+
       userService.getCompetence(title, (result) => {
         compid = result.compID;
         userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
@@ -1776,10 +1775,7 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-<<<<<<< HEAD
 
-=======
->>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
@@ -1877,14 +1873,10 @@ class Administrator extends React.Component {
   }
 
   render() {
-    return (<div className="big-container">
-		<div className="main-wrap">
-      <h1 className="title">Administrasjon</h1>
-
-			<div className="admin-grid">
-			<div>
-      <h3 className="eventmediumtitle">
-        Godkjenn bruker:
+    return (<div>
+      <h2>Adminsiden</h2>
+      <h3>
+        Ikke Godkjente brukere
       </h3>
       <ul>
         {
@@ -1893,8 +1885,8 @@ class Administrator extends React.Component {
             : 'Alle brukere er aktivert'
         }
       </ul>
-      <h5 className="eventmediumtitle">
-        Avslåtte brukere:
+      <h5>
+        Avslåtte brukere
       </h5>
       <ul>
         {
@@ -1903,26 +1895,19 @@ class Administrator extends React.Component {
             : 'Ingen brukere er avslått'
         }
       </ul>
-			</div>
-			<div>
-      <h3 className="eventmediumtitle">
-        Vaktmaler:
+      <h3>
+        Vaktmaler
       </h3>
       <ul>
         {this.state.mannskapsliste}
       </ul>
-      <button className="btn btn-outline-success" ref="newrole">Legg til vaktmaler og roller</button>
-				<br /><br />
-				<h5 className="eventmediumtitle">
-        	Godkjenn kompetanse:
-      	</h5>
+      <button ref="newrole">Legg til vaktmaler og roller</button>
+      <h3>
+        ikke godkjente kompetanser
+      </h3>
       <ul>
         {this.state.kompetanseliste}
       </ul>
-			</div>
-		</div>
-
-		</div>
     </div>)
   }
 
@@ -1964,8 +1949,8 @@ class Administrator extends React.Component {
     let mannskap = [];
     for (let rolelist of this.liste) {
       mannskap.push(<li key={rolelist.rolelistID}>
-        {rolelist.name + " "}
-        <button className="btn btn-outline-danger btn-sm" onClick= {() => {
+        {rolelist.name}
+        <button onClick= {() => {
 					history.push('/changerole')
 					rolelistID = rolelist.rolelistID;
 				}}>Rediger</button>
@@ -1978,8 +1963,8 @@ class Administrator extends React.Component {
     let utskriftavslatt = [];
     for (let user of this.avslatt) {
       utskriftavslatt.push(<li key={user.userID}>
-        {user.firstname + " " + user.lastname + " "}
-        <button className="btn btn-outline-danger btn-sm" onClick = {() => {
+        {user.firstname + " " + user.lastname}
+        <button onClick = {() => {
 					this.updateavslatt(user.userID)
 				}}>Angre</button>
       </li>)
@@ -2002,11 +1987,11 @@ class Administrator extends React.Component {
     let utskrift = [];
     for (let user of this.brukere) {
       utskrift.push(<li key={user.userID}>
-        {user.firstname + " " + user.lastname + " "}
-        <button className="btn btn-outline-success btn-sm" onClick = {() => {
+        {user.firstname + " " + user.lastname}
+        <button onClick = {() => {
 					this.updateuser(user.userID)
-				}}>Aksepter</button>
-			<button className="btn btn-outline-danger btn-sm" onClick = {() => {
+				}}>aksepter</button>
+        <button onClick = {() => {
 					this.updateDenyUser(user.userID)
 				}}>Avslå</button>
       </li>)
@@ -2041,9 +2026,7 @@ class Administrator extends React.Component {
 
 class NewRole extends React.Component {
   render() {
-    return (<div className="big-container">
-			<div className="main-wrap">
-
+    return (<div>
       <h4>Opprett vaktmal</h4>
       <b>Du kan legge til roller i vaktmalen etter at den har blitt opprettet, velg 'rediger' i adminsiden</b>
       <form>
@@ -2073,7 +2056,6 @@ class NewRole extends React.Component {
       <button ref='regRole'>Registrer rolle</button><br/>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
-<<<<<<< HEAD
       <br/>
       <b>Kompetanse som kreves:</b>
       <div ref='showComps'></div>
@@ -2093,17 +2075,6 @@ class NewRole extends React.Component {
             this.update();
           });
         })
-=======
-			</div>
-    </div>)
-  }
-  componentDidMount() {
-    userService.getRoles((result) => {
-      userService.getCompetences((result) => {
-        for(let compname of result){
-          // JOBBER HER
-        }
->>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
       });
     }
 
@@ -2154,40 +2125,29 @@ class ChangeRole extends React.Component {
   }
 
   render() {
-    return (<div className="big-container">
-			<div className="main-wrap">
-      <h1 className="title">Rediger vaktmal</h1>
-				<div className="admin-grid">
-					<div>
-			      <h3 className="medium-title" ref='roleName'></h3>
-			      <label>
-			        Navn på vaktmalen:<br/>
-			        <input ref='editRoleName' type='text'/><br/>
-			      </label>
-			      <label>
-			        Beskrivelse:<br/>
-			        <input ref='editDescription' type='text'/><br/>
-			      </label>
-			      <label>Legg til rolle:<br/>
-			        <select ref='roleSelect'></select>
-			        <button ref='addRoleToList'>Legg til</button>
-			      </label>
-					</div>
-
-					<div>
-						<h3 className="medium-title">Rolleliste:</h3>
-			      <div ref='savedRoles'>
-			      </div>
-					</div>
-					<div>
-						<button className="btn btn-outline-danger" ref="back">Tilbake</button>
-					</div>
-					<div className="admin-btn-right">
-						<button className="btn btn-success" ref="EditRole">Lagre</button>
-						<button className="btn btn-danger" ref='deleteRoleList'>Slett vaktmal</button>
-					</div>
-				</div>
-		</div>
+    return (<div>
+      <h1>Rediger vaktmal</h1>
+      <h3 ref='roleName'></h3>
+      <label>
+        Navn på vaktmalen:<br/>
+        <input ref='editRoleName' type='text'/><br/>
+      </label>
+      <label>
+        Beskrivelse:<br/>
+        <input ref='editDescription' type='text'/><br/>
+      </label>
+      <label>Legg til rolle:<br/>
+        <select ref='roleSelect'></select>
+        <button ref='addRoleToList'>Legg til</button>
+      </label>
+      <div ref='savedRoles'>
+        Rolleliste:
+      </div>
+      <div>
+        <button ref="EditRole">Lagre</button>
+        <button ref="back">Gå tilbake</button>
+				<button ref='deleteRoleList'>Slett vaktmal</button>
+      </div>
     </div>)
   }
   update() {
@@ -2229,10 +2189,9 @@ class ChangeRole extends React.Component {
         let roleitemTitle = document.createTextNode(listrole.title);
 
 				let btnDeleteRole = document.createElement('BUTTON');
-				let btnDeleteRoleTxt = document.createTextNode('Slett');
+				let btnDeleteRoleTxt = document.createTextNode('fjern');
 				btnDeleteRole.appendChild(btnDeleteRoleTxt);
 				btnDeleteRole.setAttribute('id',listrole.roleID);
-				btnDeleteRole.className = "btn btn-outline-danger btn-sm"
 
         roleitem.appendChild(roleitemTitle);
 				roleitem.appendChild(btnDeleteRole);
@@ -2242,6 +2201,7 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
+						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
@@ -2338,7 +2298,6 @@ class NewEvent extends React.Component {
             <textarea className="form-control" rows="5" ref='regDescript'></textarea>
           </div>
         </form>
-        <p className="event-div-descrip" ref="feilmelding"></p>
         <div className="login-grid">
           <div>
 						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
@@ -2376,36 +2335,18 @@ class NewEvent extends React.Component {
       let area = this.refs.regMeet.value;
       let point_award = this.refs.regPoints.value;
       let shiftManager = this.refs.regshiftManager.value;
+
       let rolelistName = this.refs.rolelistSelect.value;
 
       userService.getRolelist(rolelistName, (result) => {
         rolelistid = result.rolelistID;
-        if (!name) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et brukernavn";
-        } else if (!point_award) {
-          this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
-        } else if (date_start == "") {
-          console.log(date_start)
-          this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
-        } else if (date_end == "") {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
-        } else if (!shiftManager) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Vaktansvarlig";
-        } else if (!contact_phone) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et tlf nummer";
-        } else if (!area) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et møtested";
-        } else if (!description) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Beskrivelse";
-        } else {
+
         userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
-            this.refs.feilmelding.innerText = "Du må fylle ut skjemaet riktig";
           alert('Arrangementet er opprettet');
           history.push('/events/');
           this.forceUpdate();
         })
-      }
-    })
+      })
     }
   }
 }
