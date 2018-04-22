@@ -2073,7 +2073,6 @@ class NewRole extends React.Component {
       <br/>
       <b>Kompetanse som kreves:</b>
       <div ref='showComps'></div>
-    </div>
     </div>)
   }
 
@@ -2133,7 +2132,6 @@ class NewRole extends React.Component {
       })
     }
   }
-}
 }
 
 class ChangeRole extends React.Component {
