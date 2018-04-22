@@ -431,6 +431,7 @@ class Profile extends React.Component {
             <input type='file' ref='sendInFile'/>
             <br/>
             <button ref='btnAddComp'>Send inn</button>
+            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
         </div>
@@ -503,7 +504,7 @@ class Profile extends React.Component {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
 			let fileUpload = this.refs.sendInFile.value;
-
+      this.refs.message.innerText = "Kurset er sendt inn for godkjenning";
       userService.getCompetence(title, (result) => {
         compid = result.compID;
         userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
@@ -1776,7 +1777,6 @@ class EditEvent extends React.Component {
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
 
-
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
       alert('Arrangemenetet ble oppdatert');
@@ -2297,6 +2297,7 @@ class NewEvent extends React.Component {
             <textarea className="form-control" rows="5" ref='regDescript'></textarea>
           </div>
         </form>
+        <p className="event-div-descrip" ref="feilmelding"></p>
         <div className="login-grid">
           <div>
 						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
@@ -2334,18 +2335,36 @@ class NewEvent extends React.Component {
       let area = this.refs.regMeet.value;
       let point_award = this.refs.regPoints.value;
       let shiftManager = this.refs.regshiftManager.value;
-
       let rolelistName = this.refs.rolelistSelect.value;
 
       userService.getRolelist(rolelistName, (result) => {
         rolelistid = result.rolelistID;
-
+        if (!name) {
+          this.refs.feilmelding.innerText = "Du må skrive inn et brukernavn";
+        } else if (!point_award) {
+          this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
+        } else if (date_start == "") {
+          console.log(date_start)
+          this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
+        } else if (date_end == "") {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
+        } else if (!shiftManager) {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Vaktansvarlig";
+        } else if (!contact_phone) {
+          this.refs.feilmelding.innerText = "Du må skrive inn et tlf nummer";
+        } else if (!area) {
+          this.refs.feilmelding.innerText = "Du må skrive inn et møtested";
+        } else if (!description) {
+          this.refs.feilmelding.innerText = "Du må skrive inn en Beskrivelse";
+        } else {
         userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
+            this.refs.feilmelding.innerText = "Du må fylle ut skjemaet riktig";
           alert('Arrangementet er opprettet');
           history.push('/events/');
           this.forceUpdate();
         })
-      })
+      }
+    })
     }
   }
 }
