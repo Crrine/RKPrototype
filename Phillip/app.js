@@ -1572,7 +1572,7 @@ class Vaktliste extends React.Component {
   }
 }
 
-class divEvent extends React.Component {
+class DivEvent extends React.Component {
 	constructor() {
 		super();
 		this.userisloggedin;
@@ -1983,12 +1983,28 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
+  updatecomplist(compuserID) {
+    let active = 0
+    userService.acceptCompetence(active, userid, compuserID, (result) => {
+      userService.getDivUserComp((result) => {
+      this.active = result;
+      this.userCompList();
+    })
+  })
+ }
+
   userCompList()  {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
       usercomp.push(<li key={user_has_competence.compuserID}>
-        {reader.readAsText(new Blob([user_has_competence.fileUpload], {type: "text/xml"}))}
+        {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
+        <button className="btn btn-outline-success btn-sm" onClick = {() => {
+          this.updatecomplist(user_has_competence.compuserID);
+        }}>Aksepter</button>
+        <button className="btn btn-outline-danger btn-sm" onClick = {() => {
+
+				}}>Avslå</button>
       </li>)
     }
     this.setState({kompetanseliste: usercomp})
@@ -2450,7 +2466,7 @@ ReactDOM.render((<HashRouter>
       <Route exact="exact" path='/forgotPassword' component={ForgotPassword}/>
       <Route exact="exact" path='/vaktliste' component={Vaktliste}/>
       <Route exact="exact" path='/editevent' component={EditEvent}/>
-      <Route exact="exact" path='/divevent' component={divEvent}/>
+      <Route exact="exact" path='/divevent' component={DivEvent}/>
       <Route exact="exact" path='/newEvent' component={NewEvent}/>
       <Route exact="exact" path='/homepage' component={Homepage}/>
       <Route exact="exact" path='/loginPage' component={LoginPage}/>
