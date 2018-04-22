@@ -1901,7 +1901,7 @@ class Administrator extends React.Component {
       <ul>
         {this.state.mannskapsliste}
       </ul>
-      <button ref="newrole">Legg til vaktmal</button>
+      <button ref="newrole">Legg til vaktmaler og roller</button>
       <h3>
         ikke godkjente kompetanser
       </h3>
@@ -2027,7 +2027,8 @@ class Administrator extends React.Component {
 class NewRole extends React.Component {
   render() {
     return (<div>
-      <h1>Ny vaktmal</h1>
+      <h4>Opprett vaktmal</h4>
+      <b>Du kan legge til roller i vaktmalen etter at den har blitt opprettet, velg 'rediger' i adminsiden</b>
       <form>
         <label>
           Navn på vaktmalen:<br/>
@@ -2038,11 +2039,43 @@ class NewRole extends React.Component {
           <input ref='NewRoleDesc' type='text'/><br/>
         </label>
       </form>
-      <button ref='btnSendRole'>Registrer</button>
+      <button ref='btnSendRole'>Opprett</button>
       <button ref='btnBackRole'>Tilbake</button>
+      <br/><br/>
+      <form>
+        <h4>Legg til nye roller i databasen</h4>
+        <label>
+          Rollenavn:<br/>
+          <input ref='addRole' type='text'/>
+        </label>
+        <label>
+          Kurs som kreves:<br/>
+          <input ref='compRequired' type='text' />
+        </label>
+      </form>
+      <button ref='regRole'>Registrer rolle</button><br/>
+      <b>Disse rollene finnes i databasen:</b>
+      <div ref='showRoles'></div>
     </div>)
   }
   componentDidMount() {
+    userService.getRoles((result) => {
+      userService.getCompetences((result) => {
+        for(let compname of result){
+          // JOBBER HER  
+        }
+      });
+
+      for(let rolename of result){
+
+        let roleLi = document.createElement('LI');
+        let roleLiTxt = document.createTextNode(rolename.title);
+
+        roleLi.appendChild(roleLiTxt);
+        this.refs.showRoles.appendChild(roleLi);
+      }
+    });
+
     this.refs.btnBackRole.onclick = () => {
       history.push('/admin/');
     }
@@ -2051,7 +2084,7 @@ class NewRole extends React.Component {
       let name = this.refs.NewRoleName.value;
       let description = this.refs.NewRoleDesc.value;
 
-      userService.addRole(name, description, (result) => {
+      userService.addRoleList(name, description, (result) => {
         console.log('Arrangementet er opprettet');
         history.push('/admin/');
         this.forceUpdate();
@@ -2108,7 +2141,7 @@ class ChangeRole extends React.Component {
       var editname = this.refs.editRoleName.value;
       var editDescription = this.refs.editDescription.value;
 
-      userService.editRole(rolelistID, editname, editDescription, (result) => {})
+      userService.editRoleList(rolelistID, editname, editDescription, (result) => {})
       console.log('Vaktmal ble oppdatert, ID: ' + rolelistID);
       history.push('/admin/');
     }
@@ -2305,8 +2338,8 @@ class Search extends React.Component {
 				<input className="form-control col-4" ref='searchField' type="text" placeholder="Du kan søke på fornavn og etternavn" />
       	<button className="btn btn-outline-danger" ref='btnSearch'>Søk</button>
 			</div>
-
-      <div ref='output'></div>
+			<br />
+    		<div className="search-flex" ref='output'></div>
 		</div>
     </div>);
     //Sørg for at når man går ut av profilen, endres userid tilbake til admin
@@ -2327,19 +2360,25 @@ class Search extends React.Component {
         for (let user of result) {
           let clickedUser = user.userID;
           let divUser = document.createElement('DIV');
+					divUser.className = "search-bg";
           let btnUser = document.createElement('BUTTON');
-          let btnUserTxt = document.createTextNode('rediger');
+          let btnUserTxt = document.createTextNode('Rediger');
           btnUser.appendChild(btnUserTxt);
           btnUser.setAttribute('id', user.userID);
-					btnUser.className = "btn btn-outline-danger"
+					btnUser.className = "btn btn-outline-danger";
 
           btnUser.onclick = () => {
             sendToUser(clickedUser);
           }
 
-          let divUserTxt = document.createTextNode(user.firstname + ' ' + user.lastname + ' ' + 'epost: ' + user.email + ' ' + 'telefon: ' + user.phone);
+					let divFullName = document.createTextNode(user.firstname + ' ' + user.lastname);
+					let divUserInfo = document.createTextNode('Epost: ' + user.email + ' - ' + 'Telefon: ' + user.phone + ' ');
+					let linebreak = document.createElement('BR');
 
-          divUser.appendChild(divUserTxt);
+					divUser.className = "divUser"
+          divUser.appendChild(divFullName);
+					divUser.appendChild(linebreak);
+					divUser.appendChild(divUserInfo);
           if (this.userisloggedin.admin == 1) {
             divUser.appendChild(btnUser);
           }

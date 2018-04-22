@@ -148,7 +148,7 @@ class UserService {
     })
   }
   getRoles(callback){
-    connection.query('SELECT * FROM role', (error, result) => {
+    connection.query('SELECT * FROM role ORDER BY title', (error, result) => {
       if(error) throw error;
 
       callback(result);
@@ -161,7 +161,7 @@ class UserService {
       callback(result);
     })
   }
-  addRole(name, description, callback) {
+  addRoleList(name, description, callback) {
     connection.query('INSERT INTO rolelist (name, description) values (?, ?)', [name, description], (error, result) => {
       if (error) throw error;
 
@@ -175,7 +175,7 @@ class UserService {
       callback();
     })
   }
-  editRole(rolelistID, editname, editDescription, callback) {
+  editRoleList(rolelistID, editname, editDescription, callback) {
     connection.query('UPDATE rolelist SET name=?, description=? WHERE rolelistID=?', [editname, editDescription, rolelistID], (error, result) => {
       if (error) throw error;
 
