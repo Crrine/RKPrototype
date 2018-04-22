@@ -1776,6 +1776,10 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
+<<<<<<< HEAD
+
+=======
+>>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
@@ -2085,6 +2089,27 @@ class NewRole extends React.Component {
       <button ref='regRole'>Registrer rolle</button><br/>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
+<<<<<<< HEAD
+      <br/>
+      <b>Kompetanse som kreves:</b>
+      <div ref='showComps'></div>
+    </div>)
+  }
+  update(){
+    this.refs.regRole.onclick = () => {
+      let newroletitle = this.refs.addRole.value;
+      let newcomptitle = this.refs.compRequired.value;
+      let newcompid = 22;
+      userService.addCompetence(newcomptitle, (result) => {
+        userService.getComp(newcomptitle, (result) => {
+          let newcompid = result[0].compID;
+          userService.addRole(newcompid, newroletitle, (result) => {
+            this.refs.showRoles.innerText = '';
+            this.refs.showComps.innerText = '';
+            this.update();
+          });
+        })
+=======
 			</div>
     </div>)
   }
@@ -2094,15 +2119,27 @@ class NewRole extends React.Component {
         for(let compname of result){
           // JOBBER HER
         }
+>>>>>>> e0d7eb17e5d0b21d4e003d8a59dc2ec74c47f7a6
       });
+    }
 
+    userService.getRoles((result) => {
       for(let rolename of result){
 
+        let thisRoleID = rolename.roleID;
         let roleLi = document.createElement('LI');
         let roleLiTxt = document.createTextNode(rolename.title);
 
         roleLi.appendChild(roleLiTxt);
         this.refs.showRoles.appendChild(roleLi);
+
+        userService.getCompID(thisRoleID, (result) => {
+          let compLi = document.createElement('LI');
+          let compLiTxt = document.createTextNode(result.title);
+
+          compLi.appendChild(compLiTxt);
+          this.refs.showComps.appendChild(compLi);
+        })
       }
     });
 
@@ -2121,6 +2158,10 @@ class NewRole extends React.Component {
       })
     }
   }
+
+  componentDidMount() {
+    this.update();
+  }
 }
 
 class ChangeRole extends React.Component {
@@ -2134,7 +2175,7 @@ class ChangeRole extends React.Component {
       <h1 className="title">Rediger vaktmal</h1>
 				<div className="admin-grid">
 					<div>
-			      <h3 ref='roleName'></h3>
+			      <h3 className="medium-title" ref='roleName'></h3>
 			      <label>
 			        Navn på vaktmalen:<br/>
 			        <input ref='editRoleName' type='text'/><br/>
@@ -2150,8 +2191,8 @@ class ChangeRole extends React.Component {
 					</div>
 
 					<div>
+						<h3 className="medium-title">Rolleliste:</h3>
 			      <div ref='savedRoles'>
-			        Rolleliste:
 			      </div>
 					</div>
 					<div>
@@ -2204,9 +2245,10 @@ class ChangeRole extends React.Component {
         let roleitemTitle = document.createTextNode(listrole.title);
 
 				let btnDeleteRole = document.createElement('BUTTON');
-				let btnDeleteRoleTxt = document.createTextNode('fjern');
+				let btnDeleteRoleTxt = document.createTextNode('Slett');
 				btnDeleteRole.appendChild(btnDeleteRoleTxt);
 				btnDeleteRole.setAttribute('id',listrole.roleID);
+				btnDeleteRole.className = "btn btn-outline-danger btn-sm"
 
         roleitem.appendChild(roleitemTitle);
 				roleitem.appendChild(btnDeleteRole);
@@ -2216,7 +2258,6 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
