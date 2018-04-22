@@ -1469,72 +1469,120 @@ class Contact extends React.Component {
   }
 }
 
-class EditEvent extends React.Component {
+class Vaktliste extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      users: '',
+      userhasevent: ''
+    }
+    this.update = "";
+    this.hasevent = "";
+  }
   render() {
     return (<div>
-      <form>
-        <h1>Rediger arrangement
-        </h1>
-        <label>
-          Navn på arrangementet:<br/>
-          <input ref='editArrName' type='text'/><br/>
-        </label>
-        <label>
-          Startdato:<br/>
-          <input ref='editStartDato' type='datetime-local'/><br/>
-        </label>
-        <label>
-          sluttdato:<br/>
-          <input ref='editSluttDato' type='datetime-local'/><br/>
-        </label>
-        <label>
-          kontakttelefon:<br/>
-          <input ref='editTlf' type='text'/><br/>
-        </label>
-        <label>
-          rolelist:<br/>
-          <input ref='editRoles' type='text'/><br/>
-        </label>
-        <label>
-          Møtested:<br/>
-          <input ref='editMeet' type='text'/><br/>
-        </label>
-        <label>
-          description:<br/>
-          <input ref='editDescript' type='text'/><br/>
-        </label>
-      </form>
-      <button ref='btneditArr'>Rediger Arrangement</button>
+      <h1>
+        Påmeldte medlemmer
+      </h1>
+      <ul>
+        {
+          this.state.userhasevent
+            ? this.state.userhasevent
+            : 'Ingen påmeldte'
+        }
+      </ul>
+      <h1>
+        Interreserte medlemmer
+      </h1>
+      <ul>
+        {
+          this.state.users
+            ? this.state.users
+            : 'Ingen Interreserte'
+        }
+      </ul>
+      <button ref="backButton">Tilbake</button>
     </div>)
   }
 
-  componentDidMount() {
-    userService.getDivEvent(eventID, (result) => {
-      this.refs.editArrName.value = result.name;
-      this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
-      this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
-      this.refs.editTlf.value = result.contact_phone;
-      this.refs.editRoles.value = result.rolelist_roleID;
-      this.refs.editMeet.value = result.area;
-      this.refs.editDescript.value = result.description;
-    })
-    this.refs.btneditArr.onclick = () => {
-      var newName = this.refs.editArrName.value;
-      var newStartDato = this.refs.editStartDato.value;
-      var newEndDato = this.refs.editSluttDato.value;
-      var newTlf = this.refs.editTlf.value;
-      var newrolelist = this.refs.editRoles.value;
-      var newMeet = this.refs.editMeet.value;
-      var newDesc = this.refs.editDescript.value;
+  deleteuser(userid) {
+    userService.deleteInterested(eventID, userid, (result) => {
+      userService.getInterested(eventID, userid, (result) => {
+        this.update = result;
+        this.jodajoda();
 
-      userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
-      console.log('Oppdatert Arrangement:');
-      alert('Arrangemenetet ble oppdatert');
-      history.push('/divevent/');
-      this.forceUpdate();
-    }
+      })
+    })
   }
 
+  deletefromvakt(userid) {
+    userService.deleteFromArr(eventID, userid, (result) => {
+      userService.getUserHasEvent(userid, eventID, (result) => {
+        this.hasevent = result;
+        this.hentbrukere();
+      })
+    })
+  }
+
+  addUser(userid) {
+    userService.addUserHasEvent(userid, eventID, (result) => {
+      userService.getUserHasEvent(userid, eventID, (result) => {
+        this.hasevent = result;
+        this.hentbrukere();
+      })
+    })
+  }
+
+  hentbrukere() {
+    var pameldte = [];
+
+    for (let user of this.hasevent) {
+      pameldte.push(<li key={user.userID}>
+        <Link onClick={() => {
+            viewid = user.userID;
+          }} to={'/editotherprofile/'}>
+          {user.firstname + " " + user.lastname}
+        </Link>
+        <button onClick={() => {
+            this.deletefromvakt(user.userID)
+          }}>Meld av</button>
+      </li>)
+    }
+
+    this.setState({userhasevent: pameldte})
+  }
+
+  jodajoda() {
+    var int = [];
+
+    for (let user of this.update) {
+      int.push(<li key={user.userID}>
+        {user.firstname}
+        <button onClick={() => {
+            this.addUser(user.userID)
+            this.deleteuser(user.userID)
+          }}>aksepter</button>
+        <button onClick= {() => {
+				this.deleteuser(user.userID)
+					}}>deny</button>
+      </li>)
+    }
+    this.setState({users: int})
+  }
+
+  componentDidMount() {
+    userService.getInterested(eventID, userid, (result) => {
+      this.update = result;
+      this.jodajoda();
+    })
+    userService.getUserHasEvent(userid, eventID, (result) => {
+      this.hasevent = result;
+      this.hentbrukere();
+    })
+    this.refs.backButton.onclick = () => {
+      history.push('/divEvent');
+    }
+  }
 }
 
 class divEvent extends React.Component {
@@ -1653,6 +1701,74 @@ class divEvent extends React.Component {
       history.push('/vaktliste/');
     }
   }
+}
+
+class EditEvent extends React.Component {
+  render() {
+    return (<div>
+      <form>
+        <h1>Rediger arrangement
+        </h1>
+        <label>
+          Navn på arrangementet:<br/>
+          <input ref='editArrName' type='text'/><br/>
+        </label>
+        <label>
+          Startdato:<br/>
+          <input ref='editStartDato' type='datetime-local'/><br/>
+        </label>
+        <label>
+          sluttdato:<br/>
+          <input ref='editSluttDato' type='datetime-local'/><br/>
+        </label>
+        <label>
+          kontakttelefon:<br/>
+          <input ref='editTlf' type='text'/><br/>
+        </label>
+        <label>
+          rolelist:<br/>
+          <input ref='editRoles' type='text'/><br/>
+        </label>
+        <label>
+          Møtested:<br/>
+          <input ref='editMeet' type='text'/><br/>
+        </label>
+        <label>
+          description:<br/>
+          <input ref='editDescript' type='text'/><br/>
+        </label>
+      </form>
+      <button ref='btneditArr'>Rediger Arrangement</button>
+    </div>)
+  }
+
+  componentDidMount() {
+    userService.getDivEvent(eventID, (result) => {
+      this.refs.editArrName.value = result.name;
+      this.refs.editStartDato.valueAsNumber = result.date_start.getTime();
+      this.refs.editSluttDato.valueAsNumber = result.date_end.getTime();
+      this.refs.editTlf.value = result.contact_phone;
+      this.refs.editRoles.value = result.rolelist_roleID;
+      this.refs.editMeet.value = result.area;
+      this.refs.editDescript.value = result.description;
+    })
+    this.refs.btneditArr.onclick = () => {
+      var newName = this.refs.editArrName.value;
+      var newStartDato = this.refs.editStartDato.value;
+      var newEndDato = this.refs.editSluttDato.value;
+      var newTlf = this.refs.editTlf.value;
+      var newrolelist = this.refs.editRoles.value;
+      var newMeet = this.refs.editMeet.value;
+      var newDesc = this.refs.editDescript.value;
+
+      userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
+      console.log('Oppdatert Arrangement:');
+      alert('Arrangemenetet ble oppdatert');
+      history.push('/divevent/');
+      this.forceUpdate();
+    }
+  }
+
 }
 
 class Calendar extends React.Component {
