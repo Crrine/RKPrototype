@@ -431,6 +431,7 @@ class Profile extends React.Component {
             <input type='file' ref='sendInFile'/>
             <br/>
             <button ref='btnAddComp'>Send inn</button>
+            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
         </div>
@@ -503,7 +504,7 @@ class Profile extends React.Component {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
 			let fileUpload = this.refs.sendInFile.value;
-
+      this.refs.message.innerText = "Kurset er sendt inn for godkjenning";
       userService.getCompetence(title, (result) => {
         compid = result.compID;
         userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
@@ -511,6 +512,7 @@ class Profile extends React.Component {
           this.forceUpdate();
         })
       })
+      this.refs.btnAddComp.disabled = true;
       // Skriv en tekst her om at det er sendt til godkjenning
     }
     userService.getUserComp(userid, (result) => {
@@ -1981,9 +1983,9 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
-  updatecomplist(compuserID) {
+  updatecomplist(userid) {
     let active = 0
-    userService.acceptCompetence(active, userid, compuserID, (result) => {
+    userService.acceptCompetence(active, userid, (result) => {
       userService.getDivUserComp((result) => {
       this.active = result;
       this.userCompList();
@@ -1991,14 +1993,18 @@ class Administrator extends React.Component {
   })
  }
 
+ deletefromcomplist(userid) {
+
+ }
+
   userCompList()  {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.compuserID}>
+      usercomp.push(<li key={user_has_competence.userID}>
         {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
-          this.updatecomplist(user_has_competence.compuserID);
+          this.updatecomplist(user_has_competence.userID);
         }}>Aksepter</button>
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
 

@@ -459,7 +459,7 @@ connection.query('SELECT * FROM rolelist WHERE rolelistID=?', [rolelistid], (err
   }
 
 getUserComp(userid, callback){
-  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON (competence.compID = user_has_competence.competence_compID) WHERE userID =? AND active = 0', [userid], (error, result) => {
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON (competence.compID = user_has_competence.competence_compID) WHERE userID =? AND active = 0 OR active = 2', [userid], (error, result) => {
     if(error) throw error;
 
     callback(result);
@@ -467,7 +467,7 @@ getUserComp(userid, callback){
 }
 
 getDivUserComp(callback){
-  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON( competence.compID = user_has_competence.competence_compID) INNER JOIN user ON (user_has_competence.userID = user.userID) WHERE user_has_competence.active = 1', (error, result) => {
+  connection.query('SELECT * FROM competence INNER JOIN user_has_competence ON (competence.compID = user_has_competence.competence_compID) INNER JOIN user ON (user_has_competence.userID = user.userID) WHERE user_has_competence.active = 1', (error, result) => {
     if(error) throw error;
 
     callback(result);
@@ -488,8 +488,8 @@ regCompetence(userid, compid, fileUpload, finished, active, callback){
     callback();
   })
 }
-acceptCompetence(active, userid, compuserID, callback){
-  connection.query('UPDATE user_has_competence SET active = ? WHERE userID = ? AND compuserID = ?', [active, userid, compuserID], (error, result) => {
+acceptCompetence(active, userid, callback){
+  connection.query('UPDATE user_has_competence SET active = ? WHERE userID = ?', [active, userid], (error, result) => {
     if(error) throw error;
 
     callback();
