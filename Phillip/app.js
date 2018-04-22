@@ -1887,10 +1887,14 @@ class Administrator extends React.Component {
   }
 
   render() {
-    return (<div>
-      <h2>Adminsiden</h2>
-      <h3>
-        Ikke Godkjente brukere
+    return (<div className="big-container">
+		<div className="main-wrap">
+      <h1 className="title">Administrasjon</h1>
+
+			<div className="admin-grid">
+			<div>
+      <h3 className="eventmediumtitle">
+        Godkjenn bruker:
       </h3>
       <ul>
         {
@@ -1899,8 +1903,8 @@ class Administrator extends React.Component {
             : 'Alle brukere er aktivert'
         }
       </ul>
-      <h5>
-        Avslåtte brukere
+      <h5 className="eventmediumtitle">
+        Avslåtte brukere:
       </h5>
       <ul>
         {
@@ -1909,19 +1913,26 @@ class Administrator extends React.Component {
             : 'Ingen brukere er avslått'
         }
       </ul>
-      <h3>
-        Vaktmaler
+			</div>
+			<div>
+      <h3 className="eventmediumtitle">
+        Vaktmaler:
       </h3>
       <ul>
         {this.state.mannskapsliste}
       </ul>
-      <button ref="newrole">Legg til vaktmaler og roller</button>
-      <h3>
-        ikke godkjente kompetanser
-      </h3>
+      <button className="btn btn-outline-success" ref="newrole">Legg til vaktmaler og roller</button>
+				<br /><br />
+				<h5 className="eventmediumtitle">
+        	Godkjenn kompetanse:
+      	</h5>
       <ul>
         {this.state.kompetanseliste}
       </ul>
+			</div>
+		</div>
+
+		</div>
     </div>)
   }
 
@@ -1963,8 +1974,8 @@ class Administrator extends React.Component {
     let mannskap = [];
     for (let rolelist of this.liste) {
       mannskap.push(<li key={rolelist.rolelistID}>
-        {rolelist.name}
-        <button onClick= {() => {
+        {rolelist.name + " "}
+        <button className="btn btn-outline-danger btn-sm" onClick= {() => {
 					history.push('/changerole')
 					rolelistID = rolelist.rolelistID;
 				}}>Rediger</button>
@@ -1977,8 +1988,8 @@ class Administrator extends React.Component {
     let utskriftavslatt = [];
     for (let user of this.avslatt) {
       utskriftavslatt.push(<li key={user.userID}>
-        {user.firstname + " " + user.lastname}
-        <button onClick = {() => {
+        {user.firstname + " " + user.lastname + " "}
+        <button className="btn btn-outline-danger btn-sm" onClick = {() => {
 					this.updateavslatt(user.userID)
 				}}>Angre</button>
       </li>)
@@ -2001,11 +2012,11 @@ class Administrator extends React.Component {
     let utskrift = [];
     for (let user of this.brukere) {
       utskrift.push(<li key={user.userID}>
-        {user.firstname + " " + user.lastname}
-        <button onClick = {() => {
+        {user.firstname + " " + user.lastname + " "}
+        <button className="btn btn-outline-success btn-sm" onClick = {() => {
 					this.updateuser(user.userID)
-				}}>aksepter</button>
-        <button onClick = {() => {
+				}}>Aksepter</button>
+			<button className="btn btn-outline-danger btn-sm" onClick = {() => {
 					this.updateDenyUser(user.userID)
 				}}>Avslå</button>
       </li>)
@@ -2076,7 +2087,7 @@ class NewRole extends React.Component {
     userService.getRoles((result) => {
       userService.getCompetences((result) => {
         for(let compname of result){
-          // JOBBER HER  
+          // JOBBER HER
         }
       });
 
