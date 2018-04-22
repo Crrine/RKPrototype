@@ -1802,8 +1802,9 @@ class Calendar extends React.Component {
 
   }
   render() {
-    return (<div>
-      <BigCalendar messages={{
+    return (<div className="big-container">
+			<div className="main-wrap">
+      <BigCalendar className="big-calender" messages={{
           next: "Neste",
           previous: "Tilbake",
           today: "I dag",
@@ -1818,10 +1819,11 @@ class Calendar extends React.Component {
         }} events={this.state.events} step={60} startAccessor='startDate' endAccessor='endDate' showMultiDayTimes="showMultiDayTimes" defaultDate={new Date()} style={{
           height: 400
         }} onSelectEvent={event => this.setArrinfo(event)}/>
-      <div>
-        <button ref='CreateEvent'>Lag nytt arrangement</button>
-        <button ref="Passiv">Vær kjempe passiv</button>
+			<div className="event-div-grid-btn-right">
+        <button className="btn btn-outline-success" ref='CreateEvent'>Opprett arrangement</button>
+        <button className="btn btn-outline-danger" ref="Passiv">Meld passiv</button>
       </div>
+			</div>
     </div>);
   }
   componentDidMount() {
