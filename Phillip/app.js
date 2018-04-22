@@ -1608,27 +1608,22 @@ class divEvent extends React.Component {
 					<p ref='eventstartdate'></p>
 					<p ref='eventsluttdate'></p>
 					<p ref='eventmøtested'></p>
-					<p ref='regshiftManager'></p>
+					<p ref='shiftManager'></p>
 					<p ref='kontaktinfo'></p>
 					<p ref='rolelist'></p>
 				</div>
 			</div>
 			<div className="event-div-descrip">
-				<p className="event-div-descrip-p">Beskrivelse:</p>
-				<p ref='eventinfo'></p>
-				<div className="event-div-grid-btn">
-					<div>
-					<button className="btn btn-outline-danger">Tilbake</button>
-					<button className="btn btn-outline-danger" ref='editArr'>Rediger</button>
-					</div>
-					<div className="event-div-grid-btn-right">
-					<button className="btn btn-success" ref='Interested'>Meld interesse</button>
-					<button className="btn btn-danger" ref='notInterested'>Avmeld interesse</button>
-					<button className="btn btn-outline-danger" ref='checkinterested'>Se interesserte</button><br />
-					<p ref="hasevent"></p>
-					</div>
-				</div>
+				<p className="event-div-descrip-p">Beskrivelse:</p> <br />
 			</div>
+
+			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
+		<button>Tilbake</button>
+			<button ref='editArr'>Rediger</button>
+			<button ref='Interested'>Meld interesse</button>
+			<button ref='notInterested'>Avmeld interesse</button>
+			<button ref='checkinterested'>Se interesserte</button><br />
+			<span ref="hasevent"></span>
 			</div>
 			</div>
 		)
@@ -1651,6 +1646,7 @@ class divEvent extends React.Component {
 					this.refs.eventinfo.innerText = result.description;
 					this.refs.eventmøtested.innerText = result.area;
 					this.refs.kontaktinfo.innerText = result.contact_phone;
+					this.refs.shiftManager.innerText = result.shiftManager;
 
 					let rolelistid = result.rolelist_roleID;
 
@@ -2091,6 +2087,8 @@ class ChangeRole extends React.Component {
       for (let listrole of result) {
         let roleitem = document.createElement('LI');
         let roleitemTitle = document.createTextNode(listrole.title);
+
+				let btnDeleteRole = document.c
 
         roleitem.appendChild(roleitemTitle);
         this.refs.savedRoles.appendChild(roleitem);
