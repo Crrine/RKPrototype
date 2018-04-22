@@ -751,6 +751,7 @@ class EditOtherProfile extends React.Component {
             <h3 className="medium-title">Deaktivere profil?</h3>
             <p>Deaktiver brukerens profil her:</p>
             <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere denne profilen</button>
+            <span ref="brukertilbakemelding"></span>
           </div>
         </div>
       </div>
@@ -926,6 +927,8 @@ class EditOtherProfile extends React.Component {
       if (r == true) {
         userService.deactivateUser(viewid, (result) => {
           console.log('Deaktivert bruker - ID:' + viewid);
+          this.refs.btnDeactivate.disabled = true;
+          this.refs.brukertilbakemelding.innerText = "Denne brukeren er nå deaktivert";
           // history.push('/loginPage/');
           // this.forceUpdate();
         });
