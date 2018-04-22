@@ -698,10 +698,12 @@ class EditOtherProfile extends React.Component {
 
         <div>
           <div className="profile-deactivate">
-            <h3 className="medium-title">Deaktivere profil?</h3>
-            <p>Deaktiver brukerens profil her:</p>
+            <h3 className="medium-title" ref="deactive">Deaktivere profil?</h3>
+            <h3 className="medium-title" ref="reactivate">Aktiver profil?</h3>
+            <span ref="deactive2">Deaktiver brukerens profil her:</span>
+            <span ref="reactivate2">Aktiver brukerens profil her:</span><br />
             <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere denne profilen</button>
-            <span ref="brukertilbakemelding"></span>
+            <button type="button" ref='btnActivate'>Ja, jeg ønsker å aktivere denne profilen</button>
           </div>
         </div>
       </div>
@@ -711,12 +713,15 @@ class EditOtherProfile extends React.Component {
   componentDidMount() {
     this.userisloggedin = userService.browseruser();
     userid = this.userisloggedin.userID;
+    redid = viewid;
     let str;
     let string;
     let array;
     let stri;
     let compid = 0;
-
+    this.refs.reactivate.hidden = true;
+    this.refs.reactivate2.hidden = true;
+    this.refs.btnActivate.hidden = true;
     userService.getCompetences((result) => {
       for (let comp of result) {
         let compSel = document.createElement('OPTION');
@@ -873,16 +878,27 @@ class EditOtherProfile extends React.Component {
       this.refs.userAddress.innerText += " " + result.address;
     });
     this.refs.btnDeactivate.onclick = () => {
-      let r = confirm('Er du sikker på at du vil deaktivere denne brukeren?');
-      if (r == true) {
         userService.deactivateUser(viewid, (result) => {
           console.log('Deaktivert bruker - ID:' + viewid);
-          this.refs.btnDeactivate.disabled = true;
-          this.refs.brukertilbakemelding.innerText = "Denne brukeren er nå deaktivert";
+          this.refs.btnDeactivate.hidden = true;
+          this.refs.deactive.hidden = true;
+          this.refs.deactive2.hidden = true;
+          this.refs.reactivate.hidden = false;
+          this.refs.reactivate2.hidden = false;
+          this.refs.btnActivate.hidden = false;
           // history.push('/loginPage/');
           // this.forceUpdate();
         });
-      }
+    }
+    this.refs.btnActivate.onclick = () => {
+      userService.activateUser(viewid, (result) => {
+        this.refs.btnDeactivate.hidden = false;
+        this.refs.deactive.hidden = false;
+        this.refs.deactive2.hidden = false;
+        this.refs.reactivate.hidden = true;
+        this.refs.reactivate2.hidden = true;
+        this.refs.btnActivate.hidden = true;
+      })
     }
   }
 }
@@ -938,16 +954,17 @@ class EditProfile extends React.Component {
       </div>
     </div>)
   }
+
+  componentWillUnmount() {
+    redid = null;
+  }
+
   componentDidMount() {
 
     this.userisloggedin = userService.browseruser();
     userid = this.userisloggedin.userID;
 
-    userService.getUser(
-      redid
-      ? redid
-      : userid,
-    (result) => {
+    userService.getUser(redid ? redid : userid, (result) => {
       this.refs.editFirstName.value = result.firstname;
       this.refs.editLastName.value = result.lastname;
       this.refs.editAddress.value = result.address;
@@ -972,7 +989,7 @@ class EditProfile extends React.Component {
         let newPhone = this.refs.editPhone.value;
         let newAge = this.refs.editAge.value;
 
-        userService.editUser(userid, newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {})
+        userService.editUser(redid ? redid : userid, newFirstname, newLastname, newAddress, newEmail, newPassword, newCity, newZip, newPhone, newAge, (result) => {})
         console.log('Oppdatert bruker - ID:' + userid);
         history.push('/profile/');
         this.forceUpdate();
@@ -1587,7 +1604,7 @@ class divEvent extends React.Component {
 				<p ref='eventinfo'></p>
 				<div className="event-div-grid-btn">
 					<div className="event-div-grid-btn-left">
-						<button className="btn btn-outline-danger">Tilbake</button>
+						<button className="btn btn-outline-danger" ref="goback">Tilbake</button>
 						<button className="btn btn-outline-danger" ref='editArr'>Rediger</button>
 					</div>
 					<div className="event-div-grid-btn-right">
@@ -1607,6 +1624,10 @@ class divEvent extends React.Component {
 	componentDidMount() {
 		this.userisloggedin = userService.browseruser();
 		userid = this.userisloggedin.userID;
+
+    this.refs.goback.onclick = () => {
+      history.push('/events');
+    }
 		this.refs.notInterested.hidden = true;
 		if (this.userisloggedin.admin !== 1) {
 			this.refs.checkinterested.hidden = true;
@@ -1731,42 +1752,6 @@ class EditEvent extends React.Component {
 	        </div>
 	      </div>
 	    </div>
-
-		// 	<div>
-    //   <form>
-    //     <h1>Rediger arrangement
-    //     </h1>
-    //     <label>
-    //       Navn på arrangementet:<br/>
-    //       <input ref='editArrName' type='text'/><br/>
-    //     </label>
-    //     <label>
-    //       Startdato:<br/>
-    //       <input ref='editStartDato' type='datetime-local'/><br/>
-    //     </label>
-    //     <label>
-    //       sluttdato:<br/>
-    //       <input ref='editSluttDato' type='datetime-local'/><br/>
-    //     </label>
-    //     <label>
-    //       kontakttelefon:<br/>
-    //       <input ref='editTlf' type='text'/><br/>
-    //     </label>
-    //     <label>
-    //       rolelist:<br/>
-    //       <input ref='editRoles' type='text'/><br/>
-    //     </label>
-    //     <label>
-    //       Møtested:<br/>
-    //       <input ref='editMeet' type='text'/><br/>
-    //     </label>
-    //     <label>
-    //       description:<br/>
-    //       <input ref='editDescript' type='text'/><br/>
-    //     </label>
-    //   </form>
-    //   <button ref='btneditArr'>Rediger Arrangement</button>
-    // </div>)
   )}
 
   componentDidMount() {
@@ -1790,6 +1775,7 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
+      
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
