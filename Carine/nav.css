@@ -522,3 +522,7 @@ iframe {
   width: 80%;
   margin: 0 auto;
 }
+
+.admin-btn-right {
+  text-align: right;
+}

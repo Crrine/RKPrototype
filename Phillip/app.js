@@ -1775,7 +1775,7 @@ class EditEvent extends React.Component {
       var newrolelist = this.refs.editRoles.value;
       var newMeet = this.refs.editMeet.value;
       var newDesc = this.refs.editDescript.value;
-      
+
 
       userService.editArr(eventID, newName, newStartDato, newEndDato, newTlf, newrolelist, newMeet, newDesc, (result) => {})
       console.log('Oppdatert Arrangement:');
@@ -2037,7 +2037,9 @@ class Administrator extends React.Component {
 
 class NewRole extends React.Component {
   render() {
-    return (<div>
+    return (<div className="big-container">
+			<div className="main-wrap">
+
       <h4>Opprett vaktmal</h4>
       <b>Du kan legge til roller i vaktmalen etter at den har blitt opprettet, velg 'rediger' i adminsiden</b>
       <form>
@@ -2067,6 +2069,7 @@ class NewRole extends React.Component {
       <button ref='regRole'>Registrer rolle</button><br/>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
+			</div>
     </div>)
   }
   componentDidMount() {
@@ -2110,29 +2113,40 @@ class ChangeRole extends React.Component {
   }
 
   render() {
-    return (<div>
-      <h1>Rediger vaktmal</h1>
-      <h3 ref='roleName'></h3>
-      <label>
-        Navn på vaktmalen:<br/>
-        <input ref='editRoleName' type='text'/><br/>
-      </label>
-      <label>
-        Beskrivelse:<br/>
-        <input ref='editDescription' type='text'/><br/>
-      </label>
-      <label>Legg til rolle:<br/>
-        <select ref='roleSelect'></select>
-        <button ref='addRoleToList'>Legg til</button>
-      </label>
-      <div ref='savedRoles'>
-        Rolleliste:
-      </div>
-      <div>
-        <button ref="EditRole">Lagre</button>
-        <button ref="back">Gå tilbake</button>
-				<button ref='deleteRoleList'>Slett vaktmal</button>
-      </div>
+    return (<div className="big-container">
+			<div className="main-wrap">
+      <h1 className="title">Rediger vaktmal</h1>
+				<div className="admin-grid">
+					<div>
+			      <h3 ref='roleName'></h3>
+			      <label>
+			        Navn på vaktmalen:<br/>
+			        <input ref='editRoleName' type='text'/><br/>
+			      </label>
+			      <label>
+			        Beskrivelse:<br/>
+			        <input ref='editDescription' type='text'/><br/>
+			      </label>
+			      <label>Legg til rolle:<br/>
+			        <select ref='roleSelect'></select>
+			        <button ref='addRoleToList'>Legg til</button>
+			      </label>
+					</div>
+
+					<div>
+			      <div ref='savedRoles'>
+			        Rolleliste:
+			      </div>
+					</div>
+					<div>
+						<button className="btn btn-outline-danger" ref="back">Tilbake</button>
+					</div>
+					<div className="admin-btn-right">
+						<button className="btn btn-success" ref="EditRole">Lagre</button>
+						<button className="btn btn-danger" ref='deleteRoleList'>Slett vaktmal</button>
+					</div>
+				</div>
+		</div>
     </div>)
   }
   update() {
