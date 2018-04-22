@@ -32,7 +32,7 @@ body {
   left: 0;
   padding: 50px;
   height: 70%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .login-wrap-reg {
@@ -143,7 +143,7 @@ li {
   padding: 20px;
   overflow: auto;
   height: 640px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .news-image {
@@ -236,7 +236,7 @@ li {
   border-radius: 15px;
   height: 640px;
   margin: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 iframe {
@@ -302,7 +302,7 @@ iframe {
     margin: 0 auto;
     padding-top: 30px;
     padding-bottom: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 640px;
 }
 
@@ -382,7 +382,7 @@ iframe {
   padding: 20px;
   overflow: auto;
   height: 360px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .profile-events-grid {
@@ -448,7 +448,7 @@ iframe {
   padding: 20px;
   overflow: auto;
   height: 550px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: 0 auto;
 }
 
@@ -463,7 +463,7 @@ iframe {
   padding: 20px;
   overflow: auto;
   height: 620px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: 0 auto;
 }
 
