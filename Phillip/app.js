@@ -2067,7 +2067,7 @@ class ChangeRole extends React.Component {
       var editDescription = this.refs.editDescription.value;
 
       userService.editRole(rolelistID, editname, editDescription, (result) => {})
-      console.log('rollen ble oppdatert');
+      console.log('Vaktmal ble oppdatert, ID: ' + rolelistID);
       history.push('/admin/')
     }
     this.refs.back.onclick = () => {
