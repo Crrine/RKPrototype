@@ -433,8 +433,8 @@ getCompetence(title, callback){
     callback(result[0]);
   });
 }
-regCompetence(userid, compid, finished, callback){
-  connection.query('INSERT into user_has_competence (userID, competence_compID, finished) values (?,?,?)', [userid, compid, finished], (error, result) => {
+regCompetence(userid, compid, fileUpload, finished, callback){
+  connection.query('INSERT into user_has_competence (userID, competence_compID, fileUpload, finished) values (?,?,?,?)', [userid, compid, fileUpload, finished], (error, result) => {
     if(error) throw error;
 
     callback();
