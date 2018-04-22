@@ -480,4 +480,21 @@ iframe {
   margin: 0 auto;
   font-weight: 600;
   font-size: 1.1em;
+  line-height: 1.2;
+}
+
+.event-div-ref {
+  font-weight: 450;
+  font-size: 1.1em;
+  line-height: 1.2;
+}
+
+.event-div-descrip-p {
+  font-weight: 600;
+  font-size: 1.1em;
+  line-height: 1.2;
+}
+
+.event-div-descrip {
+  width:
 }

@@ -356,7 +356,7 @@ class Navbar extends React.Component {
 										</NavLink>
 										<div className="dropdown-menu" aria-labelledby="navbarDropdown">
 										<NavLink exact to='/events' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									 Kommende
+									 	Kommende
 											</NavLink>
 										 <NavLink exact to='/earlierevents' className="dropdown-item" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 Tidligere
@@ -1582,7 +1582,7 @@ class divEvent extends React.Component {
 					<p>Kontaktinfo:</p>
 					<p>Rolleliste:</p>
 				</div>
-				<div>
+				<div className="event-div-ref">
 					<p ref='eventstartdate'></p>
 					<p ref='eventsluttdate'></p>
 					<p ref='eventmøtested'></p>
@@ -1591,13 +1591,16 @@ class divEvent extends React.Component {
 					<p ref='rolelist'></p>
 				</div>
 			</div>
+			<div className="event-div-descrip">
+				<p className="event-div-descrip-p">Beskrivelse:</p> <br />
+			</div>
 
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 		<button>Tilbake</button>
 			<button ref='editArr'>Rediger</button>
 			<button ref='Interested'>Meld interesse</button>
 			<button ref='notInterested'>Avmeld interesse</button>
-			<button ref='checkinterested'>Sjekkinterreserte medlemmer</button><br />
+			<button ref='checkinterested'>Se interesserte</button><br />
 			<span ref="hasevent"></span>
 			</div>
 			</div>
