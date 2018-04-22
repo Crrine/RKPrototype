@@ -431,6 +431,7 @@ class Profile extends React.Component {
             <input type='file' ref='sendInFile'/>
             <br/>
             <button ref='btnAddComp'>Send inn</button>
+            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
         </div>
@@ -503,7 +504,7 @@ class Profile extends React.Component {
       let title = this.refs.compSelect.value;
       let finished = '2018-01-01';
 			let fileUpload = this.refs.sendInFile.value;
-
+      this.refs.message.innerText = "Kurset er sendt inn for godkjenning";
       userService.getCompetence(title, (result) => {
         compid = result.compID;
         userService.regCompetence(userid, compid, fileUpload, finished, active, (result) => {
@@ -511,6 +512,7 @@ class Profile extends React.Component {
           this.forceUpdate();
         })
       })
+      this.refs.btnAddComp.disabled = true;
       // Skriv en tekst her om at det er sendt til godkjenning
     }
     userService.getUserComp(userid, (result) => {
@@ -2011,9 +2013,9 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
-  updatecomplist(compuserID) {
+  updatecomplist(userid) {
     let active = 0
-    userService.acceptCompetence(active, userid, compuserID, (result) => {
+    userService.acceptCompetence(active, userid, (result) => {
       userService.getDivUserComp((result) => {
       this.active = result;
       this.userCompList();
@@ -2021,14 +2023,18 @@ class Administrator extends React.Component {
   })
  }
 
+ deletefromcomplist(userid) {
+
+ }
+
   userCompList()  {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.compuserID}>
+      usercomp.push(<li key={user_has_competence.userID}>
         {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
-          this.updatecomplist(user_has_competence.compuserID);
+          this.updatecomplist(user_has_competence.userID);
         }}>Aksepter</button>
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
 
@@ -2181,29 +2187,41 @@ class ChangeRole extends React.Component {
   }
 
   render() {
-    return (<div>
-      <h1>Rediger vaktmal</h1>
-      <h3 ref='roleName'></h3>
-      <label>
-        Navn på vaktmalen:<br/>
-        <input ref='editRoleName' type='text'/><br/>
-      </label>
-      <label>
-        Beskrivelse:<br/>
-        <input ref='editDescription' type='text'/><br/>
-      </label>
-      <label>Legg til rolle:<br/>
-        <select ref='roleSelect'></select>
-        <button ref='addRoleToList'>Legg til</button>
-      </label>
-      <div ref='savedRoles'>
-        Rolleliste:
-      </div>
-      <div>
-        <button ref="EditRole">Lagre</button>
-        <button ref="back">Gå tilbake</button>
-				<button ref='deleteRoleList'>Slett vaktmal</button>
-      </div>
+    return (<div className="big-container">
+			<div className="main-wrap">
+      <h1 className="title">Rediger vaktmal</h1>
+				<div className="admin-grid">
+					<div className="form-group admin-role-form">
+			      <h3 className="medium-title" ref='roleName'></h3>
+			      <label>
+			        Navn på vaktmalen:
+            </label>
+            <input className="form-control" ref='editRoleName' type='text'/><br/>
+			      <label>
+			        Beskrivelse:
+            </label>
+			        <input className="form-control" ref='editDescription' type='text'/><br/>
+			      <label>Legg til rolle:
+            </label>
+			        <select className="form-control" ref='roleSelect'></select>
+            <button className="btn btn-outline-success" ref='addRoleToList'>Legg til</button>
+					</div>
+
+					<div>
+						<h3 className="medium-title">Rolleliste:</h3>
+			      <div ref='savedRoles'>
+			      </div>
+					</div>
+
+					<div className="admin-btn-left">
+						<button className="btn btn-outline-danger" ref="back">Tilbake</button>
+					</div>
+					<div className="admin-btn-right">
+						<button className="btn btn-success" ref="EditRole">Lagre</button>
+						<button className="btn btn-danger" ref='deleteRoleList'>Slett vaktmal</button>
+					</div>
+				</div>
+		</div>
     </div>)
   }
   update() {
@@ -2242,12 +2260,13 @@ class ChangeRole extends React.Component {
     userService.getRolesFromList(rolelistID, (result) => {
       for (let listrole of result) {
         let roleitem = document.createElement('LI');
-        let roleitemTitle = document.createTextNode(listrole.title);
+        let roleitemTitle = document.createTextNode(listrole.title + ' ');
 
 				let btnDeleteRole = document.createElement('BUTTON');
-				let btnDeleteRoleTxt = document.createTextNode('fjern');
+				let btnDeleteRoleTxt = document.createTextNode('Slett');
 				btnDeleteRole.appendChild(btnDeleteRoleTxt);
 				btnDeleteRole.setAttribute('id',listrole.roleID);
+				btnDeleteRole.className = "btn btn-outline-danger btn-sm"
 
         roleitem.appendChild(roleitemTitle);
 				roleitem.appendChild(btnDeleteRole);
@@ -2257,7 +2276,6 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.savedRoles.innerText = 'Rollelist:';
 						this.refs.roleSelect.innerText = '';
 						this.update();
 					});
