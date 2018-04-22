@@ -2352,8 +2352,8 @@ class Search extends React.Component {
 				<input className="form-control col-4" ref='searchField' type="text" placeholder="Du kan søke på fornavn og etternavn" />
       	<button className="btn btn-outline-danger" ref='btnSearch'>Søk</button>
 			</div>
-
-      <div ref='output'></div>
+			<br />
+    		<div className="search-flex" ref='output'></div>
 		</div>
     </div>);
     //Sørg for at når man går ut av profilen, endres userid tilbake til admin
@@ -2374,19 +2374,25 @@ class Search extends React.Component {
         for (let user of result) {
           let clickedUser = user.userID;
           let divUser = document.createElement('DIV');
+					divUser.className = "search-bg";
           let btnUser = document.createElement('BUTTON');
-          let btnUserTxt = document.createTextNode('rediger');
+          let btnUserTxt = document.createTextNode('Rediger');
           btnUser.appendChild(btnUserTxt);
           btnUser.setAttribute('id', user.userID);
-					btnUser.className = "btn btn-outline-danger"
+					btnUser.className = "btn btn-outline-danger";
 
           btnUser.onclick = () => {
             sendToUser(clickedUser);
           }
 
-          let divUserTxt = document.createTextNode(user.firstname + ' ' + user.lastname + ' ' + 'epost: ' + user.email + ' ' + 'telefon: ' + user.phone);
+					let divFullName = document.createTextNode(user.firstname + ' ' + user.lastname);
+					let divUserInfo = document.createTextNode('Epost: ' + user.email + ' - ' + 'Telefon: ' + user.phone + ' ');
+					let linebreak = document.createElement('BR');
 
-          divUser.appendChild(divUserTxt);
+					divUser.className = "divUser"
+          divUser.appendChild(divFullName);
+					divUser.appendChild(linebreak);
+					divUser.appendChild(divUserInfo);
           if (this.userisloggedin.admin == 1) {
             divUser.appendChild(btnUser);
           }
