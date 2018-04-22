@@ -1591,7 +1591,7 @@ class divEvent extends React.Component {
 					<p ref='rolelist'></p>
 				</div>
 			</div>
-			</div>
+
 			Beskrivelse: <br /> <span ref='eventinfo'></span><br /> <br />
 		<button>Tilbake</button>
 			<button ref='editArr'>Rediger</button>
