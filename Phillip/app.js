@@ -2483,7 +2483,6 @@ class NewEvent extends React.Component {
         } else if (!point_award) {
           this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
         } else if (date_start == "") {
-          console.log(date_start)
           this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
         } else if (date_end == "") {
           this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
