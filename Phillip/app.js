@@ -27,18 +27,6 @@ class LoginPage extends React.Component {
   }
   render() {
     return (<div>
-
-      <link rel="stylesheet" type="text/css" href="nav.css"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet"/>
-      <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet"/>
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossOrigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossOrigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossOrigin="anonymous"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossOrigin="anonymous"/>
-      <meta charSet="utf-8"/>
-      <title>Røde Kors Sanitetsvakt</title>
-
       <div className="login-body">
         <div className="container">
           <div className="login-wrap">
@@ -424,15 +412,25 @@ class Profile extends React.Component {
         <div className="profile-course-registration">
           <h2 className="medium-title">Registrere kurs?</h2>
           <div>
-            <p>Hvilken kvalifisering gjelder det:</p>
+          <div className="profile-course-grid">
+          <div className="profile-course-inp">
+            <p>Hvilken kvalifisering gjelder det?</p>
             <form ref='compForm'>
-              <select ref='compSelect'></select>
+              <select className="form-control profile-course-file" ref='compSelect'></select>
             </form>
-            <input type='file' ref='sendInFile'/>
+            <label className="btn btn-outline-danger btn-file">
+              Velg fil
+            <input type='file' ref='sendInFile' hidden/>
+            </label>
             <br/>
-            <button ref='btnAddComp'>Send inn</button>
+          <button className="btn btn-outline-success" ref='btnAddComp'>Send inn</button>
+          </div>
+          <div>
+            <b>Dine nåværende kvalifiseringer:</b>
             <div ref="message"></div>
             <div ref='compOutput'></div>
+          </div>
+          </div>
           </div>
         </div>
       </div>
@@ -450,7 +448,7 @@ class Profile extends React.Component {
             <p className="profile-text" ref='userPhone'>Telefon:</p>
             <p className="profile-text" ref='userEmail'>Epost:</p>
             <p className="profile-text" ref='passive'></p>
-            <button onClick={() => {
+          <button className="btn btn-outline-danger" onClick={() => {
                 history.push('/editprofile/'),
                 this.forceUpdate()
               }}>Rediger</button>
@@ -458,10 +456,12 @@ class Profile extends React.Component {
         </div>
 
         <div>
-          <div className="profile-deactivate">
+          <div className="profile-deactivate-bg">
             <h3 className="medium-title">Deaktivere profil?</h3>
-            <p>Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under, Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
-            <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere min profil</button>
+          <p className="profile-deactivate-text">Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under, Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
+          <div className="profile-deactive-btn">
+            <button className="btn btn-outline-danger" type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere min profil</button>
+          </div>
           </div>
         </div>
       </div>
@@ -524,7 +524,7 @@ class Profile extends React.Component {
     userService.getEarlierUserEvents(userid, (result) => {
       for (let event of result) {
         let divEvent = document.createElement('DIV');
-        divEvent.className = 'aktueltarrangementer';
+        divEvent.className = 'profile-events-minor-grid';
 
         let btnEvent = document.createElement('BUTTON');
         let btnEventTxt = document.createTextNode('Informasjon');
@@ -535,7 +535,7 @@ class Profile extends React.Component {
 
         let titleEvent = document.createElement('span');
         // titleEvent.setAttribute('href', '/#');
-        titleEvent.className = "blueTxt";
+        titleEvent.className = "event-title-bi-pages";
         titleEvent.innerText = event.name;
 
         btnEvent.onclick = () => {
@@ -545,6 +545,7 @@ class Profile extends React.Component {
         divEvent.appendChild(titleEvent); //Fiks men lag en p for info
 
         let eventTxt = document.createElement('P');
+        eventTxt.className = "profile-event-text";
 
         str = event.date_start;
         if (str) {
@@ -577,7 +578,7 @@ class Profile extends React.Component {
 
         let titleEvent = document.createElement('span');
         // titleEvent.setAttribute('href', '/#');
-        titleEvent.className = "blueTxt";
+        titleEvent.className = "event-title-bi-pages";
         titleEvent.innerText = event.name;
 
         btnEvent.onclick = () => {
@@ -665,12 +666,25 @@ class EditOtherProfile extends React.Component {
         <div className="profile-course-registration">
           <h2 className="medium-title">Registrere kurs?</h2>
           <div>
-            <p>Hvilken kvalifisering gjelder det:</p>
+          <div className="profile-course-grid">
+          <div className="profile-course-inp">
+            <p>Hvilken kvalifisering gjelder det?</p>
             <form ref='compForm'>
-              <select ref='compSelect'></select>
+              <select className="form-control profile-course-file" ref='compSelect'></select>
             </form>
-            <button ref='btnAddComp'>Send inn</button>
+            <label className="btn btn-outline-danger btn-file">
+              Velg fil
+            <input type='file' ref='sendInFile' hidden/>
+            </label>
+            <br/>
+          <button className="btn btn-outline-success" ref='btnAddComp'>Send inn</button>
+          </div>
+          <div>
+            <b>Dine nåværende kvalifiseringer:</b>
+            <div ref="message"></div>
             <div ref='compOutput'></div>
+          </div>
+          </div>
           </div>
         </div>
       </div>
@@ -689,25 +703,26 @@ class EditOtherProfile extends React.Component {
             <p className="profile-text" ref='userPhone'>Telefon:</p>
             <p className="profile-text" ref='userEmail'>Epost:</p>
             <p className="profile-text" ref='passive'></p>
-            <button onClick = {() => {
+            <button className="btn btn-outline-danger"  onClick = {() => {
 						history.push('/editprofile/'),
 						this.forceUpdate()}}>Rediger</button>
-            <button ref="makeadmin">Gjør om til admin</button>
+            <button className="btn btn-outline-danger"  ref="makeadmin">Gjør om til admin</button>
             <p className="profile-text" ref="utskrift"></p>
             <p className="profile-text" ref="passive"></p>
           </div>
         </div>
 
         <div>
-          <div className="profile-deactivate">
+          <div className="profile-deactivate-bg">
             <h3 className="medium-title" ref="deactive">Deaktivere profil?</h3>
             <h3 className="medium-title" ref="reactivate">Aktiver profil?</h3>
-            <span ref="deactive2">Deaktiver brukerens profil her:</span>
-            <span ref="reactivate2">Aktiver brukerens profil her:</span><br />
-            <button type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere denne profilen</button>
-            <button type="button" ref='btnActivate'>Ja, jeg ønsker å aktivere denne profilen</button>
+          <p className="profile-deactivate-text" ref="deactive2">Deaktiver brukerens profil her:</p>
+        <p className="profile-deactivate-text" ref="reactivate2">Aktiver brukerens profil her:</p><br />
+            <button className="btn btn-outline-danger" type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere denne profilen</button>
+          <button  className="btn btn-outline-success" type="button" ref='btnActivate'>Ja, jeg ønsker å aktivere denne profilen</button>
           </div>
         </div>
+
       </div>
     </div>);
   }
@@ -799,7 +814,7 @@ class EditOtherProfile extends React.Component {
 
         let titleEvent = document.createElement('span');
         // titleEvent.setAttribute('href', '/#');
-        titleEvent.className = "blueTxt";
+        titleEvent.className = "event-title-bi-pages";
         titleEvent.innerText = event.name;
 
         btnEvent.onclick = () => {
@@ -841,7 +856,7 @@ class EditOtherProfile extends React.Component {
 
         let titleEvent = document.createElement('span');
         // titleEvent.setAttribute('href', '/#');
-        titleEvent.className = "blueTxt";
+        titleEvent.className = "event-title-bi-pages";
         titleEvent.innerText = event.name;
 
         btnEvent.onclick = () => {
@@ -944,13 +959,13 @@ class EditProfile extends React.Component {
         </form>
         <div className="login-grid">
           <div>
-            <button type="button" className="btn btn-outline-danger" ref='btnSendEdit'>Lagre</button>
-          </div>
-          <div className="edit-profile-btn-right">
             <button type="button" className="btn btn-outline-danger" onClick={() => {
                 history.push('/profile/'),
                 this.forceUpdate()
               }}>Tilbake</button>
+            </div>
+          <div className="edit-profile-btn-right">
+            <button type="button" className="btn btn-success" ref='btnSendEdit'>Lagre</button>
           </div>
         </div>
       </div>
@@ -1126,8 +1141,8 @@ class Homepage extends React.Component {
         <div>
           <div className="news-right-top" ref='usrDiv'>
             <img className="profile-picture" src="profilepicture.jpg" alt=""/>
-            <p className="profile-text" ref='usrName'>Per Ole Finsnes</p>
-            <p className="profile-text" ref='usrPoints'>Vaktpoeng: 14</p>
+          <p className="news-profile-text" ref='usrName'>Per Ole Finsnes</p>
+          <p className="-news-profile-text" ref='usrPoints'>Vaktpoeng: 14</p>
           </div>
           <div className="news-right-bottom">
             <h3 className="medium-title">Kommende arrangementer</h3>
@@ -1164,7 +1179,7 @@ class Homepage extends React.Component {
 
         let titleEvent = document.createElement('span');
         // titleEvent.setAttribute('href', '/#');
-        titleEvent.className = "blueTxt";
+        titleEvent.className = "event-title-bi-pages";
         titleEvent.innerText = event.name;
 
         btnEvent.onclick = () => {
@@ -1923,7 +1938,7 @@ class Administrator extends React.Component {
         {
           this.state.brukergodkjenning
             ? this.state.brukergodkjenning
-            : 'Alle brukere er aktivert'
+            : 'Det er ingen brukere å aktivere.'
         }
       </ul>
       <h5 className="eventmediumtitle">
@@ -1933,26 +1948,31 @@ class Administrator extends React.Component {
         {
           this.state.avslattebrukere
             ? this.state.avslattebrukere
-            : 'Ingen brukere er avslått'
+            : 'Ingen brukere er avslått.'
         }
       </ul>
+      <h5 className="eventmediumtitle">
+        Godkjenn kompetanse:
+      </h5>
+    <ul>
+      {
+        this.state.kompetanseliste
+        ? this.state.kompetanseliste
+        : 'Det er ingen kompetanse til godkjenning.'
+      }
+    </ul>
 			</div>
-			<div>
+			<div className="admin-grid-right">
       <h3 className="eventmediumtitle">
         Vaktmaler:
       </h3>
       <ul>
         {this.state.mannskapsliste}
       </ul>
-      <button className="btn btn-outline-success" ref="newrole">Legg til vaktmaler og roller</button>
-				<br /><br />
-				<h5 className="eventmediumtitle">
-        	Godkjenn kompetanse:
-      	</h5>
-      <ul>
-        {this.state.kompetanseliste}
-      </ul>
-			</div>
+        <div className="admin-btn-right">
+          <button className="btn btn-outline-success" ref="newrole">Legg til vaktmaler og roller</button>
+        </div>
+      </div>
 		</div>
 
 		</div>
@@ -2129,20 +2149,20 @@ class NewRole extends React.Component {
       </form>
       <button className="btn btn-success" ref='regRole'>Opprett rolle</button>
   </div>
-</div>
-  <div className="role-grid">
-    <div>
-      <b>Eksisterende roller:</b>
-      <div ref='showRoles'></div>
-  </div>
-    <div className="role-comp-list">
-      <b>Kompetanse som kreves for hver rolle:</b>
-      <div ref='showComps'></div>
     </div>
-</div>
-    <button className="btn btn-outline-danger" ref='btnBackRole'>Tilbake</button>
-  </div>
-    </div>)
+      <div className="role-grid">
+        <div>
+          <b>Eksisterende roller:</b>
+          <div ref='showRoles'></div>
+      </div>
+        <div className="role-comp-list">
+          <b>Kompetanse som kreves for hver rolle:</b>
+          <div ref='showComps'></div>
+        </div>
+    </div>
+        <button className="btn btn-outline-danger" ref='btnBackRole'>Tilbake</button>
+      </div>
+        </div>)
   }
 
   componentDidMount() {
@@ -2226,7 +2246,7 @@ class ChangeRole extends React.Component {
 			      <label>Legg til rolle:
             </label>
 			        <select className="form-control" ref='roleSelect'></select>
-            <button className="btn btn-outline-success" ref='addRoleToList'>Legg til</button>
+            <button className="btn btn-outline-success role-input" ref='addRoleToList'>Legg til</button>
 					</div>
 
 					<div>
