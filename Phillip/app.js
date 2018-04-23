@@ -2491,7 +2491,6 @@ class NewEvent extends React.Component {
         } else if (!point_award) {
           this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
         } else if (date_start == "") {
-          console.log(date_start)
           this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
         } else if (date_end == "") {
           this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
@@ -2526,7 +2525,7 @@ class Search extends React.Component {
 		<div className="main-wrap">
       <h1 className="title">Brukersøk</h1>
 			<div className="form-inline">
-				<input className="form-control col-4" ref='searchField' type="text" placeholder="Du kan søke på fornavn og etternavn" />
+				<input className="form-control col-4" ref='searchField' type="text" placeholder="Du kan søke på navn, epost og tlfnummer" />
         <div className="search-btn">
           <button className="btn btn-outline-danger" ref='btnSearch'>Søk</button>
         </div>

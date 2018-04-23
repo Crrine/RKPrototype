@@ -513,7 +513,7 @@ deletefromcomplist(userid, compuserID, callback) {
 }
 
   search(keyword, callback){
-    connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
+    connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR phone LIKE ? OR email LIKE ? OR firstname LIKE ? OR CONCAT (firstname, ' ', lastname) LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%', '%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%', '%' + keyword, keyword + '%'], (error, result) => {
       if (error) throw error;
 
       callback(result);
