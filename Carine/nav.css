@@ -582,8 +582,7 @@ iframe {
   border-radius: 15px;
   background-color: white;
   padding: 20px;
-  min-height: 500px;
-  max-height: 640px;
+  height: 640px;
   overflow-y: auto;
 }
 
@@ -669,4 +668,11 @@ iframe {
 
 .role-input {
   padding: 5px;
+}
+
+.role-btn-del {
+  text-align: right;
+  margin: -25px;
+  padding-bottom: 7px;
+  margin-right: 5px;
 }
