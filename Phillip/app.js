@@ -277,7 +277,7 @@ class Register extends React.Component {
         this.refs.feilmelding.innerText = 'Passordene er ikke like';
       } else {
         userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-          alert('Brukeren er opprettet');
+          alert('Brukeren er opprettet - vent på godkjenning');
           history.push('/loginPage/');
           this.forceUpdate(); //Ikke bruke forceUpdate
         })
