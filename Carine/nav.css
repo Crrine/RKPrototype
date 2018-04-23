@@ -596,9 +596,11 @@ iframe {
 }
 
 .admin-btn-right {
-  text-align: right;
+  display: grid;
+  grid-template-columns: 65px 65px;
+  margin-left: auto;
+  margin-right: 0;
   margin-top: 30px;
-  padding: 5px;
 }
 
 .admin-btn-left {
@@ -669,6 +671,10 @@ iframe {
 
 .role-input {
   padding: 5px;
+}
+
+.role-btn-add {
+  margin-top: 5px;
 }
 
 .role-btn-del {
