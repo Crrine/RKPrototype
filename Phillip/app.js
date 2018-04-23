@@ -365,7 +365,7 @@ class Navbar extends React.Component {
 							<li><NavLink  to='/profile'  className="nav-item nav-link">
 								Profil
 							</NavLink></li>
-							<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
+            <li><NavLink  to='/search' className="nav-item nav-link">Medlemmer</NavLink></li>
 							<li><NavLink  to='/admin' className="nav-item nav-link">Administrasjon</NavLink></li>
 					    </ul>
 					    <ul className="nav navbar-nav navbar-right">
@@ -2325,6 +2325,7 @@ class ChangeRole extends React.Component {
 						<button className="btn btn-outline-danger" ref="back">Tilbake</button>
 					</div>
 					<div className="admin-btn-right">
+
 						<button className="btn btn-success" ref="EditRole">Lagre</button>
 						<button className="btn btn-danger" ref='deleteRoleList'>Slett vaktmal</button>
 					</div>
