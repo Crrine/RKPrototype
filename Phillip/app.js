@@ -365,8 +365,8 @@ class Navbar extends React.Component {
 							<li><NavLink  to='/profile'  className="nav-item nav-link">
 								Profil
 							</NavLink></li>
-							<li><NavLink  to='/search' className="nav-item nav-link">Medlemmer</NavLink></li>
-							<li><NavLink  to='/admin' className="nav-item nav-link">Admin</NavLink></li>
+							<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
+							<li><NavLink  to='/admin' className="nav-item nav-link">Administrasjon</NavLink></li>
 					    </ul>
 					    <ul className="nav navbar-nav navbar-right">
 								<li>
@@ -401,7 +401,7 @@ class Navbar extends React.Component {
 						<li><NavLink  to='/profile'  className="nav-item nav-link">
 							Profil
 						</NavLink></li>
-						<li><NavLink  to='/search' className="nav-item nav-link">Medlemmer</NavLink></li>
+						<li><NavLink  to='/search' className="nav-item nav-link">Brukersøk</NavLink></li>
 						</ul>
 						<ul className="nav navbar-nav navbar-right">
 							<li>
@@ -765,10 +765,12 @@ class EditOtherProfile extends React.Component {
 
         <div>
           <div className="profile-deactivate-bg">
-            <h2 className="medium-title" ref="deactive">Deaktiver denne profilen:</h2>
-            <h2 className="medium-title" ref="reactivate">Aktiver denne profilen:</h2>
-            <button className="btn btn-outline-danger" type="button" ref='btnDeactivate'>Deaktiver</button>
-          <button  className="btn btn-outline-success" type="button" ref='btnActivate'>Aktiver</button>
+            <h3 className="medium-title" ref="deactive">Deaktivere profil?</h3>
+            <h3 className="medium-title" ref="reactivate">Aktiver profil?</h3>
+          <p className="profile-deactivate-text" ref="deactive2">Deaktiver brukerens profil her:</p>
+        <p className="profile-deactivate-text" ref="reactivate2">Aktiver brukerens profil her:</p><br />
+            <button className="btn btn-outline-danger" type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere denne profilen</button>
+          <button  className="btn btn-outline-success" type="button" ref='btnActivate'>Ja, jeg ønsker å aktivere denne profilen</button>
           </div>
         </div>
 
@@ -786,6 +788,7 @@ class EditOtherProfile extends React.Component {
     let stri;
     let compid = 0;
     this.refs.reactivate.hidden = true;
+    this.refs.reactivate2.hidden = true;
     this.refs.btnActivate.hidden = true;
     userService.getCompetences((result) => {
       for (let comp of result) {
@@ -947,25 +950,21 @@ class EditOtherProfile extends React.Component {
           console.log('Deaktivert bruker - ID:' + viewid);
           this.refs.btnDeactivate.hidden = true;
           this.refs.deactive.hidden = true;
+          this.refs.deactive2.hidden = true;
           this.refs.reactivate.hidden = false;
+          this.refs.reactivate2.hidden = false;
           this.refs.btnActivate.hidden = false;
           // history.push('/loginPage/');
           // this.forceUpdate();
         });
     }
-    userService.checkifInactive(viewid, (result) => {
-      if (result != undefined) {
-      this.refs.btnDeactivate.hidden = true;
-      this.refs.deactive.hidden = true;
-      this.refs.reactivate.hidden = false;
-      this.refs.btnActivate.hidden = false;
-    }
-    })
     this.refs.btnActivate.onclick = () => {
       userService.activateUser(viewid, (result) => {
         this.refs.btnDeactivate.hidden = false;
         this.refs.deactive.hidden = false;
+        this.refs.deactive2.hidden = false;
         this.refs.reactivate.hidden = true;
+        this.refs.reactivate2.hidden = true;
         this.refs.btnActivate.hidden = true;
       })
     }
@@ -2370,6 +2369,7 @@ class ChangeRole extends React.Component {
       for (let listrole of result) {
         let roleitem = document.createElement('LI');
         let roleitemTitle = document.createTextNode(listrole.title + ' ');
+        roleitem.className = "admin-li"
 
 				let btnDeleteRole = document.createElement('BUTTON');
 				let btnDeleteRoleTxt = document.createTextNode('Slett');
@@ -2377,8 +2377,12 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.setAttribute('id',listrole.roleID);
 				btnDeleteRole.className = "btn btn-outline-danger btn-sm"
 
+        let divBtnDeleteRole = document.createElement('div');
+        divBtnDeleteRole.appendChild(btnDeleteRole);
+        divBtnDeleteRole.className = "admin-btn-edit";
+
         roleitem.appendChild(roleitemTitle);
-				roleitem.appendChild(btnDeleteRole);
+				roleitem.appendChild(divBtnDeleteRole);
         this.refs.savedRoles.appendChild(roleitem);
 				let roleID = btnDeleteRole.id;
 
