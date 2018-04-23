@@ -319,7 +319,7 @@ class Register extends React.Component {
       } else if (!zip) {
         this.refs.feilmelding.innerText = 'Du må skrive et gyldig postnr';
       } else if (!email) {
-        this.refs.feilmelding.innerText = 'Du må skrive inn en epostadresse';
+        this.refs.feilmelding.innerText = 'Du må skrive inn en e-postadresse';
       } else if (!age) {
         this.refs.feilmelding.innerText = 'Du må skrive inn din alder';
       } else if (!password) {
