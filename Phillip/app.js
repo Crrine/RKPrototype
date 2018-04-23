@@ -307,7 +307,7 @@ class Register extends React.Component {
       if (!firstname && !lastname && !address && !phone && !city && !zip && !email && !age && !password) {
         this.refs.feilmelding.innerText = 'Du må fylle ut skjemaet';
       } else if (!firstname) {
-        this.refs.feilmelding.innerText = 'Du må skrive inn et brukernavn';
+        this.refs.feilmelding.innerText = 'Du må skrive inn et fornavn';
       } else if (!lastname) {
         this.refs.feilmelding.innerText = 'Du må skrive inn et etternavn';
       } else if (!address) {
@@ -319,7 +319,7 @@ class Register extends React.Component {
       } else if (!zip) {
         this.refs.feilmelding.innerText = 'Du må skrive et gyldig postnr';
       } else if (!email) {
-        this.refs.feilmelding.innerText = 'Du må skrive inn en email adresse';
+        this.refs.feilmelding.innerText = 'Du må skrive inn en e-postadresse';
       } else if (!age) {
         this.refs.feilmelding.innerText = 'Du må skrive inn din alder';
       } else if (!password) {
@@ -478,7 +478,7 @@ class Profile extends React.Component {
           <div ref="message"></div>
           </div>
           <div>
-            <b>Din nåværende kompetanse:</b>
+            <b>Din     nåværende kompetanse:</b>
             <div ref='compOutput'></div>
           </div>
           </div>
@@ -2552,21 +2552,21 @@ class NewEvent extends React.Component {
       userService.getRolelist(rolelistName, (result) => {
         rolelistid = result.rolelistID;
         if (!name) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et brukernavn";
+          this.refs.feilmelding.innerText = "Du må skrive inn en tittel";
         } else if (!point_award) {
           this.refs.feilmelding.innerText = "Du må skrive inn vaktpoeng for arrangementet";
         } else if (date_start == "") {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Startdato";
+          this.refs.feilmelding.innerText = "Du må skrive inn en startdato";
         } else if (date_end == "") {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Sluttdato";
+          this.refs.feilmelding.innerText = "Du må skrive inn en sluttdato";
         } else if (!shiftManager) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Vaktansvarlig";
+          this.refs.feilmelding.innerText = "Du må skrive inn en vaktansvarlig";
         } else if (!contact_phone) {
-          this.refs.feilmelding.innerText = "Du må skrive inn et tlf nummer";
+          this.refs.feilmelding.innerText = "Du må skrive inn et telefonnummer";
         } else if (!area) {
           this.refs.feilmelding.innerText = "Du må skrive inn et møtested";
         } else if (!description) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en Beskrivelse";
+          this.refs.feilmelding.innerText = "Du må skrive inn en beskrivelse";
         } else {
         userService.addEvent(name, date_start, date_end, contact_phone, rolelistid, description, area, point_award, shiftManager, (result) => {
             this.refs.feilmelding.innerText = "Du må fylle ut skjemaet riktig";
