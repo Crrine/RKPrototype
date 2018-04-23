@@ -2547,6 +2547,13 @@ class Search extends React.Component {
   componentDidMount() {
     this.userisloggedin = userService.browseruser();
 
+    this.refs.searchField.onkeyup = (event) => {
+      event.preventDefault();
+      if(event.keyCode === 13){
+        this.refs.btnSearch.click();
+      }
+    };
+
     this.refs.btnSearch.onclick = () => {
       let keyword = this.refs.searchField.value;
 
