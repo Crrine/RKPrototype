@@ -477,6 +477,13 @@ iframe {
   line-height: 1.2;
 }
 
+.event-div-descrip-error {
+  font-size: 1em;
+  line-height: 0.9;
+  text-align: center;
+  font-weight: 700;
+}
+
 .event-div-descrip {
   padding-top: 40px;
   width: 70%;

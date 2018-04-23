@@ -2429,7 +2429,7 @@ class NewEvent extends React.Component {
             <textarea className="form-control" rows="5" ref='regDescript'></textarea>
           </div>
         </form>
-        <p className="event-div-descrip" ref="feilmelding"></p>
+        <p className="event-div-descrip-error" ref="feilmelding"></p>
         <div className="login-grid">
           <div>
 						<button ref='btnBackArr' className="btn btn-outline-danger">Tilbake</button>
