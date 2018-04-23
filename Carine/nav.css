@@ -366,8 +366,9 @@ iframe {
 .profile-event-text {
   font-weight: 500;
   font-size: 0.5em;
-  margin-top: -40px;
+  margin-top: -30px;
   line-height: 1.2;
+  color: red;
 }
 
 .profile-course-registration {
