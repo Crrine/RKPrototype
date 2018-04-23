@@ -58,6 +58,14 @@ class UserService {
     })
   }
 
+  checkifInactive(userid, callback) {
+    connection.query('SELECT * FROM user WHERE inactive = 1 AND userID = ?', [userid], (error, result) => {
+      if(error) throw error;
+
+      callback(result[0]);
+    })
+  }
+
   getPastEvents(callback) {
   connection.query('SELECT * FROM event WHERE date_start <= CURDATE() ORDER BY date_end', (error, result) => {
     if(error) throw error;
