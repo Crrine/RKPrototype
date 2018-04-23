@@ -465,7 +465,7 @@ class Profile extends React.Component {
           <div>
           <div className="profile-course-grid">
           <div className="profile-course-inp">
-            <p>Hvilken kvalifisering gjelder det?</p>
+            <p>Hvilken kompetanse gjelder det?</p>
             <form ref='compForm'>
               <select className="form-control profile-course-file" ref='compSelect'></select>
             </form>
@@ -478,7 +478,7 @@ class Profile extends React.Component {
           <div ref="message"></div>
           </div>
           <div>
-            <b>Dine nåværende kvalifiseringer:</b>
+            <b>Din nåværende kompetanse:</b>
             <div ref='compOutput'></div>
           </div>
           </div>
@@ -509,7 +509,7 @@ class Profile extends React.Component {
         <div>
           <div className="profile-deactivate-bg">
             <h3 className="medium-title">Deaktivere profil?</h3>
-          <p className="profile-deactivate-text">Ønsker du av en grunn å deaktivere din profil kan du klikke på knappen under, Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
+          <p className="profile-deactivate-text">Ønsker du å deaktivere din profil kan du klikke på knappen under. Profilen din vil da bli deaktivert og du må kontakte administrator for å aktivere den igjen.</p>
           <div className="profile-deactive-btn">
             <button className="btn btn-outline-danger" type="button" ref='btnDeactivate'>Ja, jeg ønsker å deaktivere min profil</button>
           </div>
