@@ -93,13 +93,12 @@ class LoginPage extends React.Component {
         }
       })
     }
-    this.refs.inpPassword.addEventListener('keyup', function(event) {
+    this.refs.inpPassword.onkeyup = (event) => {
       event.preventDefault();
       if(event.keyCode === 13){
-        let btnLogin = this.refs.btnLogin;
-        btnLogin.click();
+        this.refs.btnLogin.click();
       }
-    })
+    };
   }
 }
 
