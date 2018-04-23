@@ -2554,7 +2554,7 @@ class NewEvent extends React.Component {
         } else if (date_end == "") {
           this.refs.feilmelding.innerText = "Du må skrive inn en sluttdato";
         } else if (!shiftManager) {
-          this.refs.feilmelding.innerText = "Du må skrive inn en vaktansvarlig";
+          this.refs.feilmelding.innerText = "Du må skrive inn en Vaktansvarlig";
         } else if (!contact_phone) {
           this.refs.feilmelding.innerText = "Du må skrive inn et telefonnummer";
         } else if (!area) {
