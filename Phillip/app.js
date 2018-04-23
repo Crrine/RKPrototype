@@ -307,7 +307,7 @@ class Register extends React.Component {
       if (!firstname && !lastname && !address && !phone && !city && !zip && !email && !age && !password) {
         this.refs.feilmelding.innerText = 'Du må fylle ut skjemaet';
       } else if (!firstname) {
-        this.refs.feilmelding.innerText = 'Du må skrive inn et brukernavn';
+        this.refs.feilmelding.innerText = 'Du må skrive inn et fornavn';
       } else if (!lastname) {
         this.refs.feilmelding.innerText = 'Du må skrive inn et etternavn';
       } else if (!address) {
@@ -319,7 +319,7 @@ class Register extends React.Component {
       } else if (!zip) {
         this.refs.feilmelding.innerText = 'Du må skrive et gyldig postnr';
       } else if (!email) {
-        this.refs.feilmelding.innerText = 'Du må skrive inn en email adresse';
+        this.refs.feilmelding.innerText = 'Du må skrive inn en epostadresse';
       } else if (!age) {
         this.refs.feilmelding.innerText = 'Du må skrive inn din alder';
       } else if (!password) {
@@ -478,7 +478,7 @@ class Profile extends React.Component {
           <div ref="message"></div>
           </div>
           <div>
-            <b>Din nåværende kompetanse:</b>
+            <b>Din     nåværende kompetanse:</b>
             <div ref='compOutput'></div>
           </div>
           </div>
