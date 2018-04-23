@@ -2312,7 +2312,9 @@ class ChangeRole extends React.Component {
 			      <label>Legg til rolle:
             </label>
 			        <select className="form-control" ref='roleSelect'></select>
-            <button className="btn btn-outline-success role-input" ref='addRoleToList'>Legg til</button>
+              <div className="role-btn-add">
+                <button className="btn btn-outline-success role-input" ref='addRoleToList'>Legg til</button>
+              </div>
 					</div>
 
 					<div>
@@ -2324,11 +2326,15 @@ class ChangeRole extends React.Component {
 					<div className="admin-btn-left">
 						<button className="btn btn-outline-danger" ref="back">Tilbake</button>
 					</div>
-					<div className="admin-btn-right">
 
+          <div className="admin-btn-right">
+          <div className="">
 						<button className="btn btn-success" ref="EditRole">Lagre</button>
+          </div>
+          <div className="">
 						<button className="btn btn-danger" ref='deleteRoleList'>Slett vaktmal</button>
-					</div>
+          </div>
+        </div>
 				</div>
 		</div>
     </div>)
