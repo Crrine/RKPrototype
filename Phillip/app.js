@@ -1456,7 +1456,7 @@ class Vaktliste extends React.Component {
 		<div className="main-wrap">
 
       <h1 className="title">
-        Tittel til Arrangementet
+        <p ref="title" />
       </h1>
 			<div className="int-grid">
 
@@ -1566,6 +1566,9 @@ class Vaktliste extends React.Component {
     userService.getUserHasEvent(userid, eventID, (result) => {
       this.hasevent = result;
       this.hentbrukere();
+    })
+    userService.getDivEvent(eventID,(result) => {
+      this.refs.title.innerText = result.name;
     })
     this.refs.backButton.onclick = () => {
       history.push('/divEvent');
