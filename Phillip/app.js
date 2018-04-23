@@ -1757,6 +1757,9 @@ class EditEvent extends React.Component {
   )}
 
   componentDidMount() {
+    this.refs.btnBackArr.onclick = () => {
+      history.push('/divevent');
+    }
     userService.getRolelists((result) => {
       for (let rolelist of result) {
         let rolelistSel = document.createElement('OPTION');
@@ -2325,7 +2328,7 @@ class Passiv extends React.Component {
       </div>
       </form>
       <div>
-        <button className="btn btn-outline-danger" ref="passivbutton">
+        <button className="btn btn-outline-danger" ref="backbutton">
           Tilbake</button>
       </div>
       <div className="passive-btn">
@@ -2337,7 +2340,9 @@ class Passiv extends React.Component {
     </div>);
   }
   componentDidMount() {
-
+    this.refs.backbutton.onclick = () => {
+      history.push('/calendar');
+    }
     this.refs.passivbutton.onclick = () => {
       var userID = userid;
       var date_Start = this.refs.passivdato.value;
