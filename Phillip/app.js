@@ -2132,11 +2132,11 @@ class NewRole extends React.Component {
 </div>
   <div className="role-grid">
     <div>
-      <b>Disse rollene finnes i databasen:</b>
+      <b>Eksisterende roller:</b>
       <div ref='showRoles'></div>
   </div>
     <div className="role-comp-list">
-      <b>Kompetanse som kreves:</b>
+      <b>Kompetanse som kreves for hver rolle:</b>
       <div ref='showComps'></div>
     </div>
 </div>
