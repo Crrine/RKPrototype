@@ -45,9 +45,11 @@ class LoginPage extends React.Component {
                 </div>
               </form>
               <div className="login-grid">
-                <div className="login-links">
-                  <NavLink  to='/forgotPassword' className="nav-link">Glemt passord?</NavLink>
-                  <NavLink  to='/register' className="nav-link">
+                <div className="login-links-left">
+                  <NavLink to='/forgotPassword' className="nav-link">
+                    Glemt passord?
+                  </NavLink>
+                  <NavLink to='/register' className="nav-link">
                     Registrere ny bruker?
                   </NavLink>
                   <div ref='loginOutput'></div>
@@ -123,7 +125,7 @@ class ForgotPassword extends React.Component {
                 </div>
               </form>
               <div className="login-grid">
-                <div>
+                <div className="login-links">
                   <NavLink  to='loginPage'>Logg inn?</NavLink>
                   <br/>
                   <NavLink  to="register">Registrer ny bruker?</NavLink>
@@ -271,9 +273,9 @@ class Register extends React.Component {
               </div>
             </form>
             <div className="login-grid">
-              <div>
+              <div className="login-links">
                 <NavLink  to='/loginPage'>Logg inn?</NavLink>
-                <br/>
+                <br />
                 <NavLink  to='/forgotpassword'>Glemt passord?</NavLink>
               </div>
               <div>
