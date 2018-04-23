@@ -45,16 +45,18 @@ class LoginPage extends React.Component {
                 </div>
               </form>
               <div className="login-grid">
-                <div>
-                  <NavLink  to='/forgotPassword' className="nav-link">Glemt passord?</NavLink>
-                  <NavLink  to='/register' className="nav-link">
+                <div className="login-links-left">
+                  <NavLink to='/forgotPassword' className="nav-link">
+                    Glemt passord?
+                  </NavLink>
+                  <NavLink to='/register' className="nav-link">
                     Registrere ny bruker?
                   </NavLink>
+                  <div ref='loginOutput'></div>
                 </div>
                 <div>
                   <button id="login-button" type="button" className="btn btn-danger" ref='btnLogin'>Logg inn</button>
                 </div>
-                <div ref='loginOutput'></div>
               </div>
             </div>
           </div>
@@ -87,12 +89,18 @@ class LoginPage extends React.Component {
           history.push('/homepage');
         } else {
           console.log("mislykket innlogging");
-          this.refs.loginOutput.innerText = 'feil brukernavn/passord';
+          this.refs.loginOutput.innerText = 'Feil brukernavn eller passord.';
           userService.emptystorage();
           this.forceUpdate();
         }
       })
     }
+    this.refs.inpPassword.onkeyup = (event) => {
+      event.preventDefault();
+      if(event.keyCode === 13){
+        this.refs.btnLogin.click();
+      }
+    };
   }
 }
 
@@ -117,7 +125,7 @@ class ForgotPassword extends React.Component {
                 </div>
               </form>
               <div className="login-grid">
-                <div>
+                <div className="login-links">
                   <NavLink  to='loginPage'>Logg inn?</NavLink>
                   <br/>
                   <NavLink  to="register">Registrer ny bruker?</NavLink>
@@ -196,43 +204,86 @@ class Register extends React.Component {
               <img className="login-logo-img" src="rodekors-01.png" alt="Logo"/>
             </div>
             <form>
-              <div className="login-grid">
+              <div className="login-grid-inp">
                 <div className="form-group">
+                  <div className="row">
+                  <div className="col">
                   <label className="login-text">Fornavn:</label>
                   <input type="text" className="form-control" ref='regFirstName'/>
-                  <label className="login-text">Adresse:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Etternavn:</label>
+                    <input type="text" className="form-control" ref='regLastName'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                    <div className="col">
+                <label className="login-text">Adresse:</label>
                   <input type="text" className="form-control" ref='regAddress'/>
-                  <label className="login-text">By:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Telefon:</label>
+                    <input type="text" className="form-control" ref='regPhone'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                    <div className="col">
+                <label className="login-text">By:</label>
                   <input type="text" className="form-control" ref='regCity'/>
-                  <label className="login-text">Epost:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Postnr:</label>
+                    <input type="number" className="form-control" ref='regZip'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                    <div className="col">
+                <label className="login-text">Epost:</label>
                   <input type="email" className="form-control" ref='regEmail'/>
-                  <label className="login-text">Passord:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Alder:</label>
+                    <input type="number" className="form-control" ref='regAge'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                      <div className="col">
+                <label className="login-text">Passord:</label>
                   <input type="password" className="form-control" ref='regPassword'/>
                 </div>
-                <div className="form-group">
-                  <label className="login-text">Etternavn:</label>
-                  <input type="text" className="form-control" ref='regLastName'/>
-                  <label className="login-text">Telefon:</label>
-                  <input type="text" className="form-control" ref='regPhone'/>
-                  <label className="login-text">Postnr:</label>
-                  <input type="number" className="form-control" ref='regZip'/>
-                  <label className="login-text">Alder:</label>
-                  <input type="number" className="form-control" ref='regAge'/>
-                  <label className="login-text">Bekreft passord:</label>
-                  <input type="password" className="form-control" ref='repeatregPassword'/>
+                <div className="col">
+                    <label className="login-text">Bekreft passord:</label>
+                    <input type="password" className="form-control" ref='repeatregPassword'/>
+                  </div>
+                  </div>
                 </div>
+
               </div>
             </form>
             <div className="login-grid">
-              <div>
+              <div className="login-links">
                 <NavLink  to='/loginPage'>Logg inn?</NavLink>
-                <br/>
+                <br />
                 <NavLink  to='/forgotpassword'>Glemt passord?</NavLink>
               </div>
               <div>
                 <span ref="feilmelding"></span>
                 <br/>
-                <button id='login-button' type="button" className="btn btn-danger" ref='btnSendReg'>Registrer</button>
+                <div className="login-reg-btn">
+                  <button id='login-button' type="button" className="btn btn-danger" ref='btnSendReg'>Registrer</button>
+                </div>
               </div>
             </div>
           </div>
@@ -1928,7 +1979,7 @@ class Administrator extends React.Component {
 
   render() {
     return (<div className="big-container">
-		<div className="main-wrap">
+		<div className="admin-wrap">
       <h1 className="title">Administrasjon</h1>
 
 			<div className="admin-grid">
@@ -1964,7 +2015,7 @@ class Administrator extends React.Component {
       }
     </ul>
 			</div>
-			<div className="admin-grid-right">
+			<div>
       <h3 className="eventmediumtitle">
         Vaktmaler:
       </h3>
@@ -2018,12 +2069,14 @@ class Administrator extends React.Component {
   skrivutmannskapsinfo() {
     let mannskap = [];
     for (let rolelist of this.liste) {
-      mannskap.push(<li key={rolelist.rolelistID}>
+      mannskap.push(<li className="admin-li" key={rolelist.rolelistID}>
         {rolelist.name + " "}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-danger btn-sm" onClick= {() => {
 					history.push('/changerole')
 					rolelistID = rolelist.rolelistID;
 				}}>Rediger</button>
+        </div>
       </li>)
     }
     this.setState({mannskapsliste: mannskap})
@@ -2032,11 +2085,13 @@ class Administrator extends React.Component {
   skrivutavslatt() {
     let utskriftavslatt = [];
     for (let user of this.avslatt) {
-      utskriftavslatt.push(<li key={user.userID}>
+      utskriftavslatt.push(<li className="admin-li" key={user.userID}>
         {user.firstname + " " + user.lastname + " "}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
 					this.updateavslatt(user.userID)
 				}}>Angre</button>
+      </div>
       </li>)
     }
     this.setState({avslattebrukere: utskriftavslatt})
@@ -2066,14 +2121,16 @@ class Administrator extends React.Component {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.compuserID}>
+      usercomp.push(<li className="admin-li" key={user_has_competence.compuserID}>
         {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
           this.updatecomplist(user_has_competence.compuserID, user_has_competence.userID);
         }}>Aksepter</button>
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
           this.deletecompuser(user_has_competence.userID, user_has_competence.compuserID)
 				}}>Avslå</button>
+      </div>
       </li>)
     }
     this.setState({kompetanseliste: usercomp})
@@ -2082,14 +2139,16 @@ class Administrator extends React.Component {
   skrivutinfo() {
     let utskrift = [];
     for (let user of this.brukere) {
-      utskrift.push(<li key={user.userID}>
+      utskrift.push(<li className="admin-li" key={user.userID}>
         {user.firstname + " " + user.lastname + " "}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
 					this.updateuser(user.userID)
 				}}>Aksepter</button>
 			<button className="btn btn-outline-danger btn-sm" onClick = {() => {
 					this.updateDenyUser(user.userID)
 				}}>Avslå</button>
+      </div>
       </li>)
     }
     this.setState({brukergodkjenning: utskrift})
@@ -2326,7 +2385,8 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.roleSelect.innerText = '';
+						this.refs.savedRoles.innerText = '';
+            this.refs.roleSelect.innerText = '';
 						this.update();
 					});
 				}
@@ -2339,8 +2399,9 @@ class ChangeRole extends React.Component {
 
         userService.addRoleToList(roleID, rolelistID, (result) => {
 					console.log('La til rolle ID - ' + roleID);
-					this.refs.savedRoles.innerText = 'Rolleliste:';
-					this.refs.roleSelect.innerText = '';
+					// this.refs.savedRoles.innerText = 'Rolleliste:';
+					this.refs.savedRoles.innerText = '';
+          this.refs.roleSelect.innerText = '';
           this.update();
 
         });
@@ -2532,6 +2593,13 @@ class Search extends React.Component {
   componentDidMount() {
     this.userisloggedin = userService.browseruser();
 
+    this.refs.searchField.onkeyup = (event) => {
+      event.preventDefault();
+      if(event.keyCode === 13){
+        this.refs.btnSearch.click();
+      }
+    };
+
     this.refs.btnSearch.onclick = () => {
       let keyword = this.refs.searchField.value;
 
@@ -2582,6 +2650,7 @@ class Search extends React.Component {
         history.push('/editotherprofile/',);
       }
     }
+    this.refs.btnSearch.click();
   }
 }
 

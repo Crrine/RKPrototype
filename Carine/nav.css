@@ -22,6 +22,15 @@ body {
   width: 70%;
 }
 
+.login-links {
+  line-height: 2;
+}
+
+.login-links-left {
+  line-height: 1.2;
+  margin-left: -18px;
+}
+
 .login-wrap {
   width: 40%;
   background: rgba(255,255,255, 0.9);
@@ -32,7 +41,7 @@ body {
   bottom: 0;
   left: 0;
   padding: 50px;
-  height: 70%;
+  height: 60%;
   overflow-y: auto;
 }
 
@@ -46,7 +55,14 @@ body {
   bottom: 0;
   left: 0;
   padding: 50px;
-  height: 80%;
+  height: 85%;
+}
+
+.login-grid-inp {
+  grid-template-rows: auto;
+  display: grid;
+  grid-gap: 20px;
+  padding-right: 20px;
 }
 
 .login-grid {
@@ -65,6 +81,15 @@ body {
 
 .login-text {
   font-size: 0.9em;
+}
+
+.login-form {
+  margin-top: -30px;
+}
+
+.login-reg-btn {
+  margin-top: -20px;
+  margin-right: 20px;
 }
 
 li {
@@ -99,7 +124,6 @@ li {
   border-radius: 15px;
   background-color: white;
   padding: 20px;
-  overflow: auto;
   max-height: 640px;
   overflow-y: auto;
 }
@@ -554,12 +578,22 @@ iframe {
   margin-left: 5px;
 }
 
+.admin-wrap {
+  border-radius: 15px;
+  background-color: white;
+  padding: 20px;
+  min-height: 500px;
+  max-height: 640px;
+  overflow-y: auto;
+}
+
 .admin-grid {
   display: grid;
   grid-template-columns: 50% 50%;
   width: 80%;
   margin: 0 auto;
   margin-top: 30px;
+  grid-gap: 20px;
 }
 
 .admin-btn-right {
@@ -576,9 +610,16 @@ iframe {
   margin-right: 30px;
 }
 
-.admin-grid-right {
-  margin-left: auto;
-  margin-right: 0;
+.admin-btn-edit {
+  text-align: right;
+  margin: -25px;
+  padding-bottom: 7px;
+  margin-right: 5px;
+}
+
+.admin-li {
+  margin-bottom: 20px;
+  margin-left: -20px;
 }
 
 .passive-wrap {
