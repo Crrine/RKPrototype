@@ -424,10 +424,10 @@ class Profile extends React.Component {
             </label>
             <br/>
           <button className="btn btn-outline-success" ref='btnAddComp'>Send inn</button>
+          <div ref="message"></div>
           </div>
           <div>
             <b>Dine nåværende kvalifiseringer:</b>
-            <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
           </div>
@@ -680,7 +680,7 @@ class EditOtherProfile extends React.Component {
           <button className="btn btn-outline-success" ref='btnAddComp'>Send inn</button>
           </div>
           <div>
-            <b>Dine nåværende kvalifiseringer:</b>
+            <b>Brukerens nåværende kvalifiseringer:</b>
             <div ref="message"></div>
             <div ref='compOutput'></div>
           </div>
