@@ -2091,39 +2091,54 @@ class Administrator extends React.Component {
 
 class NewRole extends React.Component {
   render() {
-    return (<div>
-      <h4>Opprett vaktmal</h4>
-      <b>Du kan legge til roller i vaktmalen etter at den har blitt opprettet, velg 'rediger' i adminsiden</b>
+    return (<div className="big-container">
+      <div className="main-wrap">
+      <h1 className="title">Opprett vaktmal</h1>
+    <div className="role-wrap">
+    <div>
       <form>
-        <label>
-          Navn på vaktmalen:<br/>
-          <input ref='NewRoleName' type='text'/><br/>
+        <label className="role-input">
+          Navn på vaktmalen:
+          <input className="form-control" ref='NewRoleName' type='text'/>
         </label>
-        <label>
-          Beskrivelse av vaktmalen:<br/>
-          <input ref='NewRoleDesc' type='text'/><br/>
+        <label className="role-input">
+          Beskrivelse av vaktmalen:
+          <input className="form-control" ref='NewRoleDesc' type='text'/>
         </label>
       </form>
-      <button ref='btnSendRole'>Opprett</button>
-      <button ref='btnBackRole'>Tilbake</button>
-      <br/><br/>
-      <form>
-        <h4>Legg til nye roller i databasen</h4>
-        <label>
-          Rollenavn:<br/>
-          <input ref='addRole' type='text'/>
+      <button className="btn btn-success" ref='btnSendRole'>Opprett vaktmal</button>
+
+    </div>
+    <br/>
+    <div>
+      <b>For å legge til roller i vaktmalen som blir opprettet må du velge 'rediger' som finnes under adminsiden.</b>
+
+    <form>
+        <h4 className="role-title">Opprett ny rolle:</h4>
+        <label className="role-input">
+          Rollenavn:
+          <input className="form-control" ref='addRole' type='text'/>
         </label>
-        <label>
-          Kurs som kreves:<br/>
-          <input ref='compRequired' type='text' />
+        <label className="role-input">
+          Kurs som kreves:
+          <input className="form-control" ref='compRequired' type='text' />
         </label>
       </form>
-      <button ref='regRole'>Registrer rolle</button><br/>
+      <button className="btn btn-success" ref='regRole'>Opprett rolle</button>
+  </div>
+</div>
+  <div className="role-grid">
+    <div>
       <b>Disse rollene finnes i databasen:</b>
       <div ref='showRoles'></div>
-      <br/>
+  </div>
+    <div className="role-comp-list">
       <b>Kompetanse som kreves:</b>
       <div ref='showComps'></div>
+    </div>
+</div>
+    <button className="btn btn-outline-danger" ref='btnBackRole'>Tilbake</button>
+  </div>
     </div>)
   }
 

@@ -67,7 +67,7 @@ body {
   font-size: 0.9em;
 }
 
-p, button, label {
+p, button, label, b {
   font-family: 'Roboto Condensed', sans-serif;
 }
 
@@ -557,4 +557,32 @@ iframe {
 
 .passive-enddate {
   margin-right: 120px;
+}
+
+.role-wrap {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.role-title {
+  color: #ad0513;
+  font-family: 'Abril Fatface', cursive;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.role-comp-list {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.role-input {
+  padding: 5px;
 }
