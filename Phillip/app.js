@@ -2340,7 +2340,8 @@ class ChangeRole extends React.Component {
 				btnDeleteRole.onclick = () => {
 					userService.deleteRoleFromList(rolelistID, roleID, (result) => {
 						console.log('Fjernet rolle ID - ' + btnDeleteRole.id);
-						this.refs.roleSelect.innerText = '';
+						this.refs.savedRoles.innerText = '';
+            this.refs.roleSelect.innerText = '';
 						this.update();
 					});
 				}
@@ -2353,8 +2354,9 @@ class ChangeRole extends React.Component {
 
         userService.addRoleToList(roleID, rolelistID, (result) => {
 					console.log('La til rolle ID - ' + roleID);
-					this.refs.savedRoles.innerText = 'Rolleliste:';
-					this.refs.roleSelect.innerText = '';
+					// this.refs.savedRoles.innerText = 'Rolleliste:';
+					this.refs.savedRoles.innerText = '';
+          this.refs.roleSelect.innerText = '';
           this.update();
 
         });
