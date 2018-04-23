@@ -496,13 +496,22 @@ regCompetence(userid, compid, fileUpload, finished, active, callback){
     callback();
   })
 }
-acceptCompetence(active, userid, callback){
-  connection.query('UPDATE user_has_competence SET active = ? WHERE userID = ?', [active, userid], (error, result) => {
+acceptCompetence(active, userid, compuserID, callback){
+  connection.query('UPDATE user_has_competence SET active = ? WHERE userID = ? AND compuserID = ?', [active, userid, compuserID], (error, result) => {
     if(error) throw error;
 
     callback();
   })
 }
+
+deletefromcomplist(userid, compuserID, callback) {
+  connection.query('DELETE FROM user_has_competence WHERE userID = ? AND compuserID = ?', [userid, compuserID], (error, result) => {
+    if(error) throw error;
+
+    callback();
+  })
+}
+
   search(keyword, callback){
     connection.query("SELECT * FROM user WHERE firstname LIKE ? OR lastname LIKE ? ORDER BY firstname", [keyword + '%', keyword + '%'], (error, result) => {
       if (error) throw error;
