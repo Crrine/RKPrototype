@@ -277,7 +277,7 @@ class Register extends React.Component {
         this.refs.feilmelding.innerText = 'Passordene er ikke like';
       } else {
         userService.addUser(firstname, lastname, address, email, password, city, zip, phone, age, (result) => {
-          alert('Brukeren er opprettet - vent på godkjenning');
+          alert('Brukeren er opprettet');
           history.push('/loginPage/');
           this.forceUpdate(); //Ikke bruke forceUpdate
         })
@@ -545,7 +545,7 @@ class Profile extends React.Component {
         divEvent.appendChild(titleEvent); //Fiks men lag en p for info
 
         let eventTxt = document.createElement('P');
-        eventTxt.classList.add("profile-event-text");
+        eventTxt.className = "profile-event-text";
 
         str = event.date_start;
         if (str) {
@@ -2540,15 +2540,20 @@ class Search extends React.Component {
 					divUser.className = "search-bg";
           let btnUser = document.createElement('BUTTON');
           let btnUserTxt = document.createTextNode('Rediger');
+          let divBtnUser = document.createElement('div');
           btnUser.appendChild(btnUserTxt);
+          btnUser.className = "btn btn-outline-danger";
           btnUser.setAttribute('id', user.userID);
-					btnUser.className = "btn btn-outline-danger";
+
 
           btnUser.onclick = () => {
             sendToUser(clickedUser);
           }
 
-					let divFullName = document.createTextNode(user.firstname + ' ' + user.lastname);
+          divBtnUser.appendChild(btnUser);
+          divBtnUser.className = "search-btn-user";
+
+          let divFullName = document.createTextNode(user.firstname + ' ' + user.lastname);
 					let divUserInfo = document.createTextNode('Epost: ' + user.email + ' - ' + 'Telefon: ' + user.phone + ' ');
 					let linebreak = document.createElement('BR');
 
@@ -2557,7 +2562,7 @@ class Search extends React.Component {
 					divUser.appendChild(linebreak);
 					divUser.appendChild(divUserInfo);
           if (this.userisloggedin.admin == 1) {
-            divUser.appendChild(btnUser);
+            divUser.appendChild(divBtnUser);
           }
           this.refs.output.appendChild(divUser);
         }

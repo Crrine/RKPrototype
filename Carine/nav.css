@@ -365,10 +365,6 @@ iframe {
 
 .profile-event-text {
   font-weight: 500;
-  font-size: 0.5em;
-  margin-top: -30px;
-  line-height: 1.2;
-  color: red;
 }
 
 .profile-course-registration {
@@ -530,17 +526,22 @@ iframe {
 }
 
 .search-bg {
-  padding: 40px;
-  overflow: auto;
-  height: 100px;
-  width: 300px;
-  margin-top: 20px;
+  width: 100%;
+  margin: 40px;
 }
 
 .search-form {
   margin-bottom: 100px;
   margin: 0 auto;
   text-align: center;
+}
+
+.search-btn-user {
+  margin-left: auto;
+  margin-right: 30px;
+  text-align: right;
+  margin-top: -35px;
+
 }
 
 .admin-grid {
