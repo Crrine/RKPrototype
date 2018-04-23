@@ -545,7 +545,7 @@ class Profile extends React.Component {
         divEvent.appendChild(titleEvent); //Fiks men lag en p for info
 
         let eventTxt = document.createElement('P');
-        eventTxt.className = "profile-event-text";
+        eventTxt.classList.add("profile-event-text");
 
         str = event.date_start;
         if (str) {
@@ -1863,6 +1863,7 @@ class Calendar extends React.Component {
   render() {
     return (<div className="big-container">
 			<div className="main-wrap">
+        <h1 className="title">Kalender</h1>
       <BigCalendar className="big-calender" messages={{
           next: "Neste",
           previous: "Tilbake",
