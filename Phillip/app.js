@@ -2041,9 +2041,10 @@ class Administrator extends React.Component {
     this.setState({avslattebrukere: utskriftavslatt})
   }
 
-  updatecomplist(userid) {
+  updatecomplist(compuserID, userid) {
+    console.log(compuserID);
     let active = 0
-    userService.acceptCompetence(active, userid, (result) => {
+    userService.acceptCompetence(active, userid, compuserID, (result) => {
       userService.getDivUserComp((result) => {
       this.active = result;
       this.userCompList();
@@ -2051,21 +2052,26 @@ class Administrator extends React.Component {
   })
  }
 
- deletefromcomplist(userid) {
-
+ deletecompuser(userid, compuserID) {
+   userService.deletefromcomplist(userid, compuserID, (result) => {
+     userService.getDivUserComp((result) => {
+       this.active = result;
+       this.userCompList();
+     })
+   })
  }
 
   userCompList()  {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.userID}>
+      usercomp.push(<li key={user_has_competence.compuserID}>
         {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
-          this.updatecomplist(user_has_competence.userID);
+          this.updatecomplist(user_has_competence.compuserID, user_has_competence.userID);
         }}>Aksepter</button>
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
-
+          this.deletecompuser(user_has_competence.userID, user_has_competence.compuserID)
 				}}>Avslå</button>
       </li>)
     }
