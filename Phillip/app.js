@@ -2592,6 +2592,13 @@ class Search extends React.Component {
   componentDidMount() {
     this.userisloggedin = userService.browseruser();
 
+    this.refs.searchField.onkeyup = (event) => {
+      event.preventDefault();
+      if(event.keyCode === 13){
+        this.refs.btnSearch.click();
+      }
+    };
+
     this.refs.btnSearch.onclick = () => {
       let keyword = this.refs.searchField.value;
 
@@ -2642,6 +2649,7 @@ class Search extends React.Component {
         history.push('/editotherprofile/',);
       }
     }
+    this.refs.btnSearch.click();
   }
 }
 
