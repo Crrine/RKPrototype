@@ -1927,7 +1927,7 @@ class Administrator extends React.Component {
 
   render() {
     return (<div className="big-container">
-		<div className="main-wrap">
+		<div className="admin-wrap">
       <h1 className="title">Administrasjon</h1>
 
 			<div className="admin-grid">
@@ -1963,7 +1963,7 @@ class Administrator extends React.Component {
       }
     </ul>
 			</div>
-			<div className="admin-grid-right">
+			<div>
       <h3 className="eventmediumtitle">
         Vaktmaler:
       </h3>
@@ -2017,12 +2017,14 @@ class Administrator extends React.Component {
   skrivutmannskapsinfo() {
     let mannskap = [];
     for (let rolelist of this.liste) {
-      mannskap.push(<li key={rolelist.rolelistID}>
+      mannskap.push(<li className="admin-li" key={rolelist.rolelistID}>
         {rolelist.name + " "}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-danger btn-sm" onClick= {() => {
 					history.push('/changerole')
 					rolelistID = rolelist.rolelistID;
 				}}>Rediger</button>
+        </div>
       </li>)
     }
     this.setState({mannskapsliste: mannskap})
@@ -2031,11 +2033,13 @@ class Administrator extends React.Component {
   skrivutavslatt() {
     let utskriftavslatt = [];
     for (let user of this.avslatt) {
-      utskriftavslatt.push(<li key={user.userID}>
+      utskriftavslatt.push(<li className="admin-li" key={user.userID}>
         {user.firstname + " " + user.lastname + " "}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
 					this.updateavslatt(user.userID)
 				}}>Angre</button>
+      </div>
       </li>)
     }
     this.setState({avslattebrukere: utskriftavslatt})
@@ -2065,14 +2069,16 @@ class Administrator extends React.Component {
     let usercomp = [];
     for (let user_has_competence of this.active) {
       const reader = new FileReader();
-      usercomp.push(<li key={user_has_competence.compuserID}>
+      usercomp.push(<li className="admin-li" key={user_has_competence.compuserID}>
         {user_has_competence.firstname + " " + user_has_competence.lastname + " " + user_has_competence.title}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
           this.updatecomplist(user_has_competence.compuserID, user_has_competence.userID);
         }}>Aksepter</button>
         <button className="btn btn-outline-danger btn-sm" onClick = {() => {
           this.deletecompuser(user_has_competence.userID, user_has_competence.compuserID)
 				}}>Avslå</button>
+      </div>
       </li>)
     }
     this.setState({kompetanseliste: usercomp})
@@ -2081,14 +2087,16 @@ class Administrator extends React.Component {
   skrivutinfo() {
     let utskrift = [];
     for (let user of this.brukere) {
-      utskrift.push(<li key={user.userID}>
+      utskrift.push(<li className="admin-li" key={user.userID}>
         {user.firstname + " " + user.lastname + " "}
+        <div className="admin-btn-edit">
         <button className="btn btn-outline-success btn-sm" onClick = {() => {
 					this.updateuser(user.userID)
 				}}>Aksepter</button>
 			<button className="btn btn-outline-danger btn-sm" onClick = {() => {
 					this.updateDenyUser(user.userID)
 				}}>Avslå</button>
+      </div>
       </li>)
     }
     this.setState({brukergodkjenning: utskrift})
