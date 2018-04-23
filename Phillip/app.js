@@ -45,16 +45,16 @@ class LoginPage extends React.Component {
                 </div>
               </form>
               <div className="login-grid">
-                <div>
+                <div className="login-links">
                   <NavLink  to='/forgotPassword' className="nav-link">Glemt passord?</NavLink>
                   <NavLink  to='/register' className="nav-link">
                     Registrere ny bruker?
                   </NavLink>
+                  <div ref='loginOutput'></div>
                 </div>
                 <div>
                   <button id="login-button" type="button" className="btn btn-danger" ref='btnLogin'>Logg inn</button>
                 </div>
-                <div ref='loginOutput'></div>
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@ class LoginPage extends React.Component {
           history.push('/homepage');
         } else {
           console.log("mislykket innlogging");
-          this.refs.loginOutput.innerText = 'feil brukernavn/passord';
+          this.refs.loginOutput.innerText = 'Feil brukernavn eller passord.';
           userService.emptystorage();
           this.forceUpdate();
         }
@@ -203,31 +203,72 @@ class Register extends React.Component {
               <img className="login-logo-img" src="rodekors-01.png" alt="Logo"/>
             </div>
             <form>
-              <div className="login-grid">
+              <div className="login-grid-inp">
                 <div className="form-group">
+                  <div className="row">
+                  <div className="col">
                   <label className="login-text">Fornavn:</label>
                   <input type="text" className="form-control" ref='regFirstName'/>
-                  <label className="login-text">Adresse:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Etternavn:</label>
+                    <input type="text" className="form-control" ref='regLastName'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                    <div className="col">
+                <label className="login-text">Adresse:</label>
                   <input type="text" className="form-control" ref='regAddress'/>
-                  <label className="login-text">By:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Telefon:</label>
+                    <input type="text" className="form-control" ref='regPhone'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                    <div className="col">
+                <label className="login-text">By:</label>
                   <input type="text" className="form-control" ref='regCity'/>
-                  <label className="login-text">Epost:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Postnr:</label>
+                    <input type="number" className="form-control" ref='regZip'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                    <div className="col">
+                <label className="login-text">Epost:</label>
                   <input type="email" className="form-control" ref='regEmail'/>
-                  <label className="login-text">Passord:</label>
+                </div>
+                <div className="col">
+                    <label className="login-text">Alder:</label>
+                    <input type="number" className="form-control" ref='regAge'/>
+                  </div>
+                </div>
+                  </div>
+
+                  <div className="form-group login-form">
+                    <div className="row">
+                      <div className="col">
+                <label className="login-text">Passord:</label>
                   <input type="password" className="form-control" ref='regPassword'/>
                 </div>
-                <div className="form-group">
-                  <label className="login-text">Etternavn:</label>
-                  <input type="text" className="form-control" ref='regLastName'/>
-                  <label className="login-text">Telefon:</label>
-                  <input type="text" className="form-control" ref='regPhone'/>
-                  <label className="login-text">Postnr:</label>
-                  <input type="number" className="form-control" ref='regZip'/>
-                  <label className="login-text">Alder:</label>
-                  <input type="number" className="form-control" ref='regAge'/>
-                  <label className="login-text">Bekreft passord:</label>
-                  <input type="password" className="form-control" ref='repeatregPassword'/>
+                <div className="col">
+                    <label className="login-text">Bekreft passord:</label>
+                    <input type="password" className="form-control" ref='repeatregPassword'/>
+                  </div>
+                  </div>
                 </div>
+
               </div>
             </form>
             <div className="login-grid">
@@ -239,7 +280,9 @@ class Register extends React.Component {
               <div>
                 <span ref="feilmelding"></span>
                 <br/>
-                <button id='login-button' type="button" className="btn btn-danger" ref='btnSendReg'>Registrer</button>
+                <div className="login-reg-btn">
+                  <button id='login-button' type="button" className="btn btn-danger" ref='btnSendReg'>Registrer</button>
+                </div>
               </div>
             </div>
           </div>

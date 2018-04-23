@@ -46,7 +46,14 @@ body {
   bottom: 0;
   left: 0;
   padding: 50px;
-  height: 80%;
+  height: 85%;
+}
+
+.login-grid-inp {
+  grid-template-rows: auto;
+  display: grid;
+  grid-gap: 20px;
+  padding-right: 20px;
 }
 
 .login-grid {
@@ -65,6 +72,15 @@ body {
 
 .login-text {
   font-size: 0.9em;
+}
+
+.login-form {
+  margin-top: -30px;
+}
+
+.login-reg-btn {
+  margin-top: -20px;
+  margin-right: 20px;
 }
 
 li {
