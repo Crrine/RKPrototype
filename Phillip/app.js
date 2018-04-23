@@ -2604,6 +2604,7 @@ class Search extends React.Component {
         history.push('/editotherprofile/',);
       }
     }
+    this.refs.btnSearch.click();
   }
 }
 
