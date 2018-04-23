@@ -2519,7 +2519,9 @@ class Search extends React.Component {
       <h1 className="title">Brukersøk</h1>
 			<div className="form-inline">
 				<input className="form-control col-4" ref='searchField' type="text" placeholder="Du kan søke på fornavn og etternavn" />
-      	<button className="btn btn-outline-danger" ref='btnSearch'>Søk</button>
+        <div className="search-btn">
+          <button className="btn btn-outline-danger" ref='btnSearch'>Søk</button>
+        </div>
 			</div>
 			<br />
     		<div className="search-flex" ref='output'></div>
@@ -2548,7 +2550,7 @@ class Search extends React.Component {
           let btnUserTxt = document.createTextNode('Rediger');
           let divBtnUser = document.createElement('div');
           btnUser.appendChild(btnUserTxt);
-          btnUser.className = "btn btn-outline-danger";
+          btnUser.className = "btn btn-outline-danger btn-sm";
           btnUser.setAttribute('id', user.userID);
 
 
@@ -2560,15 +2562,16 @@ class Search extends React.Component {
           divBtnUser.className = "search-btn-user";
 
           let divFullName = document.createTextNode(user.firstname + ' ' + user.lastname);
+          divFullName.className = "search-user-name";
 					let divUserInfo = document.createTextNode('Epost: ' + user.email + ' - ' + 'Telefon: ' + user.phone + ' ');
 					let linebreak = document.createElement('BR');
 
-					divUser.className = "divUser"
           divUser.appendChild(divFullName);
 					divUser.appendChild(linebreak);
 					divUser.appendChild(divUserInfo);
           if (this.userisloggedin.admin == 1) {
             divUser.appendChild(divBtnUser);
+          divUser.className = "search-user"
           }
           this.refs.output.appendChild(divUser);
         }

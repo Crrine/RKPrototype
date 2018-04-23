@@ -518,10 +518,17 @@ iframe {
   text-align: right;
 }
 
+.search-user {
+  margin: 10px;
+}
+
+.search-user-name {
+  font-weight: 900;
+}
+
 .search-flex {
   display: grid;
   grid-template-columns: 50% 50%;
-
   font-weight: 500;
 }
 
@@ -541,7 +548,10 @@ iframe {
   margin-right: 30px;
   text-align: right;
   margin-top: -35px;
+}
 
+.search-btn {
+  margin-left: 5px;
 }
 
 .admin-grid {
